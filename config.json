@@ -1,0 +1,4 @@
+{
+	"databaseTableName" : "mongodb://localhost/squad",
+	"port" : 8080
+}

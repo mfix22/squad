@@ -5,37 +5,26 @@ var express        = require('express');
 var app = express();
 var mongoose       = require('mongoose');
 var bodyParser = require('body-parser');
-//var methodOverride = require('method-override');
+var config= require('./config.json');
+var port = process.env.PORT || config.port;
 
-// config files
-var db= require('./config/db');
+mongoose.connect(config.databaseTableName);
 
-// connect to mongoDB
-mongoose.connect(db.url);
-
-// set port
-var port = process.env.PORT || 8080;
-
-// get all data/stuff of the body (POST) parameters
 app.use(bodyParser.json()); // parse application/json 
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
+app.use(express.static(__dirname + '/client'));  // set the static files location /client
 
-// set the static files location /client
-app.use(express.static(__dirname + '/client')); 
-
-// routes 
-require('./app/routes')(app); 
-
-// start app
-// startup our app at http://localhost:8080
-app.listen(port);               
-
-console.log("It is listening");
-
-// expose app           
-exports = module.exports = app; 
+app.use("/", require('./app/logger/logger.js')); 
+// app.use("/event", require('./app/event/eventController.js'));
 
 app.get('*', function(req, res) {
 		res.sendFile(__dirname +'/client/index.html');
 });
+app.listen(port);               
+console.log("App Started");
+
+
+
+// exports = module.exports = app; 
+
