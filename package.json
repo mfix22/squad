@@ -4,15 +4,23 @@
   "description": "Squad Application",
   "main": "app.js",
   "dependencies": {
-    "body-parser": "^1.15.1",
-    "express": "^4.13.4",
-    "mongoose": "^4.4.17",
-    "morgan": "^1.7.0",
-    "request": "^2.72.0"
+    "body-parser": "1.15.1",
+    "express": "4.13.4",
+    "mongoose": "4.4.17",
+    "morgan": "1.7.0",
+    "request": "2.72.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "3.5.0",
+    "mocha": "2.5.3",
+    "nodemon": "^1.9.2",
+    "supertest": "^1.2.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/mocha",
+    "start": "node server.js",
+    "postdev": "start chrome http://localhost:8080/",
+    "dev": "node_modules/.bin/nodemon server.js"
   },
   "repository": {
     "type": "git",

@@ -2,3 +2,5 @@
 *.vpp
 *.vux
 *.zip
+*.log
+node_modules
