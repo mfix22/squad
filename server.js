@@ -9,7 +9,7 @@ var app = express();
 dotenv.config();
 
 var port = process.env.PORT || 8080;
-var dbTableName = "mongodb://localhost/squad";
+var dbTableName = 'mongodb://localhost/squad';
 
 mongoose.connect(dbTableName);
 
@@ -20,12 +20,18 @@ app.use(express.static(__dirname + '/client'));  // set the static files locatio
 app.use(logger('dev'));
 
 
-// app.use("/event", require('./app/event/eventController.js'));
+app.use("/event", require('./app/event/eventController.js'));
+app.use("/user", require('./app/user/userRoutes'));
 
-app.get('*', function(req, res) {
-		res.sendFile(__dirname +'/client/index.html');
+
+app.use(function(err, req, res, next){
+  res.status(500).json(err);
 });
+
+// app.get('*', function(req, res) {
+// 		res.sendFile(__dirname +'/client/index.html');
+// });
 app.listen(port);
-console.log("App Started");
+console.log("App Started on port:", port);
 
 module.exports = app;
