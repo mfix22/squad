@@ -122,12 +122,14 @@ router.get("/", function(req, res){
 
 router.post('/new', validateUserReqs, function(req, res){
   console.log('Creating New User');
+  console.log(req.body);
   var newUser = new User({
     'firstName' : req.body.fn,
     'lastName'  : req.body.ln,
     'username'  : req.body.username,
     'email'     : req.body.username,
-    'password'  : req.body.password
+    'password'  : req.body.password,
+    'token'     : token.generate(req.body.username)
   });
 
   newUser.save(function (err) {

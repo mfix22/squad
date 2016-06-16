@@ -27,12 +27,7 @@ var UserSchema = new mongoose.Schema({
     }
   },
   'profileImgURL': String,
-  'token'        : {
-    'type' : String,
-    'index' : {
-      'unique' : true
-    }
-  },
+  'token'        : String,
   'dateCreated': {
     'type': Date,
     default: Date.now
