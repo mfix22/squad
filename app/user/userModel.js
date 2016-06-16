@@ -1,6 +1,9 @@
 // mongoose
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
+var token = require('token');
+token.defaults.secret = 'CHANGE-TO-REAL-SECRET-LATER'; //FIXME
+token.defaults.timeStep = 30 * 24 * 60 * 60; // 30 days in seconds
 var SALT_WORK_FACTOR = 10;
 
 var UserSchema = new mongoose.Schema({
@@ -24,7 +27,12 @@ var UserSchema = new mongoose.Schema({
     }
   },
   'profileImgURL': String,
-  'token'        : String,
+  'token'        : {
+    'type' : String,
+    'index' : {
+      'unique' : true
+    }
+  },
   'dateCreated': {
     'type': Date,
     default: Date.now
@@ -57,6 +65,13 @@ UserSchema.methods.comparePassword = function(candidatePassword, callback) {
       callback(null, isMatch);
   });
 };
+
+UserSchema.method('validateToken', function(candidateToken) {
+  console.log('username', this.username, 'token', this.token);
+  var a = token.verify(this.username, candidateToken);
+  if (a)  console.log('******** TOKEN VALID ************');
+  return a;
+});
 
 var userModel = mongoose.model('User', UserSchema);
 module.exports = userModel;
