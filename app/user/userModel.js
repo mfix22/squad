@@ -1,15 +1,16 @@
 // mongoose
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
-var token = require('token');
-token.defaults.secret = 'CHANGE-TO-REAL-SECRET-LATER'; //FIXME
-token.defaults.timeStep = 30 * 24 * 60 * 60; // 30 days in seconds
+
+var controller = require('./userController');
+
 var SALT_WORK_FACTOR = 10;
+
 
 var UserSchema = new mongoose.Schema({
   'firstName'    : String,
   'lastName'     : String,
-  'username'        : {
+  'username'     : {
     'type' : String,
     'required' : true,
     'index': {
@@ -27,7 +28,6 @@ var UserSchema = new mongoose.Schema({
     }
   },
   'profileImgURL': String,
-  'token'        : String,
   'dateCreated': {
     'type': Date,
     default: Date.now
@@ -60,8 +60,7 @@ UserSchema.virtual('profile').get(function(){
     'firstName' : this.firstName,
     'email'     : this.email,
     'username'  : this.username,
-    'profileImgURL' : this.profileImgURL,
-    'token' : this.token
+    'profileImgURL' : this.profileImgURL
   }
   return  profile;
 })
@@ -72,12 +71,10 @@ UserSchema.methods.comparePassword = function(candidatePassword, callback) {
   });
 };
 
-UserSchema.method('validateToken', function(candidateToken) {
-  console.log('username', this.username, 'token', this.token);
-  var a = token.verify(this.username, candidateToken);
-  if (a)  console.log('******** TOKEN VALID ************');
-  return a;
-});
+// UserSchema.method('validateToken', function(candidateToken) {
+//   console.log('username', this.username, 'token', this.token);
+//   return controller.jwt.verify(candidateToken, process.env.AUTH_SECRET);
+// });
 
 var userModel = mongoose.model('User', UserSchema);
 module.exports = userModel;

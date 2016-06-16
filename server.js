@@ -5,8 +5,13 @@ var bodyParser = require('body-parser');
 var dotenv = require('dotenv');
 
 var app = express();
+
 //load environment from .env
 dotenv.config();
+if (!process.env.AUTH_SECRET){
+  console.log('Error: Specify secret in environment');
+  process.exit(0);
+}
 
 var port = process.env.PORT || 8080;
 var dbTableName = 'mongodb://localhost/squad';
