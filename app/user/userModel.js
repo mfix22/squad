@@ -54,6 +54,17 @@ UserSchema.pre('save', function(next) {
   });
 });
 
+UserSchema.virtual('profile').get(function(){
+  var profile = {
+    'lastName' : this.lastName,
+    'firstName' : this.firstName,
+    'email'     : this.email,
+    'username'  : this.username,
+    'profileImgURL' : this.profileImgURL,
+    'token' : this.token
+  }
+  return  profile;
+})
 UserSchema.methods.comparePassword = function(candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
       if (err) return callback(err);
