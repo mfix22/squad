@@ -54,6 +54,10 @@ UserSchema.pre('save', function(next) {
   });
 });
 
+UserSchema.post('save', function(doc) {
+  console.log('Creating New User:', JSON.stringify(doc, null, 4), 'saved.');
+});
+
 UserSchema.virtual('profile').get(function(){
   var profile = {
     'lastName' : this.lastName,

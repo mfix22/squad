@@ -3,6 +3,9 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var dotenv = require('dotenv');
+var engines = require('consolidate');
+var handlebars = require('handlebars');
+
 
 var app = express();
 
@@ -24,9 +27,12 @@ app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-f
 app.use(express.static(__dirname + '/client'));  // set the static files location /client
 app.use(logger('dev'));
 
+app.engine('html', engines.handlebars);
+app.set('view engine', 'html');
+app.set('views', __dirname + '/views')
 
-app.use("/event", require('./app/event/eventController.js'));
-app.use("/user", require('./app/user/userRoutes'));
+app.use('/event', require('./app/event/eventController.js'));
+app.use('/', require('./app/user/userRoutes'));
 
 
 app.use(function(err, req, res, next){

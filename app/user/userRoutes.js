@@ -44,13 +44,6 @@ function authenticate(req, res, next){
           var newToken = controller.jwt.sign(user.profile, process.env.AUTH_SECRET);
           console.log('New Token', newToken);
           user.token = newToken;
-          // user.save(function (err) {
-          //   if (err) {
-          //     console.log(err);
-          //     //TODO return gentle message
-          //     res.status(500).send({'err' : err});
-          //   }
-          // });
           req.squad.token = newToken;
           next();
         } else {
@@ -69,7 +62,7 @@ function validateUserReqs(req, res, next) {
 };
 
 function restrictAccess(req, res, next) {
-  if (req.body.token) {
+  if (req.headers['x-access-token']) {
     console.log("Q=" + req.body.token + '\n');
     controller.jwt.verify(req.body.token, process.env.AUTH_SECRET, function(err, decoded){
       if (err) {
@@ -77,18 +70,9 @@ function restrictAccess(req, res, next) {
         next(err);
       } else {
         console.log(decoded);
-        res.send(decoded);
+        res.render('homepage', decoded);
       }
     });
-    // User.findById(req.params.id, function(err, user){
-    //   // console.log(JSON.stringify(user, null, 4));
-    //   if (err) res.status(404).send({'err' : err});
-    //   else if (!user) res.status(404).send({'err' : 'No user with that token.'});
-    //   else if (user.validateToken(req.body.token)){
-    //     req.squad.profile = user.profile;
-    //     next();
-    //   } else res.status(404).send({'err' : 'Incorrect token.'});
-    // });
   } else {
     res.send({'err' : 'No token provided.'})
   }
@@ -101,13 +85,6 @@ function restrictAccess(req, res, next) {
 // ##   ##   ##     ## ##     ##    ##    ##             ##
 // ##    ##  ##     ## ##     ##    ##    ##       ##    ##
 // ##     ##  #######   #######     ##    ########  ######
-// router.get("/", function(req, res){
-//   console.log('USER ROOT');
-//
-//   User.find(function (err, users) {
-//     if (err) res.status(200).send({"err" : err});
-//   })
-// });
 
 router.post('/new', validateUserReqs, function(req, res){
   console.log(req.body);
@@ -125,7 +102,6 @@ router.post('/new', validateUserReqs, function(req, res){
       //TODO return gentle message
       res.status(500).send({'err' : err});
     } else {
-      console.log('Creating New User:', JSON.stringify(newUser, null, 4), 'saved.');
       var ret = newUser.profile;
       ret.token = controller.jwt.sign(newUser.profile, process.env.AUTH_SECRET);
       res.status(200).json(ret);
@@ -140,29 +116,17 @@ router.post('/login', [validateLoginParams, authenticate], function(req, res){
   });
 });
 
-router.post('/', restrictAccess, function(req, res){
+router.all('/', restrictAccess, function(req, res){
   res.redirect('login');
 });
 
-router.get('/logout', function (req, res) {
+// router.get('/logout', function (req, res) {
+//
+//   res.redirect('/login');
+// });
 
-  res.redirect('/login');
+router.all('/test', function(req, res){
+  res.render('homepage.html', {'username' : 'Mike'});
 });
 
 module.exports = router;
-
-
-// app.param('user', function(req, res, next, id) {
-//
-//   // try to get the user details from the User model and attach it to the request object
-//   User.find(id, function(err, user) {
-//     if (err) {
-//       next(err);
-//     } else if (user) {
-//       req.user = user;
-//       next();
-//     } else {
-//       next(new Error('failed to load user'));
-//     }
-//   });
-// });
