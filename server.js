@@ -29,10 +29,11 @@ app.use(logger('dev'));
 
 app.engine('html', engines.handlebars);
 app.set('view engine', 'html');
-app.set('views', __dirname + '/views')
+app.set('views', __dirname + '/views');
+
 
 app.use('/event', require('./app/event/eventController.js'));
-app.use('/', require('./app/user/userRoutes'));
+app.use('/u', require('./app/user/userRoutes'));
 
 
 app.use(function(err, req, res, next){

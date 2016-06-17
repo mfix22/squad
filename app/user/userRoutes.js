@@ -63,8 +63,8 @@ function validateUserReqs(req, res, next) {
 
 function restrictAccess(req, res, next) {
   if (req.headers['x-access-token']) {
-    console.log("Q=" + req.body.token + '\n');
-    controller.jwt.verify(req.body.token, process.env.AUTH_SECRET, function(err, decoded){
+    console.log("Q=" + req.headers['x-access-token'] + '\n');
+    controller.jwt.verify(req.headers['x-access-token'], process.env.AUTH_SECRET, function(err, decoded){
       if (err) {
         console.log("**************" + err);
         next(err);
@@ -74,7 +74,8 @@ function restrictAccess(req, res, next) {
       }
     });
   } else {
-    res.send({'err' : 'No token provided.'})
+    console.log({'err' : 'No token provided.'});
+    next();
   }
 };
 
@@ -116,8 +117,9 @@ router.post('/login', [validateLoginParams, authenticate], function(req, res){
   });
 });
 
-router.all('/', restrictAccess, function(req, res){
-  res.redirect('login');
+router.get('/', restrictAccess, function(req, res){
+  console.log('Headers:', JSON.stringify(req.headers, null, 4));
+  res.render('login');
 });
 
 // router.get('/logout', function (req, res) {
