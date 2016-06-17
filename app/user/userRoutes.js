@@ -127,10 +127,11 @@ router.all('/', restrictAccess, function(req, res){
   return res.render('login');
 });
 
-// router.get('/logout', function (req, res) {
-//
-//   res.redirect('/login');
-// });
+router.get('/logout', function (req, res) {
+  console.log('TEST');
+  res.clearCookie('squad');
+  res.redirect('/u/');
+});
 
 router.all('/test', function(req, res){
   // console.log("Headers:", JSON.stringify(req.headers, null, 4));
