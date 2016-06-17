@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var dotenv = require('dotenv');
 var engines = require('consolidate');
 var handlebars = require('handlebars');
-
+var cookieParser = require('cookie-parser');
 
 var app = express();
 
@@ -26,6 +26,7 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse applica
 app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
 app.use(express.static(__dirname + '/client'));  // set the static files location /client
 app.use(logger('dev'));
+app.use(cookieParser());
 
 app.engine('html', engines.handlebars);
 app.set('view engine', 'html');

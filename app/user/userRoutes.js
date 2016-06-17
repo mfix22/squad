@@ -62,14 +62,15 @@ function validateUserReqs(req, res, next) {
 };
 
 function restrictAccess(req, res, next) {
-  if (req.headers['x-access-token']) {
-    console.log("Q=" + req.headers['x-access-token'] + '\n');
-    controller.jwt.verify(req.headers['x-access-token'], process.env.AUTH_SECRET, function(err, decoded){
+  var token = req.cookies.squad || req.headers['x-access-token'] || req.body.token;
+  if (token) {
+    console.log("Q=" + token + '\n');
+    controller.jwt.verify(token, process.env.AUTH_SECRET, function(err, decoded){
       if (err) {
         console.log("**************" + err);
         next(err);
       } else {
-        console.log(decoded);
+        console.log('Decoded:', decoded);
         res.render('homepage', decoded);
       }
     });
@@ -111,15 +112,19 @@ router.post('/new', validateUserReqs, function(req, res){
 });
 
 router.post('/login', [validateLoginParams, authenticate], function(req, res){
+  res.cookie('squad', req.squad.token, {
+    maxAge: 30 * 24 * 60  * 60 * 1000, //30 days
+    httpOnly: true
+  });
   res.send({
     'ok' : true,
     'token' : req.squad.token
   });
 });
 
-router.get('/', restrictAccess, function(req, res){
+router.all('/', restrictAccess, function(req, res){
   console.log('Headers:', JSON.stringify(req.headers, null, 4));
-  res.render('login');
+  return res.render('login');
 });
 
 // router.get('/logout', function (req, res) {
@@ -128,6 +133,8 @@ router.get('/', restrictAccess, function(req, res){
 // });
 
 router.all('/test', function(req, res){
+  // console.log("Headers:", JSON.stringify(req.headers, null, 4));
+  // console.log('Cookies: ', JSON.stringify(req.cookies, null, 4));
   res.render('homepage.html', {'username' : 'Mike'});
 });
 
