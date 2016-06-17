@@ -71,12 +71,14 @@ function restrictAccess(req, res, next) {
         next(err);
       } else {
         console.log('Decoded:', decoded);
-        res.render('homepage', decoded);
+        req.squad.decoded = decoded;
+        return next();
+        // res.render('homepage', decoded);
       }
     });
   } else {
     console.log({'err' : 'No token provided.'});
-    next();
+    res.render('login');
   }
 };
 
@@ -123,8 +125,8 @@ router.post('/login', [validateLoginParams, authenticate], function(req, res){
 });
 
 router.all('/', restrictAccess, function(req, res){
-  console.log('Headers:', JSON.stringify(req.headers, null, 4));
-  return res.render('login');
+  // console.log('Headers:', JSON.stringify(req.headers, null, 4));
+  res.render('homepage', req.squad.decoded);
 });
 
 router.get('/logout', function (req, res) {
