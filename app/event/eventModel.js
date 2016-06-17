@@ -31,9 +31,4 @@ eventSchema.statics.getById = function (id, cb) {
 }
 
 
-
-
-
-
-
-module.exports = Event =  mongoose.model('Event', eventSchema);
+module.exports = mongoose.model('Event', eventSchema);
