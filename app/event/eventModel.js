@@ -1,9 +1,6 @@
-// app/models/song.js
-
 // mongoose
 var mongoose = require('mongoose');
 
-// for test, will be changed to song
 var eventSchema = mongoose.Schema({
     title        : String,
     meetingSpots    : [{
@@ -12,7 +9,12 @@ var eventSchema = mongoose.Schema({
         status: Number,
         location: {
             long: Number,
-            lat: Number
+            lat: Number,
+            address: String,
+            city: String,
+            state: String,
+            zip: Number,
+            country: String
         }
     }],
     startTime    : Date,
@@ -23,12 +25,10 @@ var eventSchema = mongoose.Schema({
         id      :   String,
         creator :   Boolean
     }]
-    //date_created : some date, need to add this later!!!!
 });
 
 eventSchema.statics.getById = function (id, cb) {
   return this.find({ _id: id }, cb);
 }
-
 
 module.exports = mongoose.model('Event', eventSchema);
