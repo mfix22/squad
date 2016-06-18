@@ -1,15 +1,11 @@
 $('#login').click(function(){
   var u = document.getElementById("exampleInputEmail1").value
   var p = document.getElementById("exampleInputPassword1").value
-  login(u,p, function(err, data){
+  login(u,p, function(err, page){
     if (!err) {
-      // alert(JSON.stringify(data.token, null, 4));
-      $.post('/u', {'token' : data.token}, function(page){
-        // $('body').html(data);
-        document.open();
-        document.write(page);
-        document.close();
-      });
+      document.open();
+      document.write(page);
+      document.close();
     }
   });
 })

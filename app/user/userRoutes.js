@@ -45,6 +45,7 @@ function authenticate(req, res, next){
           console.log('New Token', newToken);
           user.token = newToken;
           req.squad.token = newToken;
+          req.squad.profile = user.profile;
           next();
         } else {
           res.send({'err' : 'Invalid Password'});
@@ -118,10 +119,11 @@ router.post('/login', [validateLoginParams, authenticate], function(req, res){
     maxAge: 30 * 24 * 60  * 60 * 1000, //30 days
     httpOnly: true
   });
-  res.send({
-    'ok' : true,
-    'token' : req.squad.token
-  });
+  res.render('homepage', req.squad.profile);
+  // res.send({
+  //   'ok' : true,
+  //   'token' : req.squad.token
+  // });
 });
 
 router.all('/', restrictAccess, function(req, res){
@@ -130,7 +132,6 @@ router.all('/', restrictAccess, function(req, res){
 });
 
 router.get('/logout', function (req, res) {
-  console.log('TEST');
   res.clearCookie('squad');
   res.redirect('/u/');
 });
