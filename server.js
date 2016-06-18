@@ -34,7 +34,7 @@ app.set('views', __dirname + '/views');
 app.use("/event", require('./app/event/eventController.js'));
 
 
-app.use('/event', require('./app/event/eventController.js'));
+app.use('/e', require('./app/event/eventController.js'));
 app.use('/u', require('./app/user/userRoutes'));
 
 
