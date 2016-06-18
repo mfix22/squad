@@ -9,7 +9,12 @@ var eventSchema = mongoose.Schema({
         status: Number,
         location: {
             long: Number,
-            lat: Number
+            lat: Number,
+            address: String,
+            city: String,
+            state: String,
+            zip: Number,
+            country: String
         }
     }],
     startTime    : Date,
