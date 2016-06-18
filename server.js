@@ -1,4 +1,4 @@
-var express        = require('express');
+var express = require('express');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
@@ -17,14 +17,13 @@ if (!process.env.AUTH_SECRET){
 }
 
 var port = process.env.PORT || 8080;
-var dbTableName = 'mongodb://localhost/squad';
 
-mongoose.connect(dbTableName);
+mongoose.connect("mongodb://localhost/squad");
 
 app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
-app.use(express.static(__dirname + '/client'));  // set the static files location /client
+app.use(express.static(__dirname + '/public'));  // set the static files location /client
 app.use(logger('dev'));
 app.use(cookieParser());
 
@@ -41,9 +40,9 @@ app.use(function(err, req, res, next){
   res.status(500).json(err);
 });
 
-// app.get('*', function(req, res) {
-// 		res.sendFile(__dirname +'/client/index.html');
-// });
+app.get('*', function(req, res) {
+		res.sendFile(__dirname +'/public/index.html');
+});
 app.listen(port);
 console.log("App Started on port:", port);
 

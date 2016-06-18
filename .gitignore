@@ -4,4 +4,9 @@
 *.zip
 *.log
 node_modules
+<<<<<<< HEAD
+.DS_Store
+npm-debug.log
+=======
 .env
+>>>>>>> ee95287cd86ebdc33f03810067b218e12c97ad06

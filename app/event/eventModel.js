@@ -1,24 +1,29 @@
 // mongoose
 var mongoose = require('mongoose');
 
-var EventSchema = new mongoose.Schema({
+var eventSchema = mongoose.Schema({
     title        : String,
-    location     : {
-      long: Number,
-      lat: Number,
-      address: String,
-      city: String,
-      state: String,
-      country: String,
-    },
+    meetingSpots    : [{
+        requestedUserID: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        requestedUserName: String,
+        status: Number,
+        location: {
+            long: Number,
+            lat: Number
+        }
+    }],
     startTime    : Date,
     endTime 	 : Date,
     description  : String,
-    dateCreated: { type: Date, default: Date.now },
-    color: String,
-    busy: Boolean
+    dateCreated  : { type: Date, default: Date.now },
+    attendees    : [{
+        id      :   String,
+        creator :   Boolean
+    }]
 });
 
+eventSchema.statics.getById = function (id, cb) {
+  return this.find({ _id: id }, cb);
+}
 
-var eventModel = mongoose.model('Event', EventSchema);
-module.exports = eventModel;
+module.exports = mongoose.model('Event', eventSchema);
