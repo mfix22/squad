@@ -1,18 +1,24 @@
-// app/models/song.js
-
 // mongoose
 var mongoose = require('mongoose');
 
-// for test, will be changed to song
-var eventModel = mongoose.model('Event', {
+var EventSchema = new mongoose.Schema({
     title        : String,
-    location     : {long: Number, lat: Number},
+    location     : {
+      long: Number,
+      lat: Number,
+      address: String,
+      city: String,
+      state: String,
+      country: String,
+    },
     startTime    : Date,
     endTime 	 : Date,
     description  : String,
-    dateCreated: { type: Date, default: Date.now }
-    //date_created : some date, need to add this later!!!!
+    dateCreated: { type: Date, default: Date.now },
+    color: String,
+    busy: Boolean
 });
 
 
+var eventModel = mongoose.model('Event', EventSchema);
 module.exports = eventModel;

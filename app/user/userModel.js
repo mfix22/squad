@@ -1,9 +1,10 @@
-// mongoose
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
-
+var _ = require('underscore');
+// local
 var controller = require('./userController');
 
+var ObjectId = mongoose.Schema.Types.ObjectId
 var SALT_WORK_FACTOR = 10;
 
 
@@ -31,7 +32,8 @@ var UserSchema = new mongoose.Schema({
   'dateCreated': {
     'type': Date,
     default: Date.now
-  }
+  },
+  'views' : [{ type : ObjectId, ref: 'View' }]
 });
 
 UserSchema.pre('save', function(next) {
@@ -58,8 +60,10 @@ UserSchema.post('save', function(doc) {
   console.log('Creating New User:', JSON.stringify(doc, null, 4), 'saved.');
 });
 
+
 UserSchema.virtual('profile').get(function(){
   var profile = {
+    '_id'       : this._id,
     'lastName' : this.lastName,
     'firstName' : this.firstName,
     'email'     : this.email,
@@ -75,10 +79,14 @@ UserSchema.methods.comparePassword = function(candidatePassword, callback) {
   });
 };
 
-// UserSchema.method('validateToken', function(candidateToken) {
-//   console.log('username', this.username, 'token', this.token);
-//   return controller.jwt.verify(candidateToken, process.env.AUTH_SECRET);
-// });
+UserSchema.methods.addView = function(viewId){
+  if (_.contains(this.views, viewId)) console.log('Duplicate view.');
+  else {
+    this.views.push(viewId);
+    console.log('View:', viewId, 'added.');
+  }
+}
+
 
 var userModel = mongoose.model('User', UserSchema);
 module.exports = userModel;
