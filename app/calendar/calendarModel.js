@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
+
 // local
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -36,6 +36,10 @@ var CalendarSchema = new mongoose.Schema({
        default: false
      }
    }]
+});
+
+CalendarSchema.pre('update', function() {
+  this.update({},{ $set: { updatedAt: new Date() } });
 });
 
 

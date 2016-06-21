@@ -4,7 +4,7 @@ var _ = require('underscore');
 
 // local
 var Calendar = require("../calendar/calendarModel");
-var ObjectId = mongoose.Schema.Types.ObjectId
+var ObjectId = mongoose.Schema.Types.ObjectId;
 var SALT_WORK_FACTOR = 10;
 
 // TODO add validators for friends[] and calendars[]
@@ -35,7 +35,7 @@ var UserSchema = new mongoose.Schema({
     'type': Date,
     default: Date.now
   },
-  'defaultCalendar' : {
+  'defaultCalendarId' : {
     type: ObjectId,
     ref: 'Calendar',
     required : true
@@ -89,7 +89,17 @@ UserSchema.virtual('profile').get(function(){
     'profileImgURL' : this.profileImgURL
   }
   return  profile;
-})
+});
+
+// UserSchema.virtual('defaultCalendar').get(function(){
+//   var user = this;
+//   console.log(user.defaultCalendarId);
+//   Calendar.findById(user.defaultCalendarId, function(err, cal){
+//     if (err) throw err;
+//     return cal;
+//   });
+// });
+
 UserSchema.methods.comparePassword = function(candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
       if (err) return callback(err);
@@ -97,9 +107,10 @@ UserSchema.methods.comparePassword = function(candidatePassword, callback) {
   });
 };
 
+// TODO update this to use callback like above.
 UserSchema.methods.addCalendar = function(calendarId){
   // consider using this.calendars = _.uniq(this.calendars)
-  if (_.contains(this.calendars, calendarId)) console.log('Duplicate calendar.');
+  if (_.contains(this.calendars, calendarId)) throw new Error('Duplicate calendar.');
   else {
     this.calendars.push(calendarId);
     console.log('Calendar:', calendarId, 'added.');
