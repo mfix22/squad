@@ -1,18 +1,20 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var _ = require('underscore');
-// local
-var controller = require('./userController');
 
+// local
+var Calendar = require("../calendar/calendarModel");
 var ObjectId = mongoose.Schema.Types.ObjectId
 var SALT_WORK_FACTOR = 10;
 
+// TODO add validators for friends[] and calendars[]
 
 var UserSchema = new mongoose.Schema({
   'firstName'    : String,
   'lastName'     : String,
   'username'     : {
     'type' : String,
+    //email regex'validate' : /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i
     'required' : true,
     'index': {
       'unique': true
@@ -33,7 +35,19 @@ var UserSchema = new mongoose.Schema({
     'type': Date,
     default: Date.now
   },
-  'views' : [{ type : ObjectId, ref: 'View' }]
+  'defaultCalendar' : {
+    type: ObjectId,
+    ref: 'Calendar',
+    required : true
+  },
+  'calendars' : [{
+    type : ObjectId,
+    ref: 'Calendar'
+  }],
+  'friends' : [{
+    type: ObjectId,
+     ref: 'User'
+   }]
 });
 
 UserSchema.pre('save', function(next) {
@@ -56,6 +70,10 @@ UserSchema.pre('save', function(next) {
   });
 });
 
+UserSchema.pre('update', function() {
+  this.update({},{ $set: { updatedAt: new Date() } });
+});
+
 UserSchema.post('save', function(doc) {
   console.log('Creating New User:', JSON.stringify(doc, null, 4), 'saved.');
 });
@@ -64,7 +82,7 @@ UserSchema.post('save', function(doc) {
 UserSchema.virtual('profile').get(function(){
   var profile = {
     '_id'       : this._id,
-    'lastName' : this.lastName,
+    'lastName'  : this.lastName,
     'firstName' : this.firstName,
     'email'     : this.email,
     'username'  : this.username,
@@ -79,14 +97,23 @@ UserSchema.methods.comparePassword = function(candidatePassword, callback) {
   });
 };
 
-UserSchema.methods.addView = function(viewId){
-  if (_.contains(this.views, viewId)) console.log('Duplicate view.');
+UserSchema.methods.addCalendar = function(calendarId){
+  // consider using this.calendars = _.uniq(this.calendars)
+  if (_.contains(this.calendars, calendarId)) console.log('Duplicate calendar.');
   else {
-    this.views.push(viewId);
-    console.log('View:', viewId, 'added.');
+    this.calendars.push(calendarId);
+    console.log('Calendar:', calendarId, 'added.');
   }
 }
 
+UserSchema.methods.addFriend = function(friendId){
+  // consider using this.friends = _.uniq(this.friends)
+  if (_.contains(this.friends, friendId)) console.log('Duplicate friend.');
+  else {
+    this.friends.push(friendId);
+    console.log('Friend:', friendId, 'added.');
+  }
+}
 
 var userModel = mongoose.model('User', UserSchema);
 module.exports = userModel;
