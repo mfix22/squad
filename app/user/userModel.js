@@ -38,7 +38,7 @@ var UserSchema = new mongoose.Schema({
   'defaultCalendarId' : {
     type: ObjectId,
     ref: 'Calendar',
-    required : true
+    // required : true
   },
   'calendars' : [{
     type : ObjectId,

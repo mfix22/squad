@@ -5,6 +5,7 @@ var jwt = require('jsonwebtoken');
 
 //local packages
 var User = require('./userModel');
+var email = require('../email/email');
 
 // router config
 var router = express.Router();
@@ -26,6 +27,14 @@ router.use(function(req,res,next){
 function validateLoginParams(req, res, next) {
   if (!req.body.username || !req.body.password){
     res.status(200).send({'err' : 'Invalid parameters'});
+  }
+  else next();
+};
+
+
+function validateUserReqs(req, res, next) {
+  if (!req.body.fn || !req.body.ln || !req.body.username || !req.body.password){
+    res.status(200).send({ 'err' : 'Invalid parameters'});
   }
   else next();
 };
@@ -54,15 +63,8 @@ function authenticate(req, res, next){
   });
 };
 
-function validateUserReqs(req, res, next) {
-  if (!req.body.fn || !req.body.ln || !req.body.username || !req.body.password){
-    res.status(200).send({ 'err' : 'Invalid parameters'});
-  }
-  else next();
-};
-
 function restrictAccess(req, res, next) {
-  var token = req.cookies.squad || req.headers['x-access-token'] || req.body.token;
+  var token = req.query.token || req.body.token || req.cookies.squad || req.headers['x-access-token'] ;
   if (token) {
     console.log("Q=" + token + '\n');
     jwt.verify(token, process.env.AUTH_SECRET, function(err, decoded){
@@ -107,10 +109,15 @@ router.post('/new', validateUserReqs, function(req, res){
       res.status(500).send({'err' : err});
     } else {
       var token = jwt.sign(newUser.profile, process.env.AUTH_SECRET);
-      //TODO send email link with token!
-      res.status(200).send({
-        'ok' : true,
-        'message' : "Email has been sent to: " + newUser.email
+
+      email.sendToken(newUser.email, token, function(err){
+        if (err) res.status(500).send({'err' : "Error sending email to " + newUser.email + "."});
+        else {
+          res.status(200).send({
+            'ok' : true,
+            'message' : "Email has been sent to: " + newUser.email
+          });
+        }
       });
     }
   });
@@ -135,6 +142,11 @@ router.all('/', restrictAccess, function(req, res){
 
 router.get('/logout', function (req, res) {
   res.clearCookie('squad');
+  res.redirect('/u/');
+});
+
+router.get('/:token', function(req, res){
+  res.cookie('squad', req.params.token);
   res.redirect('/u/');
 });
 

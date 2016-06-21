@@ -8,15 +8,15 @@ mongoose.connect(connStr, function(err) {
     console.log('Successfully connected to MongoDB');
 });
 
-var defaultCal = new Calendar({'title' : 'Life'});
-defaultCal.save();
+// var defaultCal = new Calendar({'title' : 'Life'});
+// defaultCal.save();
 
 // create a user a new user
 var testUser = new User({
     username: 'test-user',
     password: 'test-password',
     email : 'test-email',
-    defaultCalendarId : defaultCal._id
+    // defaultCalendarId : defaultCal._id
 });
 
 console.log(JSON.stringify(testUser, null, 4 ));
@@ -29,7 +29,6 @@ console.log(JSON.stringify(testUser, null, 4));
 
 // unsuccessful add
 testUser.addCalendar(testView1._id);
-console.log(JSON.stringify(testUser, null, 4));
 
 testUser.save(function (err) {
   if (err) {
