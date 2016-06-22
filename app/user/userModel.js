@@ -30,6 +30,10 @@ var UserSchema = new mongoose.Schema({
       'unique' : true
     }
   },
+  'verifiedEmail' : {
+    'type' : Boolean,
+    default : false
+  },
   'profileImgURL': String,
   'dateCreated': {
     'type': Date,

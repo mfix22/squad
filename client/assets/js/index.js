@@ -7,6 +7,7 @@ $('#login').click(function(){
       document.write(page);
       document.close();
     }
+    else alert(err);
   });
 })
 
