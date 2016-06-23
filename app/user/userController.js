@@ -107,7 +107,7 @@ router.post('/register', validateUserReqs, function(req, res){
     if (err) {
       console.log(err);
       //TODO return gentle message
-      res.status(500).send({'err' : err});
+      res.status(400).send({'err' : err});
     } else {
       var token = jwt.sign({
         '_id' : newUser._id,
@@ -117,7 +117,7 @@ router.post('/register', validateUserReqs, function(req, res){
       email.sendToken(newUser.email, token, function(err){
         if (err) res.status(500).send({'err' : "Error sending email to " + newUser.email + "."});
         else {
-          res.status(200).send({
+          res.status(201).send({
             'ok' : true,
             'message' : "Email has been sent to: " + newUser.email
           });
@@ -132,7 +132,7 @@ router.post('/login', [validateLoginParams, authenticate], function(req, res){
     maxAge: 30 * 24 * 60  * 60 * 1000, //30 days
     httpOnly: true
   });
-  res.render('homepage', req.squad.profile);
+  res.status(200).render('homepage', req.squad.profile);
   // res.send({
   //   'ok' : true,
   //   'token' : req.squad.token

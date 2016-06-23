@@ -42,6 +42,4 @@ CalendarSchema.pre('update', function() {
   this.update({},{ $set: { updatedAt: new Date() } });
 });
 
-
-var calendarModel = mongoose.model('Calendar', CalendarSchema);
-module.exports = calendarModel;
+module.exports = mongoose.model('Calendar', CalendarSchema);
