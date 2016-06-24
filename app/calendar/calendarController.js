@@ -13,12 +13,11 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-    var calendar = new Calendar(req.body.calendar);
-    calendar = req.body.calendar;
-    if(!calendar){
+    if(!req.body.calendar){
         res.send({"error": "no calendar"});
     }
     else{
+        var calendar = new Calendar(req.body.calendar);
         calendar.save(function(err) {
             if (err){
                 res.send(err);
@@ -61,7 +60,7 @@ router.put("/:calendar_id", function(req, res) {
                         res.json({ calendar });
                     }
                 });
-            }       
+            }
         }
     });
 });

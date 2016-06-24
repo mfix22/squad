@@ -26,6 +26,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-f
 app.use(express.static(__dirname + '/public'));  // set the static files location /client
 app.use(logger('dev'));
 app.use(cookieParser());
+// TODO confirm this
+app.disable('etag');
 
 app.engine('html', engines.handlebars);
 app.set('view engine', 'html');

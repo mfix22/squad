@@ -38,10 +38,10 @@ var UserSchema = new mongoose.Schema({
     'type': Date,
     default: Date.now
   },
-  'defaultCalendarId' : {
+  'defaultCalendar' : {
     type: ObjectId,
     ref: 'Calendar',
-    required : true
+    // required : true
   },
   'calendars' : [{
     type : ObjectId,
@@ -94,14 +94,28 @@ UserSchema.virtual('profile').get(function(){
   return  profile;
 });
 
-// UserSchema.virtual('defaultCalendar').get(function(){
-//   var user = this;
-//   console.log(user.defaultCalendarId);
-//   Calendar.findById(user.defaultCalendarId, function(err, cal){
-//     if (err) throw err;
-//     return cal;
-//   });
-// });
+
+// TODO consider moving to controller
+UserSchema.virtual('blob').get(function(){
+  User.findById(this._id)
+  .populate({
+    path : 'defaultCalendar calendars',
+    populate: {path : 'events'}
+  }).exec(function (err, user) {
+    if (err) throw err;
+    return user;
+  });
+})
+
+UserSchema.virtual('fullName')
+  .get(function(){
+    return this.firstName + ' ' + this.lastName;
+  })
+  .set(function(setFullName){
+    var split = setFullName.split(' ');
+    this.set('firstName', split[0]);
+    this.set('lastName', split[1]);
+  });
 
 UserSchema.methods.comparePassword = function(candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
@@ -122,7 +136,7 @@ UserSchema.methods.addCalendar = function(calendarId){
 UserSchema.methods.addEvent = function (calendarId, eventId) {
   var Calendar = require("../calendar/calendarModel");
   if (arguments.length !== 2) throw new Error('Invalid Parameters');
-  if (this.defaultCalendarId === calendarId || _.contains(this.calendars, calendarId)) {
+  if (this.defaultCalendar === calendarId || _.contains(this.calendars, calendarId)) {
     Calendar.findById(calendarId, function(err, cal) {
       if (err) throw err;
       cal.addEvent(eventId);
