@@ -3,7 +3,6 @@ var bcrypt = require('bcrypt-nodejs');
 var _ = require('underscore');
 
 // local
-var Calendar = require("../calendar/calendarModel");
 var ObjectId = mongoose.Schema.Types.ObjectId;
 var SALT_WORK_FACTOR = 10;
 
@@ -42,7 +41,7 @@ var UserSchema = new mongoose.Schema({
   'defaultCalendarId' : {
     type: ObjectId,
     ref: 'Calendar',
-    // required : true
+    required : true
   },
   'calendars' : [{
     type : ObjectId,
@@ -79,7 +78,7 @@ UserSchema.pre('update', function() {
 });
 
 UserSchema.post('save', function(doc) {
-  console.log('Creating New User:', JSON.stringify(doc, null, 4), 'saved.');
+  console.log('Creating New User:', JSON.stringify(doc._id, null, 4), 'saved.');
 });
 
 
@@ -111,7 +110,6 @@ UserSchema.methods.comparePassword = function(candidatePassword, callback) {
   });
 };
 
-// TODO update this to use callback like above.
 UserSchema.methods.addCalendar = function(calendarId){
   // consider using this.calendars = _.uniq(this.calendars)
   if (_.contains(this.calendars, calendarId)) throw new Error('Duplicate calendar.');
@@ -119,6 +117,18 @@ UserSchema.methods.addCalendar = function(calendarId){
     this.calendars.push(calendarId);
     console.log('Calendar:', calendarId, 'added.');
   }
+}
+
+UserSchema.methods.addEvent = function (calendarId, eventId) {
+  var Calendar = require("../calendar/calendarModel");
+  if (arguments.length !== 2) throw new Error('Invalid Parameters');
+  if (this.defaultCalendarId === calendarId || _.contains(this.calendars, calendarId)) {
+    Calendar.findById(calendarId, function(err, cal) {
+      if (err) throw err;
+      cal.addEvent(eventId);
+      this.update();
+    });
+  } else throw new Error("You don't have access to that calendar");
 }
 
 UserSchema.methods.addFriend = function(friendId){
