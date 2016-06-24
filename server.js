@@ -33,6 +33,10 @@ app.engine('html', engines.handlebars);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 
+var User = require('./app/user/userModel');
+var Calendar = require('./app/calendar/calendarModel')
+var Event = require('./app/event/eventModel')
+
 app.use('/e', require('./app/event/eventController.js'));
 app.use('/u', require('./app/user/userController'));
 

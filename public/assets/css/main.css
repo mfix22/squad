@@ -1,0 +1,60 @@
+@import url(https://fonts.googleapis.com/css?family=Inconsolata:400,700);
+
+.calendarContainer{
+  font-size: 24px;
+  font-family: 'Inconsolata', sans-serif;
+}
+
+.control:hover{
+  cursor: pointer;
+}
+
+.clndr-previous-button{
+  text-align: center
+}
+.current-month{
+  text-align: center;
+}
+.clndr-next-button{
+  text-align: center
+}
+
+.schedule{
+  text-align: center;
+}
+.calendar-table-wrapper{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.day{
+  text-align: center;
+  padding: 10px 20px 10px 20px;
+}
+
+.event{
+  color: #129923;
+}
+.adjacent-month{
+  color: #888888;
+}
+
+
+.agenda{
+  background-color: #cccccc;
+  /*height: 40vh;*/
+}
+
+.event-listing-title{
+  text-align: center;
+  background-color: #012668;
+  color: white;
+}
+.event-item-name{
+  font-weight: 700;
+}
+.event-item-location{
+  font-weight: 400;
+  font-size: 20px;
+}

@@ -6,6 +6,7 @@ var jwt = require('jsonwebtoken');
 //local packages
 var User = require('./userModel');
 var email = require('../email/email');
+var Calendar = require('../calendar/calendarModel')
 
 // router config
 var router = express.Router();
@@ -41,7 +42,8 @@ function validateUserReqs(req, res, next) {
 
 //for /login
 function authenticate(req, res, next){
-  User.findOne({'username' : req.body.username}, function(err, user){
+  // TODO populate here
+    User.findOne({'username' : req.body.username}, function(err, user){
     if (!user) {
       res.send({ err : 'We have no record of ' + req.body.username});
     } else if (!Boolean(user.verifiedEmail)){
@@ -53,7 +55,6 @@ function authenticate(req, res, next){
         else if (isMatch) {
           var newToken = jwt.sign(user.profile, process.env.AUTH_SECRET);
           console.log('New Token', newToken);
-          user.token = newToken;
           req.squad.token = newToken;
           req.squad.profile = user.profile;
           next();
@@ -95,12 +96,17 @@ function restrictAccess(req, res, next) {
 
 router.post('/register', validateUserReqs, function(req, res){
   console.log(req.body);
+
+  var defCal = new Calendar({'title' : 'Life'});
+  defCal.save();
+
   var newUser = new User({
     'firstName' : req.body.fn,
     'lastName'  : req.body.ln,
     'username'  : req.body.username,
     'password'  : req.body.password,
-    'email'     : req.body.username
+    'email'     : req.body.username,
+    'defaultCalendar' : defCal._id
   });
 
   newUser.save(function (err) {
@@ -111,7 +117,7 @@ router.post('/register', validateUserReqs, function(req, res){
     } else {
       var token = jwt.sign({
         '_id' : newUser._id,
-        'createdAt' : Date.now
+        'dateCreated' : Date.now
       }, process.env.AUTH_SECRET);
 
       email.sendToken(newUser.email, token, function(err){
@@ -141,7 +147,10 @@ router.post('/login', [validateLoginParams, authenticate], function(req, res){
 
 router.all('/', restrictAccess, function(req, res){
   // console.log('Headers:', JSON.stringify(req.headers, null, 4));
-  res.render('homepage', req.squad.decoded);
+  populateUser(req.squad.decoded._id, function(err, user){
+    if (err) res.status(500).send({'err' : err})
+    else res.render('homepage', user);
+  });
 });
 
 router.get('/logout', function (req, res) {
@@ -167,5 +176,25 @@ router.all('/test', function(req, res){
   // console.log('Cookies: ', JSON.stringify(req.cookies, null, 4));
   res.render('homepage.html', {'username' : 'Mike'});
 });
+
+ // ####### #     # #     #  #####  ####### ### ####### #     #  #####
+ // #       #     # ##    # #     #    #     #  #     # ##    # #     #
+ // #       #     # # #   # #          #     #  #     # # #   # #
+ // #####   #     # #  #  # #          #     #  #     # #  #  #  #####
+ // #       #     # #   # # #          #     #  #     # #   # #       #
+ // #       #     # #    ## #     #    #     #  #     # #    ## #     #
+ // #        #####  #     #  #####     #    ### ####### #     #  #####
+function populateUser(userId, callback) {
+  User.findById(userId, '-password')
+  .populate({
+    path : 'defaultCalendar calendars',
+    populate: {path : 'events'}
+  }).exec(function (err, user) {
+    if (err) {
+      callback(err, null);
+    }
+    callback(null, user);
+  });
+}
 
 module.exports = router;

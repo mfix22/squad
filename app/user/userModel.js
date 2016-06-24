@@ -94,19 +94,6 @@ UserSchema.virtual('profile').get(function(){
   return  profile;
 });
 
-
-// TODO consider moving to controller
-UserSchema.virtual('blob').get(function(){
-  User.findById(this._id)
-  .populate({
-    path : 'defaultCalendar calendars',
-    populate: {path : 'events'}
-  }).exec(function (err, user) {
-    if (err) throw err;
-    return user;
-  });
-})
-
 UserSchema.virtual('fullName')
   .get(function(){
     return this.firstName + ' ' + this.lastName;
