@@ -5,27 +5,39 @@
   font-family: 'Inconsolata', sans-serif;
 }
 
+.title-row{
+  font-size: 28px;
+}
+
+.control-row{
+  background-color: #333333;
+  color: #dddddd;
+}
+
 .control:hover{
   cursor: pointer;
 }
 
 .clndr-previous-button{
-  text-align: center
+  text-align: left;
 }
 .current-month{
   text-align: center;
 }
 .clndr-next-button{
-  text-align: center
+  text-align: right;
+}
+
+.header-day-row{
+  background-color: #cccccc;
 }
 
 .schedule{
   text-align: center;
+  padding: 0;
 }
-.calendar-table-wrapper{
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+.calendar-table{
+  width: 100%;
 }
 
 .day{
@@ -35,6 +47,7 @@
 
 .event{
   color: #129923;
+  font-weight: bold;
 }
 .adjacent-month{
   color: #888888;

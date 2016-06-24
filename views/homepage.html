@@ -12,13 +12,16 @@
       <p>{{firstName}} {{lastName}}</p>
       <p>{{username}}</p>
       <a href="mailto:{{email}}">{{email}}</a>
-      <p>{{defaultCalendar.title}}</p>
-      <p>{{calendars}}
       <a href="/u/logout"><button id="logout" class="btn btn-default">Logout</button></a>
       <div id="calendar" class="clearfix">
         <script type="text/template" id="calendarTemplate">
           <div class="container calendarContainer">
-            <div class="row">
+            <div class="row title-row">
+              <div class="col-md-12 text-center">
+                {{defaultCalendar.title}}
+              </div>
+            </div>
+            <div class="row control-row">
               <div class="col-md-12">
                 <div class="clndr-controls">
                   <div class="col-md-4 control">
@@ -38,9 +41,9 @@
                 <div class="calendar-table-wrapper">
                   <table class="calendar-table">
                     <thead>
-                      <tr>
+                      <tr class="header-day-row">
                         <% _.each(daysOfTheWeek, function(day) { %>
-                          <td class="header-day"><%= day %></div>
+                          <td class="header-day"><%= day %></td>
                         <% }); %>
                       </tr>
                     </thead>

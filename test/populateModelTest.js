@@ -20,14 +20,14 @@ mongoose.connect(connStr, function(err) {
 // });
 
 
-User.findById('576d7320dfa098102858242c', '-password')
-.populate({
-  path : 'defaultCalendar calendars',
-  populate: {path : 'events'}
-}).exec(function (err, user) {
-  if (err) throw err;
-  console.log(JSON.stringify(user, null, 4));
-});
+// User.findById('576d7320dfa098102858242c', '-password')
+// .populate({
+//   path : 'defaultCalendar calendars',
+//   populate: {path : 'events'}
+// }).exec(function (err, user) {
+//   if (err) throw err;
+//   console.log(JSON.stringify(user, null, 4));
+// });
 
 
 // var defaultCal = new Calendar({'title' : 'Life'});
@@ -60,6 +60,19 @@ User.findById('576d7320dfa098102858242c', '-password')
 // cal1.save()
 // cal2.save();
 // cal3.save();
+//
+//
+// User.findById('576d7e89d4d5b5d018701820', function (err, user) {
+//   if (err) throw err;
+//   user.addCalendar(cal1._id);
+//   user.addCalendar(cal2._id);
+//
+//   user.save(function(err){
+//     if (!err) mongoose.connection.close();
+//   });
+// });
+
+
 //
 //
 // // create a user a new user
