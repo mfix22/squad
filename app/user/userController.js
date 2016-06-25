@@ -5,7 +5,7 @@ var jwt = require('jsonwebtoken');
 
 //local packages
 var User = require('./userModel');
-var email = require('../email/email');
+var email = require('../util/email');
 var Calendar = require('../calendar/calendarModel')
 
 // router config
@@ -42,21 +42,31 @@ function validateUserReqs(req, res, next) {
 
 //for /login
 function authenticate(req, res, next){
-  // TODO populate here
-    User.findOne({'username' : req.body.username}, function(err, user){
-    if (!user) {
-      res.send({ err : 'We have no record of ' + req.body.username});
+    User.findOne({'username' : req.body.username})
+    .populate({
+      path : 'defaultCalendar calendars',
+      populate: {path : 'events'}
+    }).exec(function(err, user){
+    if (err) console.log(err);
+    else if (!user) {
+      console.log("HERE");
+      res.json({ err : 'We have no record of ' + req.body.username});
     } else if (!Boolean(user.verifiedEmail)){
       console.log(user.email + " has not been registered yet.");
-      res.send({ err : 'This email has not been registered yet'});
+      res.json({ err : 'This email has not been registered yet'});
     } else{
+      console.log(JSON.stringify(user, null, 4));
       user.comparePassword(req.body.password, function(err, isMatch){
         if (err) return next(err);
         else if (isMatch) {
           var newToken = jwt.sign(user.profile, process.env.AUTH_SECRET);
           console.log('New Token', newToken);
+          // pass token for cookieing or not
           req.squad.token = newToken;
-          req.squad.profile = user.profile;
+          // pass user
+          req.squad.user = user;
+          // strip password from response
+          req.squad.user.password = undefined;
           next();
         } else {
           res.send({'err' : 'Invalid Password'});
@@ -138,7 +148,7 @@ router.post('/login', [validateLoginParams, authenticate], function(req, res){
     maxAge: 30 * 24 * 60  * 60 * 1000, //30 days
     httpOnly: true
   });
-  res.status(200).render('homepage', req.squad.profile);
+  res.status(200).render('homepage', req.squad.user);
   // res.send({
   //   'ok' : true,
   //   'token' : req.squad.token
@@ -177,7 +187,7 @@ router.get('/register/:token', restrictAccess, function(req, res){
 router.all('/test', function(req, res){
   // console.log("Headers:", JSON.stringify(req.headers, null, 4));
   // console.log('Cookies: ', JSON.stringify(req.cookies, null, 4));
-  res.render('homepage.html', {'username' : 'Mike'});
+
 });
 
  // ####### #     # #     #  #####  ####### ### ####### #     #  #####
