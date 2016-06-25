@@ -5,6 +5,21 @@
   font-family: 'Inconsolata', sans-serif;
 }
 
+.calendar-list{
+  margin-top: 40px;
+  list-style: none;
+  padding: 0;
+}
+.calendar-list-bullet{
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+}
+.calendar-list-bullet:hover{
+  cursor:pointer;
+}
+
 .title-row{
   font-size: 28px;
 }

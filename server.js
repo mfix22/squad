@@ -37,8 +37,9 @@ var User = require('./app/user/userModel');
 var Calendar = require('./app/calendar/calendarModel')
 var Event = require('./app/event/eventModel')
 
-app.use('/e', require('./app/event/eventController.js'));
+app.use('/e', require('./app/event/eventController'));
 app.use('/u', require('./app/user/userController'));
+app.use('/c', require('./app/calendar/calendarController'));
 
 app.use(function(err, req, res, next){
   res.status(500).json(err);

@@ -149,7 +149,10 @@ router.all('/', restrictAccess, function(req, res){
   // console.log('Headers:', JSON.stringify(req.headers, null, 4));
   populateUser(req.squad.decoded._id, function(err, user){
     if (err) res.status(500).send({'err' : err})
-    else res.render('homepage', user);
+    else {
+      console.log(JSON.stringify(user, null, 4));
+      res.render('homepage', user);
+    }
   });
 });
 

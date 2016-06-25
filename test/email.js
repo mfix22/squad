@@ -1,2 +1,2 @@
-var email = require('../app/email/email');
+var email = require('../app/util/email');
 email.sendToken("TEST");
