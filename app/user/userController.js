@@ -1,3 +1,5 @@
+// TODO update middleware to use next(err) and routes to use .get('/', function(err, req, res))
+
 // node modules
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -47,7 +49,7 @@ function authenticate(req, res, next){
       path : 'defaultCalendar calendars',
       populate: {path : 'events'}
     }).exec(function(err, user){
-    if (err) console.log(err);
+    if (err) res.status(500).send(err)
     else if (!user) {
       console.log("HERE");
       res.json({ err : 'We have no record of ' + req.body.username});
@@ -57,7 +59,7 @@ function authenticate(req, res, next){
     } else{
       console.log(JSON.stringify(user, null, 4));
       user.comparePassword(req.body.password, function(err, isMatch){
-        if (err) return next(err);
+        if (err) res.status(500).send(err);
         else if (isMatch) {
           var newToken = jwt.sign(user.profile, process.env.AUTH_SECRET);
           console.log('New Token', newToken);
@@ -79,14 +81,12 @@ function authenticate(req, res, next){
 function restrictAccess(req, res, next) {
   var token =  req.body.token || req.cookies.squad || req.params.token || req.headers['x-access-token']; // || req.query.token
   if (token) {
-    console.log("Q=" + token + '\n');
     jwt.verify(token, process.env.AUTH_SECRET, function(err, decoded){
       if (err) {
-        console.log("**************" + err);
-        next(err);
+        res.status(500).send(err);
       } else {
         console.log('Decoded:', decoded);
-        req.squad.decoded = decoded;
+        req.decoded = decoded;
         return next();
       }
     });
@@ -122,7 +122,6 @@ router.post('/register', validateUserReqs, function(req, res){
   newUser.save(function (err) {
     if (err) {
       console.log(err);
-      //TODO return gentle message
       res.status(400).send({'err' : err});
     } else {
       var token = jwt.sign({
@@ -149,6 +148,8 @@ router.post('/login', [validateLoginParams, authenticate], function(req, res){
     httpOnly: true
   });
   res.status(200).render('homepage', req.squad.user);
+  // w/ client side renderings, just redirect to /
+
   // res.send({
   //   'ok' : true,
   //   'token' : req.squad.token
@@ -156,8 +157,7 @@ router.post('/login', [validateLoginParams, authenticate], function(req, res){
 });
 
 router.all('/', restrictAccess, function(req, res){
-  // console.log('Headers:', JSON.stringify(req.headers, null, 4));
-  populateUser(req.squad.decoded._id, function(err, user){
+  populateUser(req.decoded._id, function(err, user){
     if (err) res.status(500).send({'err' : err})
     else {
       console.log(JSON.stringify(user, null, 4));
@@ -172,16 +172,29 @@ router.get('/logout', function (req, res) {
 });
 
 router.get('/register/:token', restrictAccess, function(req, res){
-  if (req.squad.decoded._id){
-    User.findOneAndUpdate({_id : req.squad.decoded._id}, {'verifiedEmail' : true}, function(err, user){
+  if (req.decoded._id){
+    User.findOneAndUpdate({_id : req.decoded._id}, {'verifiedEmail' : true}, function(err, user){
       console.log(JSON.stringify(user.profile, null, 4));
       var token = jwt.sign(user.profile, process.env.AUTH_SECRET);
       res.cookie('squad', token);
       // TODO fix this, just a hack until we do client side rendering
-      req.squad.decoded = user.profile;
+      req.decoded = user.profile;
       res.redirect('/u/');
     });
   }
+});
+
+router.get('/:user_id', restrictAccess, function(req, res) {
+    if (req.params.user_id == req.decoded._id){
+      populateUser(req.decoded._id, function(err, user){
+        if (err) res.status(500).send({'err' : err})
+        else {
+          console.log(JSON.stringify(user, null, 4));
+          res.json(user);
+        }
+      });
+    } else res.sent("You can't access that user");
+
 });
 
 router.all('/test', function(req, res){

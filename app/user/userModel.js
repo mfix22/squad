@@ -78,7 +78,7 @@ UserSchema.pre('update', function() {
 });
 
 UserSchema.post('save', function(doc) {
-  console.log('Creating New User:', JSON.stringify(doc._id, null, 4), 'saved.');
+  console.log('User:', JSON.stringify(doc._id, null, 4), 'updated.');
 });
 
 
@@ -117,17 +117,19 @@ UserSchema.methods.addCalendar = function(calendarId){
   else {
     this.calendars.push(calendarId);
     console.log('Calendar:', calendarId, 'added.');
+    console.log(this.calendars);
+    this.save();
   }
 }
 
-UserSchema.methods.addEvent = function (calendarId, eventId) {
+UserSchema.methods.addEvent = function (calendarId, eventId, callback) {
   var Calendar = require("../calendar/calendarModel");
   if (arguments.length !== 2) throw new Error('Invalid Parameters');
-  if (this.defaultCalendar === calendarId || _.contains(this.calendars, calendarId)) {
+  if (this.defaultCalendar == calendarId || _.contains(this.calendars, calendarId)) {
     Calendar.findById(calendarId, function(err, cal) {
       if (err) throw err;
       cal.addEvent(eventId);
-      this.update();
+      this.update(); //TODO is this important?
     });
   } else throw new Error("You don't have access to that calendar");
 }
