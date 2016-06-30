@@ -4,6 +4,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
+var fs = require('fs-extra');
+var request = require('request');
 
 //local packages
 var User = require('./userModel');
@@ -22,6 +24,7 @@ router.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 // ##     ##  ##  ##     ## ##     ## ##       ##       ##  ##  ## ######### ##   ##   ##
 // ##     ##  ##  ##     ## ##     ## ##       ##       ##  ##  ## ##     ## ##    ##  ##
 // ##     ## #### ########  ########  ######## ########  ###  ###  ##     ## ##     ## ########
+
 router.use(function(req,res,next){
   req.squad = {};
   next()
@@ -29,7 +32,7 @@ router.use(function(req,res,next){
 
 function validateLoginParams(req, res, next) {
   if (!req.body.username || !req.body.password){
-    res.status(200).send({'err' : 'Invalid parameters'});
+    res.status(422).send({'err' : 'Invalid parameters'});
   }
   else next();
 };
@@ -37,7 +40,7 @@ function validateLoginParams(req, res, next) {
 
 function validateUserReqs(req, res, next) {
   if (!req.body.fn || !req.body.ln || !req.body.username || !req.body.password){ //|| !req.body.email){
-    res.status(200).send({ 'err' : 'Invalid parameters'});
+    res.status(422).send({ 'err' : 'Invalid parameters'});
   }
   else next();
 };
@@ -49,7 +52,7 @@ function authenticate(req, res, next){
       path : 'defaultCalendar calendars',
       populate: {path : 'events'}
     }).exec(function(err, user){
-    if (err) res.status(500).send(err)
+    if (err) res.status(500).send({'err' : err})
     else if (!user) {
       console.log("HERE");
       res.json({ err : 'We have no record of ' + req.body.username});
@@ -59,7 +62,7 @@ function authenticate(req, res, next){
     } else{
       console.log(JSON.stringify(user, null, 4));
       user.comparePassword(req.body.password, function(err, isMatch){
-        if (err) res.status(500).send(err);
+        if (err) res.status(500).send({'err' : err});
         else if (isMatch) {
           var newToken = jwt.sign(user.profile, process.env.AUTH_SECRET);
           console.log('New Token', newToken);
@@ -71,7 +74,7 @@ function authenticate(req, res, next){
           req.squad.user.password = undefined;
           next();
         } else {
-          res.send({'err' : 'Invalid Password'});
+          res.status(401).send({'err' : 'Invalid Password'});
         }
       });
     }
@@ -83,11 +86,28 @@ function restrictAccess(req, res, next) {
   if (token) {
     jwt.verify(token, process.env.AUTH_SECRET, function(err, decoded){
       if (err) {
+        console.log(err);
         res.status(500).send(err);
       } else {
         console.log('Decoded:', decoded);
         req.decoded = decoded;
         return next();
+      }
+    });
+  } else {
+    console.log({'err' : 'No token provided.'});
+    res.render('login');
+  }
+};
+
+function restrictGoogleAccess(req, res, next) {
+  var token =  req.body.token || req.params.token || req.headers['x-access-token']; // || req.query.token
+  if (token) {
+    console.log(token);
+    // var cert = fs.readFileSync('google.pem');  // get public key
+    request('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + token, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        res.status(200).json(body);
       }
     });
   } else {
@@ -122,7 +142,7 @@ router.post('/register', validateUserReqs, function(req, res){
   newUser.save(function (err) {
     if (err) {
       console.log(err);
-      res.status(400).send({'err' : err});
+      res.status(500).send({'err' : err});
     } else {
       var token = jwt.sign({
         '_id' : newUser._id,
@@ -184,6 +204,11 @@ router.get('/register/:token', restrictAccess, function(req, res){
   }
 });
 
+router.post('/login/g', restrictGoogleAccess, function(req, res){
+  console.log(JSON.stringify(req.decoded, null, 4));
+  res.send(req.user);
+});
+
 router.get('/:user_id', restrictAccess, function(req, res) {
     if (req.params.user_id == req.decoded._id){
       populateUser(req.decoded._id, function(err, user){
@@ -193,7 +218,7 @@ router.get('/:user_id', restrictAccess, function(req, res) {
           res.json(user);
         }
       });
-    } else res.sent("You can't access that user");
+    } else res.status(401).send({'err' : 'You are not authorized to access that user.'});
 
 });
 

@@ -5,14 +5,14 @@ var Event = require('../event/eventModel');
 var jwt = require('jsonwebtoken');
 
 function validateNewCalendarParams(req, res, next) {
-  if (!req.body.calendar) res.send({"error": "No calendar"});
-  else if (!req.body.calendar.title) res.send({"error": "A calendar title is required."})
+  if (!req.body.calendar) res.status(504).send({"err": "No calendar provided."});
+  else if (!req.body.calendar.title) res.status(504).send({"err": "A calendar title is required."})
   else next();
 }
 
 function validateNewEventParams(req, res, next) {
-  if (!req.body.event) res.send({"error": "No event"});
-  else if (!req.body.event.title) res.send({"error": "An event title is required."})
+  if (!req.body.event) res.status(505).send({"err": "No event provided."});
+  else if (!req.body.event.title) res.status(505).send({"err": "An event title is required."})
   else next();
 }
 
@@ -21,7 +21,10 @@ function restrictAccess(req, res, next) {
   if (token) {
     jwt.verify(token, process.env.AUTH_SECRET, function(err, decoded){
       if (err) {
-        res.status(500).send(err);
+        res.status(501).send({
+          'body' : err,
+          'err' : err.message
+        });
       } else {
         req.decoded = decoded;
         return next();
@@ -37,7 +40,7 @@ function restrictAccess(req, res, next) {
 router.get('/', function(req, res) {
     Calendar.find(function(err, calendars) {
         if (err){
-            res.send(err);
+            res.status(500).json(err);
         }
         else{
             res.json(calendars);
@@ -46,11 +49,11 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', [validateNewCalendarParams, restrictAccess], function(req, res) {
-    if (!req.decoded) throw new Error('Decoding error.');
+    if (!req.decoded) res.status(501).send({'err' : 'Decoding error.'});
     else{
       User.findById(req.decoded._id, '-password').exec(function (err, user) {
         if (err) {
-          res.status(500).send({'error' : "Error finding user."})
+          res.status(503).send({'err' : "Error finding user."})
         } else{
           var calendar = new Calendar({
             'title' : req.body.calendar.title,
@@ -58,13 +61,13 @@ router.post('/', [validateNewCalendarParams, restrictAccess], function(req, res)
             'defaultVisibility' : req.body.calendar.defaultVisibility
           });
           calendar.save(function(err) {
-              if (err)res.send(err);
+              if (err) res.status(500).send({'err' : err});
               else{
                 try {
                   user.addCalendar(calendar._id);
-                  res.json({ calendar });
+                  res.json({ "ok" : true, calendar });
                 } catch (e) {
-                  res.send(e);
+                  res.status(504).send({'err' : e});
                 }
               }
           });
@@ -77,7 +80,7 @@ router.post('/', [validateNewCalendarParams, restrictAccess], function(req, res)
 router.get('/:calendar_id', function(req, res) {
     Calendar.findById(req.params.calendar_id, function (err, calendar) {
         if(err){
-            res.send(err);
+            res.status(500).send({'err' : err});
         }
         else{
             res.json(calendar);
@@ -95,9 +98,9 @@ router.post('/:calendar_id', [validateNewEventParams, restrictAccess] , function
       newE.save();
       try {
         user.addEvent(req.params.calendar_id, newE._id);
-        res.send({'ok' : true});
+        res.send({'ok' : true,  'event' : newE});
       } catch (e) {
-        res.send(e);
+        res.status(505).send(e);
       }
     }
   });
@@ -115,17 +118,17 @@ router.post('/:calendar_id', [validateNewEventParams, restrictAccess] , function
 router.put("/:calendar_id", function(req, res) {
     Calendar.findById(req.params.calendar_id, function(err, calendar) {
         if (err){
-            res.send(err);
+            res.status(504).send({'err' : err});
         }
         else{
             calendar = req.body.calendar;
             if(!calendar){
-                res.send({"error": "no calendar"});
+                res.status(504).send({"err": "No calendar with that id exists."});
             }
             else{
                 calendar.save(function(err) {
                     if (err){
-                        res.send(err);
+                        res.status(504).send({'err' : err});
                     }
                     else{
                         res.json({ calendar });
@@ -139,7 +142,7 @@ router.put("/:calendar_id", function(req, res) {
 router.delete("/:calendar_id", function(req, res) {
     Calendar.remove({_id: req.params.calendar_id}, function(err, bear) {
         if (err){
-            res.send(err);
+            res.status(504).send({'err' : err});
         }
         else{
             res.json({ message: 'Successfully deleted' });

@@ -3,7 +3,7 @@ var S = require('string');
 
 var HUMAN_READABLE = 'dddd, MMMM Do YYYY, h:mma'
 var time_reg = /\b((0*\d)|(1[0-2]))(:\d\d(pm|am|p|a)*|pm|am|p|a)\b|noon|midnight/ig;
-var address_reg = /at\s(.*?)(?:(?!(\sat|\sfrom)).)*/ig;
+var address_reg = /at\s(.*?)(?:(?!(\sat|\sfrom|\son)).)*/ig;
 var date_reg = /(\d{1,2}[\/-]\d{1,2}[\/-](\d{4}|\d{2})\b)|(\d{1,2}[\/-]\d{1,2}\b)|today|tomorrow/ig;
 
 function highlight(sentence) {
