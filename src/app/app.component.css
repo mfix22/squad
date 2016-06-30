@@ -4,4 +4,8 @@ main {
   text-align: center;
   margin-top: 50px;
   display: block;
+  color: orange;
+}
+h1 {
+	color:blue;
 }
