@@ -115,7 +115,7 @@ exports.sendToken = function(address, token, callback){
   HTML += "    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"wrapper-mobile\">";
   HTML += "      <tr>";
   HTML += "        <td align=\"center\" style=\"-webkit-border-radius: 100px; -moz-border-radius: 100px; border-radius: 100px; font-size: 20px;\" bgcolor=\"#cc4668\">";
-  HTML += "          <a href=" + "http://localhost:8080/u/register/" + token + "\" class=\"bulletproof-button\" target=\"_blank\" style=\"height: px; width: px; font-size: 20px; line-height: px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; padding: 18px 24px 18px 24px; text-decoration: none; color: #ffffff; text-decoration: none; -webkit-border-radius: 100px; -moz-border-radius: 100px; border-radius: 100px; border: 1px solid #CC4668; display: inline-block;\">Start Your Squad<\/a>";
+  HTML += "          <a href=" + "http://localhost:8080/register/" + token + "\" class=\"bulletproof-button\" target=\"_blank\" style=\"height: px; width: px; font-size: 20px; line-height: px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; padding: 18px 24px 18px 24px; text-decoration: none; color: #ffffff; text-decoration: none; -webkit-border-radius: 100px; -moz-border-radius: 100px; border-radius: 100px; border: 1px solid #CC4668; display: inline-block;\">Start Your Squad<\/a>";
   HTML += "        <\/td>";
   HTML += "      <\/tr>";
   HTML += "    <\/table>";

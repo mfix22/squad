@@ -1,5 +1,11 @@
 var router = require('express').Router();
 var jwt = require('jsonwebtoken');
+var request = require('request');
+
+//local packages
+var User = require('../user/userModel');
+var email = require('../util/email');
+var Calendar = require('../calendar/calendarModel')
 
 
 // #     # ### ######  ######  #       ####### #     #    #    ######  #######
@@ -176,15 +182,24 @@ router.post('/register', validateUserReqs, function(req, res){
   });
 });
 
-router.get('/register/:token', restrictAccess, function(req, res){
-  if (req.decoded._id){
-    User.findOneAndUpdate({_id : req.decoded._id}, {'verifiedEmail' : true}, function(err, user){
-      console.log(JSON.stringify(user.profile, null, 4));
-      var token = jwt.sign(user.profile, process.env.AUTH_SECRET);
-      res.cookie('squad', token);
-      // TODO fix this, just a hack until we do client side rendering
-      req.decoded = user.profile;
-      res.redirect('/u/');
-    });
-  }
+router.get('/register/:token', function(req, res){
+  jwt.verify(req.params.token, process.env.AUTH_SECRET, function(err, decoded){
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+    } else {
+      User.findOneAndUpdate({_id : decoded._id}, {'verifiedEmail' : true}, function(err, user){
+        if (err) res.status(503).send(err);
+        else{
+          var token = jwt.sign(user.profile, process.env.AUTH_SECRET);
+          res.cookie('squad', token);
+          // TODO fix this, just a hack until we do client side rendering
+          req.decoded = user.profile;
+          res.redirect('/u/');
+        }
+      });
+    }
+  });
 });
+
+module.exports = router;

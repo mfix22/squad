@@ -37,6 +37,7 @@ var User = require('./app/user/userModel');
 var Calendar = require('./app/calendar/calendarModel')
 var Event = require('./app/event/eventModel')
 
+app.use('/', require('./app/auth/authController'));
 app.use('/e', require('./app/event/eventController'));
 app.use('/u', require('./app/user/userController'));
 app.use('/c', require('./app/calendar/calendarController'));

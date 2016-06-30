@@ -20,7 +20,7 @@ $('#login').click(function(){
 })
 
 function loginUserPass(username, password, callback){
-  $.post("/u/login/b", {
+  $.post("/login/b", {
     'username' : username,
     'password' : password
   }, function(data){
@@ -29,7 +29,7 @@ function loginUserPass(username, password, callback){
 }
 
 function signup(payload, callback){
-  $.post("/u/register", payload, function(data){
+  $.post("/register", payload, function(data){
     callback(data.err, data);
   });
 }
@@ -109,7 +109,7 @@ var signinChanged = function (val) {
     // console.log('Image URL: ' + profile.getImageUrl());
     // console.log('Email: ' + profile.getEmail());
     var id_token = googleUser.getAuthResponse().id_token;
-    $.post("/u/login/g", {
+    $.post("/login/g", {
       'token' : id_token
     }, function(data){
       // console.log(data);
