@@ -12,7 +12,9 @@
       <p>{{firstName}} {{lastName}}</p>
       <p>{{username}}</p>
       <a href="mailto:{{email}}">{{email}}</a>
-      <a href="/u/logout"><button id="logout" class="btn btn-default">Logout</button></a>
+      <a href="/u/logout">
+        <button id="logout" class="btn btn-default">Logout</button>
+      </a>
       <div id="calendar" class="clearfix">
         <script type="text/template" id="calendarTemplate">
           <div class="container calendarContainer">
@@ -97,6 +99,7 @@
     </div>
 
     <div class="clearfix">
+      <script src="https://apis.google.com/js/platform.js" async defer></script>
       <script type="text/javascript" src="/assets/js/jquery.js"></script>
       <script type="text/javascript" src="/assets/js/moment.js"></script>
       <script type="text/javascript" src="/assets/js/underscore.js"></script>

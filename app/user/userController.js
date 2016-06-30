@@ -46,7 +46,7 @@ function validateUserReqs(req, res, next) {
 };
 
 //for /login
-function authenticate(req, res, next){
+function authenticateB(req, res, next){
     User.findOne({'username' : req.body.username})
     .populate({
       path : 'defaultCalendar calendars',
@@ -54,7 +54,6 @@ function authenticate(req, res, next){
     }).exec(function(err, user){
     if (err) res.status(500).send({'err' : err})
     else if (!user) {
-      console.log("HERE");
       res.json({ err : 'We have no record of ' + req.body.username});
     } else if (!Boolean(user.verifiedEmail)){
       console.log(user.email + " has not been registered yet.");
@@ -100,14 +99,36 @@ function restrictAccess(req, res, next) {
   }
 };
 
-function restrictGoogleAccess(req, res, next) {
+function authenticateG(req, res, next) {
   var token =  req.body.token || req.params.token || req.headers['x-access-token']; // || req.query.token
   if (token) {
-    console.log(token);
     // var cert = fs.readFileSync('google.pem');  // get public key
     request('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + token, function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        res.status(200).json(body);
+        console.log(body);
+        User.findOne({'username' : req.body.username})
+        .populate({
+          path : 'defaultCalendar calendars',
+          populate: {path : 'events'}
+        }).exec(function(err, user) {
+          if (err) res.status(500).send({'err' : err})
+          else if (!user) {
+            res.json({ err : 'We have no record of ' + req.body.username});
+          } else {
+            // homepage of user
+            var newToken = jwt.sign(user, process.env.AUTH_SECRET);
+            // pass token for cookieing or not
+            req.squad.token = newToken;
+            // pass user
+            req.squad.user = user;
+            // strip password from response
+            req.squad.user.password = undefined;
+            next();
+          }
+        });
+      } else {
+        console.log(error);
+        res.status(500).send({'err' : error});
       }
     });
   } else {
@@ -162,20 +183,6 @@ router.post('/register', validateUserReqs, function(req, res){
   });
 });
 
-router.post('/login', [validateLoginParams, authenticate], function(req, res){
-  res.cookie('squad', req.squad.token, {
-    maxAge: 30 * 24 * 60  * 60 * 1000, //30 days
-    httpOnly: true
-  });
-  res.status(200).render('homepage', req.squad.user);
-  // w/ client side renderings, just redirect to /
-
-  // res.send({
-  //   'ok' : true,
-  //   'token' : req.squad.token
-  // });
-});
-
 router.all('/', restrictAccess, function(req, res){
   populateUser(req.decoded._id, function(err, user){
     if (err) res.status(500).send({'err' : err})
@@ -186,10 +193,7 @@ router.all('/', restrictAccess, function(req, res){
   });
 });
 
-router.get('/logout', function (req, res) {
-  res.clearCookie('squad');
-  res.redirect('/u/');
-});
+
 
 router.get('/register/:token', restrictAccess, function(req, res){
   if (req.decoded._id){
@@ -204,9 +208,31 @@ router.get('/register/:token', restrictAccess, function(req, res){
   }
 });
 
-router.post('/login/g', restrictGoogleAccess, function(req, res){
-  console.log(JSON.stringify(req.decoded, null, 4));
-  res.send(req.user);
+router.post('/login/b', [validateLoginParams, authenticateB], function(req, res){
+  res.cookie('squad', req.squad.token, {
+    maxAge: 30 * 24 * 60  * 60 * 1000, //30 days
+    httpOnly: true
+  });
+  res.status(200).render('homepage', req.squad.user);
+  // w/ client side renderings, just redirect to /
+
+  // res.send({
+  //   'ok' : true,
+  //   'token' : req.squad.token
+  // });
+});
+
+router.post('/login/g', authenticateG, function(req, res){
+  res.cookie('squad', req.squad.token, {
+    maxAge: 30 * 24 * 60  * 60 * 1000, //30 days
+    httpOnly: true
+  });
+  res.status(200).render('homepage', req.squad.user);
+});
+
+router.get('/logout', function (req, res) {
+  res.clearCookie('squad');
+  res.redirect('/u/');
 });
 
 router.get('/:user_id', restrictAccess, function(req, res) {

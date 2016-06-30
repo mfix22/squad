@@ -10,3 +10,15 @@ var $cal = $('#calendar').clndr({
   events : events,
   forceSixRows : true
 });
+
+var auth2 = gapi.auth2.getAuthInstance();
+console.log(JSON.stringify(auth2.currentUser.get(), null, 4));
+// $('#logout').click(signOutGoogle);
+//
+// function signOutGoogle() {
+//   console.log('Logging out');
+//   var auth2 = gapi.auth2.getAuthInstance();
+//   auth2.signOut().then(function () {
+//     console.log('User signed out.');
+//   });
+// }
