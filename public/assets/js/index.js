@@ -48,6 +48,9 @@ function signup(payload, callback){
 
  function onSuccessfulGoogleLogin(googleUser) {
    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+   window.googleUser = googleUser;
+   console.log(window.googleUser);
+  //  console.log('Logged in as: ' + JSON.stringify(googleUser.getAuthResponse(), null, 2));
  }
  function onLoginFailure(error) {
    console.log(error);
@@ -76,16 +79,19 @@ var appStart = function() {
  * Initializes Signin v2 and sets up listeners.
  */
 var initSigninV2 = function() {
-  auth2 = gapi.auth2.init({
-      client_id: '583561432942-5fcf74j7tmfelnqj5jttnubd55dghdff.apps.googleusercontent.com'
+  window.auth2 = gapi.auth2.init({
+      client_id: '583561432942-5fcf74j7tmfelnqj5jttnubd55dghdff.apps.googleusercontent.com',
+      // cookie_policy : 'none',
+      scope : 'profile email',
+      immediate : true
   });
 
   // Listen for sign-in state changes.
-  // auth2.isSignedIn.listen(signinChanged);
+  window.auth2.isSignedIn.listen(signinChanged);
 
   // // Sign in the user if they are currently signed in.
-  // if (auth2.isSignedIn.get() == true) {
-  //   auth2.signIn();
+  // if (window.auth2.isSignedIn.get() == true) {
+  //   window.auth2.signIn();
   // } else{
   //   renderButton();
   // }
@@ -112,7 +118,7 @@ var signinChanged = function (val) {
     $.post("/login/g", {
       'token' : id_token
     }, function(data){
-      // console.log(data);
+      console.log(data);
       document.open();
       document.write(data);
       document.close();
@@ -125,14 +131,15 @@ var signinChanged = function (val) {
  * object.
  */
 var refreshValues = function() {
-  if (auth2){
+  if (window.auth2){
     console.log('Refreshing values...');
-    googleUser = auth2.currentUser.get();
+    googleUser = window.auth2.currentUser.get();
   }
 }
 
 window.onbeforeunload = function(e){
-  auth2.signOut().then(function () {
+  window.auth2.currentUser.get().disconnect();
+  window.auth2.signOut().then(function () {
     console.log('User signed out.');
   });
 };

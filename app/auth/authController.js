@@ -77,17 +77,19 @@ function authenticateG(req, res, next) {
    request('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + token, function (error, response, body) {
      if (!error && response.statusCode == 200) {
        console.log(body);
-       User.findOne({'username' : req.body.username})
+       body = JSON.parse(body);
+       console.log(body.email);
+       User.findOne({'username' : body.email})
        .populate({
          path : 'defaultCalendar calendars',
          populate: {path : 'events'}
        }).exec(function(err, user) {
          if (err) res.status(500).send({'err' : err})
          else if (!user) {
-           res.json({ err : 'We have no record of ' + req.body.username});
+           res.json({ err : 'We have no record of ' + body.email});
          } else {
            // homepage of user
-           var newToken = jwt.sign(user, process.env.AUTH_SECRET);
+           var newToken = jwt.sign(user.profile, process.env.AUTH_SECRET);
            // pass token for cookieing or not
            req.squad.token = newToken;
            // pass user

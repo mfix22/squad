@@ -1,4 +1,6 @@
 var router = require('express').Router();
+var gcal = require('google-calendar');
+
 var Calendar = require('./calendarModel');
 var User = require('../user/userModel');
 var Event = require('../event/eventModel');
@@ -104,15 +106,25 @@ router.post('/:calendar_id', [validateNewEventParams, restrictAccess] , function
       }
     }
   });
-  // Calendar.findById(req.params.calendar_id, function (err, calendar) {
-  //     if(err){
-  //         res.send(err);
-  //     }
-  //     else{
-  //         calendar.addEvent()
-  //         res.json(calendar);
-  //     }
-  // });
+});
+
+router.post('/import', function(req, res){
+  console.log('HERElkja;slkfja');
+  if (req.params.token){
+    console.log('here');
+    var google_calendar = new gcal.GoogleCalendar(req.params.token);
+
+    google_calendar.calendarList.list(function(err, calendarList) {
+      console.log(JSON.stringify(calendarList, null, 4));
+
+      google_calendar.events.list(calendarList[0], function(err, eventList) {
+        console.log(JSON.stringify(eventList, null, 4));
+      });
+    });
+    res.status(200).end();
+  } else {
+    res.status(422).send({'err' : 'Import requires an token parameter.'})
+  }
 });
 
 router.put("/:calendar_id", function(req, res) {

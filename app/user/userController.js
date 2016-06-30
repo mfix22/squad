@@ -87,6 +87,7 @@ router.all('/test', function(req, res){
  // #       #     # #    ## #     #    #     #  #     # #    ## #     #
  // #        #####  #     #  #####     #    ### ####### #     #  #####
 function populateUser(userId, callback) {
+  console.log('UserId:', userId);
   User.findById(userId, '-password')
   .populate({
     path : 'defaultCalendar calendars',
