@@ -30,7 +30,8 @@ $('#calendar-import').click(function() {
     }).then(function() {
       refreshValues();
       console.log('Scopes', googleUser.getGrantedScopes());
-      var token = googleUser.getAuthResponse().id_token;
+      console.log(googleUser.hg.access_token);
+      var token = googleUser.hg.access_token;
       $.post("/c/import", {
         'token' : token
       }, function(data){
@@ -58,6 +59,7 @@ var refreshValues = function() {
   if (auth2){
     console.log('Refreshing values...');
     googleUser = auth2.currentUser.get();
+    console.log(googleUser);
   } else{
     console.log('No auth client.');
   }

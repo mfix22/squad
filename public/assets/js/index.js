@@ -82,7 +82,7 @@ var initSigninV2 = function() {
   window.auth2 = gapi.auth2.init({
       client_id: '583561432942-5fcf74j7tmfelnqj5jttnubd55dghdff.apps.googleusercontent.com',
       // cookie_policy : 'none',
-      scope : 'profile email',
+      scope : 'profile email https://www.googleapis.com/auth/calendar.readonly',
       immediate : true
   });
 

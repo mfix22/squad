@@ -1,6 +1,8 @@
 var router = require('express').Router();
 var gcal = require('google-calendar');
+var request = require('request');
 
+var gc = require('./googleExample');
 var Calendar = require('./calendarModel');
 var User = require('../user/userModel');
 var Event = require('../event/eventModel');
@@ -37,6 +39,48 @@ function restrictAccess(req, res, next) {
     res.render('login');
   }
 };
+
+router.post('/import', function(req, res){
+  var token = req.body.token;
+  if (token){
+      console.log(token);
+      // gc.listEvents(token);
+      // var options = {
+      //   url: 'https://www.googleapis.com/calendar/v3/calendars/primary/events',
+      //   headers: {
+      //     'Authorization': 'Oauth ' + token
+      //   }
+      // };
+      //
+      // function callback(error, response, body) {
+      //   if (!error && response.statusCode == 200) {
+      //     var info = JSON.parse(body);
+      //     console.log(info);
+      //   } else{
+      //     if (error) console.log(error)
+      //     else console.log(response.message);
+      //   }
+      // }
+      //
+      // request(options, callback);
+    var google_calendar = new gcal.GoogleCalendar(token);
+
+    google_calendar.calendarList.list(function(err, calendarList) {
+      if (err) console.log(err);
+      else {
+        console.log(JSON.stringify(calendarList, null, 4));
+
+        // google_calendar.events.list(calendarList[0], function(err, eventList) {
+        //   if (err) console.log("2", err);
+        //   console.log(JSON.stringify(eventList, null, 4));
+        // });
+      }
+    });
+    res.status(200).send('ok');
+  } else {
+    res.status(422).send({'err' : 'Import requires an token parameter.'})
+  }
+});
 
 
 router.get('/', function(req, res) {
@@ -106,25 +150,6 @@ router.post('/:calendar_id', [validateNewEventParams, restrictAccess] , function
       }
     }
   });
-});
-
-router.post('/import', function(req, res){
-  console.log('HERElkja;slkfja');
-  if (req.params.token){
-    console.log('here');
-    var google_calendar = new gcal.GoogleCalendar(req.params.token);
-
-    google_calendar.calendarList.list(function(err, calendarList) {
-      console.log(JSON.stringify(calendarList, null, 4));
-
-      google_calendar.events.list(calendarList[0], function(err, eventList) {
-        console.log(JSON.stringify(eventList, null, 4));
-      });
-    });
-    res.status(200).end();
-  } else {
-    res.status(422).send({'err' : 'Import requires an token parameter.'})
-  }
 });
 
 router.put("/:calendar_id", function(req, res) {
