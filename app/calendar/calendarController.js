@@ -2,7 +2,6 @@ var router = require('express').Router();
 var gcal = require('google-calendar');
 var request = require('request');
 
-var gc = require('./googleExample');
 var Calendar = require('./calendarModel');
 var User = require('../user/userModel');
 var Event = require('../event/eventModel');
@@ -69,11 +68,16 @@ router.post('/import', function(req, res){
       if (err) console.log(err);
       else {
         console.log(JSON.stringify(calendarList, null, 4));
-
-        // google_calendar.events.list(calendarList[0], function(err, eventList) {
-        //   if (err) console.log("2", err);
-        //   console.log(JSON.stringify(eventList, null, 4));
-        // });
+        console.log(calendarList.items[1].id);
+        google_calendar.events.list(calendarList.items[1].id,{
+          timeMin: (new Date()).toISOString(),
+          maxResults: 3,
+          singleEvents: true,
+          orderBy: 'startTime'
+        }, function(err, eventList) {
+          if (err) console.log("***", err);
+          else console.log(JSON.stringify(eventList, null, 4));
+        });
       }
     });
     res.status(200).send('ok');
