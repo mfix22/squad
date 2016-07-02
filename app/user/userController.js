@@ -31,14 +31,14 @@ function restrictAccess(req, res, next) {
         console.log(err);
         res.status(500).send(err);
       } else {
-        console.log('Decoded:', decoded);
+        // console.log('Decoded:', decoded);
         req.decoded = decoded;
         return next();
       }
     });
   } else {
-    console.log({'err' : 'No token provided.'});
-    res.render('login');
+    console.log('No token provided.');
+    res.redirect('/u/login');
   }
 };
 
@@ -55,10 +55,15 @@ router.all('/', restrictAccess, function(req, res){
   populateUser(req.decoded._id, function(err, user){
     if (err) res.status(500).send({'err' : err})
     else {
-      console.log(JSON.stringify(user, null, 4));
+      // console.log(JSON.stringify(user, null, 4));
       res.render('homepage', user);
     }
   });
+});
+
+router.all('/login', function(req, res) {
+  console.log('Rendering...');
+  res.render('login');
 });
 
 router.get('/:user_id', restrictAccess, function(req, res) {

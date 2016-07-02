@@ -124,7 +124,8 @@ router.post('/login/b', [validateLoginParams, authenticateB], function(req, res)
     maxAge: 30 * 24 * 60  * 60 * 1000, //30 days
     httpOnly: true
   });
-  res.status(200).render('homepage', req.squad.user);
+  res.status(200).redirect('/u/');
+  // res.status(200).render('homepage', req.squad.user);
   // w/ client side renderings, just redirect to /
 
   // res.send({
@@ -138,12 +139,13 @@ router.post('/login/g', authenticateG, function(req, res){
     maxAge: 30 * 24 * 60  * 60 * 1000, //30 days
     httpOnly: true
   });
-  res.status(200).render('homepage', req.squad.user);
+  res.status(200).redirect('/u/');
+  // res.status(200).render('homepage', req.squad.user);
 });
 
 router.get('/logout', function (req, res) {
   res.clearCookie('squad');
-  res.redirect('/u/');
+  res.redirect('/u/login');
 });
 
 router.post('/register', validateUserReqs, function(req, res){

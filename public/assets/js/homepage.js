@@ -1,5 +1,6 @@
 // var auth2, googleUser;
-var googleUser, auth2;
+var googleUser;
+var auth2;
 
 
 function initSigninV2() {
