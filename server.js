@@ -19,6 +19,7 @@ if (!process.env.AUTH_SECRET){
 var port = process.env.PORT || 8080;
 
 mongoose.connect("mongodb://localhost/squad");
+// mongoose.Promise =  require('q').Promise;
 
 app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json

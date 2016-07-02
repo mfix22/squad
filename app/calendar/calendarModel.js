@@ -37,7 +37,14 @@ var CalendarSchema = new mongoose.Schema({
        type: Boolean,
        default: false
      }
-   }]
+   }],
+   // prevent duplicates being created on upload
+   'google_id': {
+     type : String,
+     'index': {
+       'unique': true
+     }
+   }
 });
 
 CalendarSchema.methods.addEvent = function(eventId){

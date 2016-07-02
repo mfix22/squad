@@ -129,6 +129,7 @@ UserSchema.methods.addEvent = function (calendarId, eventId, callback) {
     Calendar.findById(calendarId, function(err, cal) {
       if (err) throw err;
       cal.addEvent(eventId);
+      cal.save();
       this.update(); //TODO is this important?
     });
   } else throw new Error("You don't have access to that calendar");
