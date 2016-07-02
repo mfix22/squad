@@ -24,6 +24,30 @@ function initializePage() {
   }
 }
 
+var refreshValues = function() {
+  if (auth2){
+    console.log('Refreshing values...');
+    googleUser = auth2.currentUser.get();
+    console.log(googleUser);
+  } else{
+    console.log('No auth client.');
+  }
+}
+
+initializePage();
+
+$('#logout').click(function(event) {
+  event.preventDefault();
+  console.log('Logging out');
+  if (auth2) {
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+  }
+  location.href = this.href;
+});
+
+
 $('#calendar-import').click(function() {
   if (googleUser) {
     googleUser.grant({
@@ -55,24 +79,3 @@ var $cal = $('#calendar').clndr({
   events : events,
   forceSixRows : true
 });
-
-var refreshValues = function() {
-  if (auth2){
-    console.log('Refreshing values...');
-    googleUser = auth2.currentUser.get();
-    console.log(googleUser);
-  } else{
-    console.log('No auth client.');
-  }
-}
-
-initializePage();
-$('#logoutGoogle').click(signOutGoogle);
-
-function signOutGoogle() {
-  console.log('Logging out');
-  // var auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut().then(function () {
-    console.log('User signed out.');
-  });
-}
