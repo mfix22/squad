@@ -127,39 +127,14 @@ router.post('/:calendar_id/import/g', function(req, res){
           'duplicates' : [],
           'errors' : []
         };
-        var promises = [];
-        var count = 0;
         Calendar.findById(req.params.calendar_id, function (err, calendar) {
             if(err){
               res.status(500).send({'err' : err});
             }
             else{
-              newEvents.forEach((e) => {
-                var newE = new Event(e);
-                var p = newE.save(function(err, product, numAffected){
-                  if (!err) {
-                    calendar.addEvent(product._id);
-                    summary.newEvents.push(product._id);
-                  }
-                }).then(function(val) {
-                  console.log(JSON.stringify(val, null, 4));
-                }).catch(function(reason) {
-                  if (reason.code == 11000){
-                    var parsed = reason.toJSON();
-                    summary.duplicates.push(parsed.op.google_id);
-                  } else {
-                    summary.errors.push(reason);
-                  }
-                });
-                promises.push(p);
-              });
-              Q.allSettled(promises).then(function (results){
-                // console.log(results);
-                res.status(200).send({
-                  'ok' : true,
-                  summary
-                });
-              });
+              calendar.import(newEvents, function(summary) {
+                res.send(summary);
+              })
             }
         });
       }
