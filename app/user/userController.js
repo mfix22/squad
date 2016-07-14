@@ -29,7 +29,7 @@ function restrictAccess(req, res, next) {
     jwt.verify(token, process.env.AUTH_SECRET, function(err, decoded){
       if (err) {
         console.log(err);
-        res.status(500).send(err);
+        res.status(400).send(err);
       } else {
         // console.log('Decoded:', decoded);
         req.decoded = decoded;
@@ -53,7 +53,7 @@ function restrictAccess(req, res, next) {
 
 router.all('/', restrictAccess, function(req, res){
   populateUser(req.decoded._id, function(err, user){
-    if (err) res.status(500).send({'err' : err})
+    if (err) res.status(400).send({'err' : err})
     else {
       // console.log(JSON.stringify(user, null, 4));
       res.render('homepage', user);
@@ -68,7 +68,7 @@ router.all('/login', function(req, res) {
 router.get('/:user_id', restrictAccess, function(req, res) {
     if (req.params.user_id == req.decoded._id){
       populateUser(req.decoded._id, function(err, user){
-        if (err) res.status(500).send({'err' : err})
+        if (err) res.status(400).send({'err' : err})
         else {
           console.log(JSON.stringify(user, null, 4));
           res.json(user);

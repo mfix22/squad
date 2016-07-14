@@ -17,13 +17,13 @@ var Event = require('../event/eventModel');
  // #     # ### ######  ######  ####### #######  ## ##  #     # #     # #######
 
 router.param('calendar_id', function(req,res, next, id) {
-  if (isNaN(parseInt(id, 16))) return res.status(403).send({'err' : 'Id is not a valid number'});
+  if (isNaN(parseInt(id, 16))) return res.status(400).send({'err' : 'Id is not a valid number'});
   next();
-})
+});
 
 function validateNewCalendarParams(req, res, next) {
   if (!req.body.calendar) res.status(400).send({"err": "No calendar provided."});
-  else if (!req.body.calendar.title) res.status(403).send({"err": "A calendar title is required."})
+  else if (!req.body.calendar.title) res.status(400).send({"err": "A calendar title is required."})
   else next();
 }
 
@@ -38,10 +38,7 @@ function restrictAccess(req, res, next) {
   if (token) {
     jwt.verify(token, process.env.AUTH_SECRET, function(err, decoded){
       if (err) {
-        res.status(501).send({
-          'body' : err,
-          'err' : err.message
-        });
+        res.status(400).send({'err' : err});
       } else {
         req.decoded = decoded;
         return next();
@@ -97,7 +94,7 @@ router.get('/g/list', function(req, res){
     var google_calendar = new gcal.GoogleCalendar(token);
 
     google_calendar.calendarList.list(function(err, calendarList) {
-      if (err) res.status(500).send({'err' : err});
+      if (err) res.status(400).send({'err' : err});
       else {
         console.log(JSON.stringify(calendarList, null, 4));
         res.status(200).send(calendarList.items);
@@ -124,7 +121,7 @@ router.post('/:calendar_id/import/g', function(req, res){
     }, function(err, eventList) {
       if (err) {
         console.log("***", err);
-        res.status(401).send(err);
+        res.status(400).send(err);
       } else {
         var newEvents = translate.googleEvents(eventList.items);
         var summary = {
@@ -134,7 +131,7 @@ router.post('/:calendar_id/import/g', function(req, res){
         };
         Calendar.findById(req.params.calendar_id, function (err, calendar) {
             if(err){
-              res.status(500).send({'err' : err});
+              res.status(400).send({'err' : err});
             }
             else{
               calendar.import(newEvents, function(summary) {
@@ -152,7 +149,7 @@ router.post('/:calendar_id/import/g', function(req, res){
 router.get('/', function(req, res) {
     Calendar.find(function(err, calendars) {
         if (err){
-            res.status(500).json(err);
+            res.status(400).json(err);
         }
         else{
             res.json(calendars);
@@ -161,11 +158,11 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', [validateNewCalendarParams, restrictAccess], function(req, res) {
-    if (!req.decoded) res.status(501).send({'err' : 'Decoding error.'});
+    if (!req.decoded) res.status(500).send({'err' : 'Decoding error.'});
     else{
       User.findById(req.decoded._id, '-password').exec(function (err, user) {
         if (err) {
-          res.status(503).send({'err' : "Error finding user."})
+          res.status(400).send({'err' : "Error finding user."})
         } else{
           var calendar = new Calendar({
             'title' : req.body.calendar.title,
@@ -177,10 +174,10 @@ router.post('/', [validateNewCalendarParams, restrictAccess], function(req, res)
               else{
                 try {
                   user.addCalendar(calendar._id);
-                  res.json({ "ok" : true, calendar });
+                  res.status(201).json({ "ok" : true, calendar });
                 } catch (e) {
                   console.log(e);
-                  res.status(504).send({'err' : e});
+                  res.status(500).send({'err' : e});
                 }
               }
           });
@@ -193,10 +190,10 @@ router.post('/', [validateNewCalendarParams, restrictAccess], function(req, res)
 router.get('/:calendar_id', function(req, res) {
     Calendar.findById(req.params.calendar_id, function (err, calendar) {
         if(err){
-            res.status(400).send({'err' : err});
+          res.status(400).send({'err' : err});
         }
         else{
-            res.json(calendar);
+          res.json(calendar);
         }
     });
 });
@@ -205,7 +202,7 @@ router.post('/:calendar_id', [validateNewEventParams, restrictAccess] , function
   console.log(JSON.stringify(req.decoded, null, 4));
   User.findById(req.decoded._id, '-password').exec(function (err, user) {
     if (err) {
-      res.status(500).send({'error' : "Error finding user."})
+      res.status(400).send({'error' : "Error finding user."})
     } else{
       var newE = new Event(req.body.event);
       newE.save();
@@ -213,7 +210,7 @@ router.post('/:calendar_id', [validateNewEventParams, restrictAccess] , function
         user.addEvent(req.params.calendar_id, newE._id);
         res.send({'ok' : true,  'event' : newE});
       } catch (e) {
-        res.status(505).send(e);
+        res.status(500).send(e);
       }
     }
   });
@@ -222,10 +219,10 @@ router.post('/:calendar_id', [validateNewEventParams, restrictAccess] , function
 router.delete("/:calendar_id", function(req, res) {
     Calendar.remove({_id: req.params.calendar_id}, function(err, bear) {
         if (err){
-            res.status(504).send({'err' : err});
+          res.status(400).send({'err' : err});
         }
         else{
-            res.json({ message: 'Successfully deleted' });
+          res.json({ message: 'Successfully deleted' });
         }
     });
 });

@@ -198,7 +198,7 @@ router.get('/logout', function (req, res) {
 });
 
 router.post('/register/g', validateGoogleUserReqs, function(req, res) {
-  res.json(req.squad);
+  res.status(201).json(req.squad);
 });
 
 router.post('/register', validateUserReqs, function(req, res){
