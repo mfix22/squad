@@ -14,7 +14,7 @@
     var p = document.getElementById("password").value
     loginUserPass(u,p, function(err, page){
       if (!err) {
-        location.href = _this.href;
+        window.location.href = _this.href;
       }
       else alert(err);
     });
@@ -52,10 +52,11 @@ function signup(payload, callback){
    window.googleUser = googleUser;
    console.log(window.googleUser);
    var id_token = googleUser.getAuthResponse().id_token;
+   console.log(id_token);
    $.post("/login/g", {
      'token' : id_token
    }, function(page){
-     location = '/u/'
+     window.location = '/u/'
    });
  }
  function onLoginFailure(error) {
@@ -134,13 +135,5 @@ var refreshValues = function() {
     googleUser = window.auth2.currentUser.get();
   }
 }
-
-// window.onbeforeunload = function(e){
-//   console.log('Revoking access for testing . . .');
-//   window.auth2.currentUser.get().disconnect();
-//   // window.auth2.signOut().then(function () {
-//   //   console.log('User signed out.');
-//   // });
-// };
 
 appStart();

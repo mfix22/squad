@@ -17,23 +17,29 @@ var UserSchema = new mongoose.Schema({
     'required' : true,
     'index': {
       'unique': true
-    }
+    },
+    'trim' :true
   },
   'password'     : {
     'type' : String,
-    'required' : true
+    'required' : false, //TODO update later for multi-step registration
+    'trim' :true
   },
   'email' : {
     'type' : String,
     'index' : {
       'unique' : true
-    }
+    },
+    'trim' :true
   },
   'verifiedEmail' : {
     'type' : Boolean,
     default : false
   },
-  'profileImgURL': String,
+  'profileImgURL': {
+    'type' : String,
+    'trim' :true
+  },
   'dateCreated': {
     'type': Date,
     default: Date.now

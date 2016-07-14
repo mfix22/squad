@@ -104,6 +104,7 @@ router.get('/g/list', function(req, res){
   }
 });
 
+// ! Token required is access_token
 router.post('/:calendar_id/import/g', function(req, res){
   var token = req.body.token;
   var calendarId = req.body.calendarId;

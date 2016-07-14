@@ -27,9 +27,58 @@ function validateLoginParams(req, res, next) {
  else next();
 };
 
+function validateGoogleUserReqs(req,res, next) {
+  var token =  req.body.token || req.headers['x-access-token']; // || req.query.token
+  if (token) {
+    var url = 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + token.trim();
+    request(url, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        body = JSON.parse(body);
+        console.log(body.email);
+        var defCal = new Calendar({'title' : 'Life'});
+        defCal.save();
+
+        var newUser = new User({
+          'firstName' : body.given_name,
+          'lastName' : body.family_name,
+          'profileImgURL' : body.picture,
+          'username'  : body.email,
+          'email'     : body.email,
+          'defaultCalendar' : defCal._id,
+          'verifiedEmail' : true,
+          'password' : null
+        });
+        newUser.save(function (err, newUser, numAffected) {
+          if (err) {
+            if (err.code == 11000) {
+              res.status(409).send({'err' : err});
+            } else{
+              console.log(err);
+              res.status(500).send({'err' : err});
+            }
+          } else {
+            var newToken = jwt.sign({
+              '_id' : newUser._id,
+              'dateCreated' : Date.now
+            }, process.env.AUTH_SECRET);
+
+            req.squad.token = newToken;
+            // pass user
+            req.squad.user = newUser;
+            // strip password from response
+            req.squad.user.password = undefined;
+            next();
+          }
+        });
+      }
+    });
+  } else{
+    res.status(422).send({'err' : 'No access token provided.'});
+  }
+ };
 
 function validateUserReqs(req, res, next) {
- if (!req.body.fn || !req.body.ln || !req.body.username || !req.body.password){ //|| !req.body.email){
+ if (!req.body.firstName || !req.body.lastName || !req.body.username || !req.body.password){ //|| !req.body.email){
    res.status(422).send({ 'err' : 'Invalid parameters'});
  }
  else next();
@@ -76,9 +125,9 @@ function authenticateG(req, res, next) {
    // var cert = fs.readFileSync('google.pem');  // get public key
    request('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + token, function (error, response, body) {
      if (!error && response.statusCode == 200) {
-       console.log(body);
+      //  console.log(body);
        body = JSON.parse(body);
-       console.log(body.email);
+      //  console.log(body.email);
        User.findOne({'username' : body.email})
        .populate({
          path : 'defaultCalendar calendars',
@@ -148,6 +197,10 @@ router.get('/logout', function (req, res) {
   res.redirect('/u/login');
 });
 
+router.post('/register/g', validateGoogleUserReqs, function(req, res) {
+  res.json(req.squad);
+});
+
 router.post('/register', validateUserReqs, function(req, res){
   console.log(req.body);
 
@@ -155,8 +208,8 @@ router.post('/register', validateUserReqs, function(req, res){
   defCal.save();
 
   var newUser = new User({
-    'firstName' : req.body.fn,
-    'lastName'  : req.body.ln,
+    'firstName' : req.body.firstName,
+    'lastName'  : req.body.lastName,
     'username'  : req.body.username,
     'password'  : req.body.password,
     'email'     : req.body.username,
@@ -165,8 +218,12 @@ router.post('/register', validateUserReqs, function(req, res){
 
   newUser.save(function (err) {
     if (err) {
-      console.log(err);
-      res.status(500).send({'err' : err});
+      if (err.code == 11000) {
+        res.status(409).send({'err' : err});
+      } else{
+        console.log(err);
+        res.status(500).send({'err' : err});
+      }
     } else {
       var token = jwt.sign({
         '_id' : newUser._id,
