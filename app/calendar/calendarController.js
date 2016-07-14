@@ -1,14 +1,12 @@
 var router = require('express').Router();
 var gcal = require('google-calendar');
 var jwt = require('jsonwebtoken');
-var Q = require('q');
-
 var moment = require('moment');
+
 var translate = require('../util/translator');
 var Calendar = require('./calendarModel');
 var User = require('../user/userModel');
 var Event = require('../event/eventModel');
-
 
  // #     # ### ######  ######  #       ####### #     #    #    ######  #######
  // ##   ##  #  #     # #     # #       #       #  #  #   # #   #     # #
@@ -17,15 +15,21 @@ var Event = require('../event/eventModel');
  // #     #  #  #     # #     # #       #       #  #  # ####### #   #   #
  // #     #  #  #     # #     # #       #       #  #  # #     # #    #  #
  // #     # ### ######  ######  ####### #######  ## ##  #     # #     # #######
+
+router.param('calendar_id', function(req,res, next, id) {
+  if (isNaN(parseInt(id, 16))) return res.status(403).send({'err' : 'Id is not a valid number'});
+  next();
+})
+
 function validateNewCalendarParams(req, res, next) {
-  if (!req.body.calendar) res.status(504).send({"err": "No calendar provided."});
-  else if (!req.body.calendar.title) res.status(504).send({"err": "A calendar title is required."})
+  if (!req.body.calendar) res.status(400).send({"err": "No calendar provided."});
+  else if (!req.body.calendar.title) res.status(403).send({"err": "A calendar title is required."})
   else next();
 }
 
 function validateNewEventParams(req, res, next) {
-  if (!req.body.event) res.status(505).send({"err": "No event provided."});
-  else if (!req.body.event.title) res.status(505).send({"err": "An event title is required."})
+  if (!req.body.event) res.status(400).send({"err": "No event provided."});
+  else if (!req.body.event.title) res.status(400).send({"err": "An event title is required."})
   else next();
 }
 
@@ -107,10 +111,10 @@ router.get('/g/list', function(req, res){
 // ! Token required is access_token
 router.post('/:calendar_id/import/g', function(req, res){
   var token = req.body.token;
-  var calendarId = req.body.calendarId;
-  if (token && calendarId){
+  var googleCalendarId = req.body.calendar_id;
+  if (token && googleCalendarId){
     var google_calendar = new gcal.GoogleCalendar(token);
-    google_calendar.events.list(calendarId,{
+    google_calendar.events.list(googleCalendarId,{
       timeMin: (new Date()).toISOString(),
       //only import X number of years, default=1
       timeMax: moment().add(req.body.numYears || 1, 'y').format(),
@@ -189,7 +193,7 @@ router.post('/', [validateNewCalendarParams, restrictAccess], function(req, res)
 router.get('/:calendar_id', function(req, res) {
     Calendar.findById(req.params.calendar_id, function (err, calendar) {
         if(err){
-            res.status(500).send({'err' : err});
+            res.status(400).send({'err' : err});
         }
         else{
             res.json(calendar);
@@ -213,30 +217,6 @@ router.post('/:calendar_id', [validateNewEventParams, restrictAccess] , function
       }
     }
   });
-});
-
-router.put("/:calendar_id", function(req, res) {
-    Calendar.findById(req.params.calendar_id, function(err, calendar) {
-        if (err){
-            res.status(504).send({'err' : err});
-        }
-        else{
-            calendar = req.body.calendar;
-            if(!calendar){
-                res.status(504).send({"err": "No calendar with that id exists."});
-            }
-            else{
-                calendar.save(function(err) {
-                    if (err){
-                        res.status(504).send({'err' : err});
-                    }
-                    else{
-                        res.json({ calendar });
-                    }
-                });
-            }
-        }
-    });
 });
 
 router.delete("/:calendar_id", function(req, res) {

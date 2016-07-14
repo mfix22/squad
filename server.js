@@ -44,6 +44,7 @@ app.use('/u', require('./app/user/userController'));
 app.use('/c', require('./app/calendar/calendarController'));
 
 app.use(function(err, req, res, next){
+  console.log(err);
   res.status(500).json(err);
 });
 

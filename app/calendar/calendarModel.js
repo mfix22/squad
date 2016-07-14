@@ -19,8 +19,8 @@ var CalendarSchema = new mongoose.Schema({
   },
   'defaultVisibility' : {
     type : String,
-    enum : ['PUBLIC', 'PRIVATE', 'GROUP'],  //TODO check if this is all
-    default : 'PUBLIC'
+    enum : ['PUBLIC', 'PRIVATE', 'GROUP', 'FRIENDS'],  //TODO check if this is all
+    default : 'FRIENDS'
   },
   'dateCreated': {
     type: Date,

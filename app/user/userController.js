@@ -62,7 +62,6 @@ router.all('/', restrictAccess, function(req, res){
 });
 
 router.all('/login', function(req, res) {
-  console.log('Rendering...');
   res.render('login');
 });
 
