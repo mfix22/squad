@@ -26,6 +26,7 @@ app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
 app.use(express.static(__dirname + '/dist'));  // set the static files location /client
+app.use(express.static(__dirname + '/public')); 
 app.use(logger('dev'));
 app.use(cookieParser());
 
@@ -36,7 +37,8 @@ app.use(cookieParser());
 
 
 
-app.use('/e', require('./server-app/event/eventController.js'));
+
+app.use('/api/e', require('./server-app/event/eventController.js'));
 app.use('/u', require('./server-app/user/userRoutes'));
 
 
@@ -44,9 +46,11 @@ app.use(function(err, req, res, next){
   res.status(500).json(err);
 });
 
+
 app.get('*', function(req, res) {
 		res.sendFile(__dirname +'/dist/index.html');
 });
+
 app.listen(port);
 console.log("App Started on port:", port);
 

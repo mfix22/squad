@@ -1,23 +1,25 @@
 import { Injectable }    from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Headers, Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
+import { Observable }     from 'rxjs/Observable';
 import { Event } from './event';
 @Injectable()
 export class EventService {
-  private eventUrl = 'e';  // URL to web api
+  private eventUrl = 'http://localhost:8080/api/e';  // URL to web api
+  private errorMessage: any;
   constructor(private http: Http) { }
-  getEvents(): Promise<Event[]> {
+  getEvents (): Observable<Event[]> {
     return this.http.get(this.eventUrl)
-               .toPromise()
-               .then(response => response.json().data)
-               .catch(this.handleError);
+                    .map(this.extractData)
+                    .catch(this.handleError);
   }
   getEvent(id: number) {
-    return this.getEvents()
-               .then(events => events.filter(event => event.id === id)[0]);
+    return this.http.get(this.eventUrl + "/"+id)
+                    .map(this.extractData)
+                    .catch(this.handleError);
   }
   save(event: Event): Promise<Event>  {
-    if (event.id) {
+    if (event._id) {
       return this.put(event);
     }
     return this.post(event);
@@ -25,7 +27,7 @@ export class EventService {
   delete(event: Event) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    let url = `${this.eventUrl}/${event.id}`;
+    let url = `${this.eventUrl}/${event._id}`;
     return this.http
                .delete(url, headers)
                .toPromise()
@@ -45,15 +47,24 @@ export class EventService {
   private put(event: Event) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    let url = `${this.eventUrl}/${event.id}`;
+    let url = `${this.eventUrl}/${event._id}`;
     return this.http
                .put(url, JSON.stringify(event), {headers: headers})
                .toPromise()
                .then(() => event)
                .catch(this.handleError);
   }
-  private handleError(error: any) {
-    console.error('An error occurred', error);
-    return Promise.reject(error.message || error);
+  private extractData(res: Response) {
+    let body = res.json();
+    return res.json() || { };
+  }
+
+  private handleError (error: any) {
+    // In a real world app, we might use a remote logging infrastructure
+    // We'd also dig deeper into the error to get a better message
+    let errMsg = (error.message) ? error.message :
+      error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+    console.error(errMsg); // log to console instead
+    return Observable.throw(errMsg);
   }
 }

@@ -1,0 +1,13 @@
+<h2>My Events</h2>
+<ul class="events">
+
+  <li *ngFor="let event of events" (click)="gotoDetail(event)" [class.selected]="event === selectedEvent">
+    <span class="event-element">
+      <span class="badge">{{event._id}}</span>
+    </span> 
+  </li>
+</ul>
+<div class="error" *ngIf="error">{{error}}</div>
+<div (click)="gotoAdd()">Add Event</div>
+
+

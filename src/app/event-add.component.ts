@@ -2,14 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
 import { Event }                from './event';
 import { EventService }         from './event.service';
-import { EventDetailComponent } from './event-detail.component';
 @Component({
   selector: 'my-events',
-  template: require('./event-list.component.html'),
-  styles:  [require('./event-list.component.css')],
-  directives: [EventDetailComponent]
+  template: require('./event-add.component.html'),
+  styles:  [require('./event-add.component.css')],
 })
-export class EventListComponent implements OnInit {
+export class EventAddComponent implements OnInit {
   events: Event[];
   errorMessage: string;
   selectedEvent: Event;
@@ -18,19 +16,13 @@ export class EventListComponent implements OnInit {
   constructor(
     private router: Router,
     private eventService: EventService) { }
-  getEvents() {
-    this.eventService.getEvents()
-                     .subscribe(
-                       events => this.events = events,
-                       error =>  this.errorMessage = <any>error);
-  }
   addEvent() {
     this.addingEvent = true;
     this.selectedEvent = null;
   }
   close(savedEvent: Event) {
     this.addingEvent = false;
-    if (savedEvent) { this.getEvents(); }
+    if (savedEvent) { this.router.navigate(['/']); }
   }
   deleteEvent(myEvent: Event, event: any) {
     event.stopPropagation();
@@ -43,19 +35,6 @@ export class EventListComponent implements OnInit {
         .catch(error => this.error = error);
   }
   ngOnInit() {
-    this.getEvents();
-    console.log("init: ", this.events);
-     console.log("error: ", this.errorMessage);
-  }
-  onSelect(event: Event) {
-    this.selectedEvent = event;
-    this.addingEvent = false;
-  }
-  gotoDetail(event: Event) {
-    console.log("event: ",event);
-    this.router.navigate(['/e/', event._id]);
-  }
-  gotoAdd(){
-    this.router.navigate(['/e/create']);
+
   }
 }
