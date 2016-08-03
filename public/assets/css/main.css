@@ -4,12 +4,6 @@
 .warning {
   color: red; }
 
-body, html {
-  overflow: hidden; }
-
-#calendar {
-  visibility: hidden; }
-
 code {
   background: #f9f9f9;
   padding: 1px 3px;
