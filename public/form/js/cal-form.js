@@ -244,13 +244,13 @@ $(".what-button-text").on("blur paste input", function(e){
 });
 
 var numPeople = 0
-$('.with-button').click(function() {
+$('.with-button-node.add').click(function() {
   numPeople++;
   if (numPeople <= 5) {
     var buttonClass = (numPeople >= 5) ? 'more' : 'person';
     var icon = (numPeople >= 5) ? numPeople : ''
-    $(this).append('<div class="with-button-node ' + buttonClass + " person" + numPeople +'">' + icon + '</div>');
-  } 
+    $('.with-button').append('<div class="with-button-node ' + buttonClass + " person" + numPeople +'">' + icon + '</div>');
+  }
   $('.with-button-node.more').text(numPeople)
 });
 
