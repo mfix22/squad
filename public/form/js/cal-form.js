@@ -24,30 +24,34 @@ var repeat_action_reg = /(repeat|rep\.)\s+([MTWRFSN][T]{0,1}[W]{0,1}[R]{0,1}[F]{
 // })
 var startTime = moment()
 var endTime = startTime.clone().add(1, 'h');
-var dateFormat = 'YYYY<br>ddd, MMM Do';
+var dateFormat = '[<p><span class="year-text">]YYYY[</span><br>]ddd, MMM Do[</p>]';
 var timeFormat = 'LT'
 
 var place = "888 North Brannan"
 
 
 $('.form-times.startDate').mousewheel(function(event) {
+  event.preventDefault();
   // console.log(event.deltaX, event.deltaY, event.deltaFactor);
   startTime.add(Math.floor(event.deltaY), 'd');
   updateStartTimeDisplay();
 });
 
 $('.form-times.endDate').mousewheel(function(event) {
+  event.preventDefault();
   endTime.add(Math.floor(event.deltaY), 'd')
   updateEndTimeDisplay();
 });
 
 
 $('.form-times.startTime').mousewheel(function(event) {
+  event.preventDefault();
   startTime.add(Math.floor(event.deltaY), 'm')
   updateStartTimeDisplay();
 });
 
 $('.form-times.endTime').mousewheel(function(event) {
+  event.preventDefault();
   endTime.add(Math.floor(event.deltaY), 'm')
   updateEndTimeDisplay();
 });
@@ -192,13 +196,14 @@ $(".what-button-text").on("blur paste input", function(e){
     $this.html($this.text());
     if (ob.location) {
       $this.html($this.text().replace(new RegExp(ob.location + '(?![\\s\\S]*' + ob.location + ')'), '<code class="location">$&</code>'))
-      $('.where-button').css({
-        'background-image' : generateMapsImage(ob.location)
-      }).find('.where-button-text').text(ob.location);
+      // FIXME this totally blew up Google and we overdid the load. Need to rate-limit calls
+      // $('.where-button').css({
+      //   'background-image' : generateMapsImage(ob.location)
+      // }).find('.where-button-text').text(ob.location);
     } else {
-      $('.where-button').css({
-        'background-image' : ''
-      }).find('.where-button-text').text('');
+      // $('.where-button').css({
+      //   'background-image' : ''
+      // }).find('.where-button-text').text('');
     }
     if (ob.startDate_regex) {
       $this.html($this.html().replace(ob.startDate_regex, '<code class="date">' + ob.startDate_regex + '</code>'));
@@ -244,7 +249,8 @@ $(".what-button-text").on("blur paste input", function(e){
 });
 
 var numPeople = 0
-$('.with-button-node.add').click(function() {
+function addPerson(event, key, code) {
+  event.preventDefault();
   numPeople++;
   if (numPeople <= 5) {
     var buttonClass = (numPeople >= 5) ? 'more' : 'person';
@@ -252,8 +258,55 @@ $('.with-button-node.add').click(function() {
     $('.with-button').append('<div class="with-button-node ' + buttonClass + " person" + numPeople +'">' + icon + '</div>');
   }
   $('.with-button-node.more').text(numPeople)
-});
+  return false;
+}
 
+function submit(event, key, code) {
+  event.preventDefault();
+  var str = event.code
+  if (event.ctrlKey) str = 'ctrl+' + str
+  if (event.shiftKey) str = 'shift+' + str
+  if (event.altKey) str = 'alt+' + str
+  HI.log.info(str)
+  if ($('.cal-form-submit').hasClass('active')){
+    console.log('Submitted');
+  }
+}
+
+function clapOnClapOff(event, key, code) {
+  console.log('Clap');
+}
+
+function focus(event, key, code) {
+  var str = event.code
+  if (event.ctrlKey) str = 'ctrl+' + str
+  if (event.shiftKey) str = 'shift+' + str
+  if (event.altKey) str = 'alt+' + str
+  console.log(str);
+  $('#sentence').focus();
+}
+
+var settings = {listenEvents: ["keydown", "keypress", "keyup", "click", "dblclick", "wheel", "contextmenu",
+"compositionstart", "compositionupdate", "compositionend", "cut", "copy",
+"paste", "select", "scroll", "pointerdown", "pointerup"]};
+// Provide the settings when instantiating:
+var HI = new HumanInput(window, settings);
+HI.filter = function(e) {
+  if (e.type === 'keydown') {
+    var str = event.code
+    if (event.ctrlKey) str = 'ctrl+' + str
+    if (event.shiftKey) str = 'shift+' + str
+    if (event.altKey) str = 'alt+' + str
+    console.log(str);
+  }
+  return true;
+};
+HI.on(['ctrl-enter', 'shift-enter'], submit);
+HI.on(['ctrl-+', 'alt-a'], addPerson);
+HI.on(['doubleclap', 'clap'], clapOnClapOff);
+HI.on('ctrl-/', focus);
+
+$('.with-button-node.add').click(addPerson);
 $('.form-times.startDate').html(startTime.format(dateFormat));
 $('.form-times.endDate').html(endTime.format(dateFormat));
 $('.form-times.startTime').html(startTime.format(timeFormat));

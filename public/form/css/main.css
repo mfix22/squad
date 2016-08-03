@@ -211,8 +211,11 @@ code.repeat {
 .where-button {
   cursor: pointer;
   background-position: center;
-  background-size: cover; }
+  background-size: cover;
+  padding: 20px; }
   .where-button i {
+    position: relative;
+    z-index: 3;
     font-size: 42px; }
   .where-button:hover i {
     color: #4d4d4d; }
@@ -220,11 +223,16 @@ code.repeat {
 .where-button-text {
   position: absolute;
   z-index: 2;
+  word-wrap: break-word;
+  max-width: 90%;
+  height: auto;
   font-size: 12px;
   left: 50%;
-  width: 80%;
+  padding: 5px 20px;
+  border-radius: 5px;
   transform: translateX(-50%);
-  text-align: center; }
+  text-align: center;
+  background-color: white; }
 
 [contenteditable=true]:empty:before {
   content: attr(placeholder);

@@ -259,7 +259,11 @@ code.repeat
   cursor: pointer
   background-position: center
   background-size: cover
+  padding: 20px
+  word-wrap:break-word
   i
+    position: relative
+    z-index: 3
     font-size: 42px
   &:hover
     i
@@ -267,12 +271,19 @@ code.repeat
 
 .where-button-text
   position: absolute
+
   z-index: 2
+  word-wrap: break-word
+  max-width: 90%
+  height: auto
+
   font-size: 12px
   left: 50%
-  width: 80%
+  padding: 5px 20px
+  border-radius: 5px
   transform: translateX(-50%)
   text-align: center
+  background-color: white
 
 [contenteditable=true]:empty:before
   content: attr(placeholder)
