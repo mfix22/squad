@@ -248,9 +248,9 @@ $('.with-button').click(function() {
   numPeople++;
   if (numPeople <= 5) {
     var buttonClass = (numPeople >= 5) ? 'more' : 'person';
-    var icon = (numPeople >= 5) ? numPeople : '<i class="ion-person"></i></div>'
-    $(this).append('<div class="with-button-node ' + buttonClass +'">' + icon + '</div>');
-  }
+    var icon = (numPeople >= 5) ? numPeople : ''
+    $(this).append('<div class="with-button-node ' + buttonClass + " person" + numPeople +'">' + icon + '</div>');
+  } 
   $('.with-button-node.more').text(numPeople)
 });
 

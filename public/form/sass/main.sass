@@ -138,9 +138,7 @@ code.repeat
   width: 600px
   height: 400px
   border: 2px solid $form-border-color
-  //#595984
-  border-radius: 10px
-  overflow: hidden
+  overflow: visible
   position: relative
 
   .cal-form-submit
@@ -148,7 +146,7 @@ code.repeat
     @extend .flex-center
     z-index: 2
     top: 50%
-    left: 50%
+    left: 100%
     border-radius: 100%
     width: 50px
     height: 50px
@@ -245,6 +243,16 @@ code.repeat
     &.person
       border: 3px solid #4e4e8f
       border-radius: 100%
+      background-repeat: no-repeat
+      background-size: cover
+    &.person1
+      background-image: url('https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAXBAAAAJDZkMWYzMTg2LTNlY2EtNGY2NS1hMTA2LWU3NTE2MGEzNTI1Nw.jpg')
+    &.person2
+      background-image: url('https://media.licdn.com/media/AAEAAQAAAAAAAAdoAAAAJDcxNzJmY2JmLWU2NDktNDAzZS1iZGMyLWU4NjE1MTRkMWQ5Zg.jpg')
+    &.person3
+      background-image: url('https://media.licdn.com/media/p/8/000/24f/2cb/0552629.jpg')
+    &.person4
+      background-image: url('https://scontent-dft4-2.xx.fbcdn.net/v/t1.0-9/13185_10205520827774417_8458942004873631409_n.jpg?oh=048e70e523532ee11d11dc047e481e9f&oe=5815AC1A')
 
 
 
