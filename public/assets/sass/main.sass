@@ -1,0 +1,255 @@
+@import url(https://fonts.googleapis.com/css?family=Inconsolata:400,700)
+@import 'https://fonts.googleapis.com/css?family=Lato'
+@import 'https://fonts.googleapis.com/css?family=Titillium+Web'
+
+$warning-color: red
+$primary: #5757bc
+$puple: #595984
+$body-grey: #333
+$form-border-color: #555
+
+.warning
+  color: $warning-color
+
+body, html
+  overflow: hidden
+
+#calendar
+  visibility: hidden
+
+
+code
+  background: #f9f9f9
+  padding: 1px 3px
+  border: 1px solid #E8E8E8
+  border-radius: 0.2rem
+
+code.location
+  color: #66FF66
+
+code.time
+  color: #ff6666
+
+code.date
+  color: #6666ff
+
+code.repeat
+  color: #ffa566
+
+
+.calendarContainer
+  font-size: 24px
+  font-family: 'Inconsolata', sans-serif
+
+
+.calendar-list
+  margin-top: 40px
+  list-style: none
+  padding: 0
+
+.calendar-list-bullet
+  display: inline-block
+  width: 15px
+  height: 15px
+  border-radius: 3px
+
+.calendar-list-bullet:hover
+  cursor: pointer
+
+
+.title-row
+  font-size: 28px
+
+
+.control-row
+  background-color: #333333
+  color: #dddddd
+
+
+.control:hover
+  cursor: pointer
+
+
+.clndr-previous-button
+  text-align: left
+
+.current-month
+  text-align: center
+
+.clndr-next-button
+  text-align: right
+
+
+.header-day-row
+  background-color: #cccccc
+
+
+.schedule
+  text-align: center
+  padding: 0
+
+.calendar-table
+  width: 100%
+
+
+.day
+  text-align: center
+  padding: 10px 20px 10px 20px
+
+
+.event
+  color: #129923
+  font-weight: bold
+
+.adjacent-month
+  color: #888888
+
+
+
+.agenda
+  background-color: #cccccc
+  /*height: 40vh*/
+
+
+.event-listing-title
+  text-align: center
+  background-color: #012668
+  color: white
+
+.event-item-name
+  font-weight: 700
+
+.event-item-location
+  font-weight: 400
+  font-size: 20px
+
+
+.flex-center
+  display: flex
+  justify-content: center
+  align-items: center
+  height: 100%
+
+
+.form-container
+  // font-family: 'Lato', sans-serif
+  font-family: 'Titillium Web', sans-serif
+  margin: 20px
+  width: 600px
+  height: 400px
+  border: 2px solid $form-border-color
+  //#595984
+  border-radius: 10px
+  overflow: hidden
+  position: relative
+
+  .cal-form-submit
+    position: absolute
+    @extend .flex-center
+    z-index: 2
+    top: 50%
+    left: 50%
+    border-radius: 100%
+    width: 50px
+    height: 50px
+    margin: -25px 0 0 -25px
+    background-color: $body-grey
+    cursor: pointer
+    transform: scale(0)
+
+    &.active
+      background-color: saturate($primary, 20%)
+      transition: all 300ms ease-in-out
+      transform: scale(1)
+      transform-origin: center
+
+    &:hover
+      /*darken(#8f8fb4, 20%)*/
+      background-color: lighten($body-grey, 10%)
+    &.active:hover
+      background-color: lighten(saturate($primary, 20%), 5%)
+      transform: scale(1.1)
+
+    i
+      color: white
+
+
+  .row
+    height: 50%
+    width: 100%
+    max-width: 100%
+    margin: 0
+
+    .cal-form-buttons
+      height: 100%
+      vertical-align: middle
+      padding: 0
+      margin: 0
+      border: 2px solid $form-border-color
+      //#595984
+
+      .row
+        height: 50%
+
+
+.what-button
+  .what-button-text
+    font-size: 24px
+    max-width: 70%
+    max-height: 80%
+    line-height: 150%
+    overflow-y: auto
+    overflow-x: hidden
+    &:focus
+      outline: none
+
+
+.form-times
+  height: 100%
+  padding: 0
+  margin: 0
+  display: flex
+  justify-content: center
+  align-items: center
+  border: 1px solid $form-border-color
+  font-size: 16px
+  cursor: url('../img/finger.png'), auto
+  &.startTime, &.endTime
+    font-size: 20px
+
+.with-button
+  cursor: pointer
+  height: 100%
+  display: flex
+  justify-content: center
+  align-items: center
+  font-size: 42px
+
+  &:hover
+    /*darken(#8f8fb4, 20%)*/
+    color: lighten($body-grey, 10%)
+
+.where-button-text
+  position: absolute
+  z-index: 2
+  font-size: 12px
+  left: 50%
+  width: 80%
+  transform: translateX(-50%)
+  text-align: center
+
+.where-button
+  cursor: pointer
+  background-position: center
+  background-size: cover
+  i
+    font-size: 42px
+  &:hover
+    i
+      color: lighten($body-grey, 10%)
+
+[contenteditable=true]:empty:before
+  content: attr(placeholder)
+  display: block /* For Firefox */
+  color: #bbb
+  cursor: text
