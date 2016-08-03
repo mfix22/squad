@@ -96,7 +96,7 @@ code.repeat {
   font-weight: 400;
   font-size: 20px; }
 
-.flex-center, .form-container .cal-form-submit {
+.flex-center, .form-container .cal-form-submit, .form-times, .with-button, .with-button .with-button-node, .where-button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -174,16 +174,35 @@ code.repeat {
     font-size: 20px; }
 
 .with-button {
+  flex-flow: row wrap;
+  flex-wrap: wrap;
   cursor: pointer;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 42px; }
-  .with-button .with-button-person {
-    display: block; }
-  .with-button:hover {
-    /*darken(#8f8fb4, 20%) */
+  font-size: 32px; }
+  .with-button .with-button-node {
+    width: 25%;
+    height: 25%;
+    margin: 3% 5%; }
+    .with-button .with-button-node.add {
+      font-size: 42px;
+      order: 6; }
+      .with-button .with-button-node.add:hover {
+        /*darken(#8f8fb4, 20%) */
+        color: #4d4d4d; }
+    .with-button .with-button-node.more {
+      font-size: 42px;
+      order: 5; }
+    .with-button .with-button-node.person {
+      border: 3px solid #4e4e8f;
+      border-radius: 100%; }
+
+.where-button {
+  cursor: pointer;
+  background-position: center;
+  background-size: cover; }
+  .where-button i {
+    font-size: 42px; }
+  .where-button:hover i {
     color: #4d4d4d; }
 
 .where-button-text {
@@ -194,15 +213,6 @@ code.repeat {
   width: 80%;
   transform: translateX(-50%);
   text-align: center; }
-
-.where-button {
-  cursor: pointer;
-  background-position: center;
-  background-size: cover; }
-  .where-button i {
-    font-size: 42px; }
-  .where-button:hover i {
-    color: #4d4d4d; }
 
 [contenteditable=true]:empty:before {
   content: attr(placeholder);
