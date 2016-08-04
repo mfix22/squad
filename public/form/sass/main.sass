@@ -2,7 +2,8 @@
 @import 'https://fonts.googleapis.com/css?family=Lato'
 @import 'https://fonts.googleapis.com/css?family=Titillium+Web'
 
-$warning-color: red
+$warning-color: #f00
+$success-color: #5f5
 $primary: #5757bc
 $puple: #595984
 $body-grey: #333
@@ -11,13 +12,14 @@ $form-border-color: $body-light-grey
 
 .warning
   color: $warning-color
+.success
+  color: $success-color
+
 
 body, html
+  padding: 0
+  margin: 0
   // overflow: hidden
-
-#calendar
-  visibility: hidden
-
 
 code
   background: #f9f9f9
@@ -33,6 +35,22 @@ code
   &.repeat
     color: #ffa566
 
+
+[contenteditable=true]:empty:before
+  content: attr(placeholder)
+  display: block /* For Firefox */
+  color: #bbb
+  cursor: text
+
+
+.tooltip.bottom > .tooltip-inner
+  background-color: $body-grey
+.tooltip.bottom > .tooltip-arrow
+  border-bottom-color: $body-grey
+
+
+#calendar
+  visibility: hidden
 
 .calendarContainer
   font-size: 24px
@@ -149,15 +167,14 @@ code
   &:not(.collapsed)
     cursor: pointer
 
-  .success-icon
+  .success
     @extend .absolute-center
     display: none
     font-size: 50vmin
-    color: #55ff55
 
   &.collapsed
     transform: scale(0.1)
-    .success-icon
+    .success
       display: block
     div
       display: none
@@ -223,7 +240,7 @@ code
       padding: 0
       margin: 0
       border: 2px solid $form-border-color
-      //#595984
+      cursor: auto
 
       .row
         height: 50%
@@ -324,12 +341,6 @@ code
   transform: translateX(-50%)
   text-align: center
   background-color: white
-
-[contenteditable=true]:empty:before
-  content: attr(placeholder)
-  display: block /* For Firefox */
-  color: #bbb
-  cursor: text
 
 .color-module
   @extend .flex-center

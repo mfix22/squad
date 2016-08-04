@@ -6,7 +6,16 @@ var body = {
     { date: '2016-08-09', title: 'Mike\'s Birthday', location: 'San Francisco' },
     { date: '2017-08-04', title: 'Emily\'s 22nd Birthday', location: 'Who Knows Where?' }
   ],
-  palette : ['#5555ff','#A8B6BF','#1F4F5C','#002035','#FB3333','#55FF55','#F0DB4F','#FF5555']
+  palette : [
+    {'color' : '#5555ff', 'name' : 'blueberry'},
+    {'color' : '#A8B6BF', 'name' : 'ash grey'},
+    {'color' : '#1F4F5C', 'name' : 'dark slate grey'},
+    {'color' : '#002035', 'name' : 'maastricht blue'},
+    {'color' : '#FB3333', 'name' : 'deep carmine pink'},
+    {'color' : '#55FF55', 'name' : 'screamin\' green'},
+    {'color' : '#F0DB4F', 'name' : 'minion yellow'},
+    {'color' : '#FF5555', 'name' : 'sunset orange'}
+  ]
 }
 var $cal = $('#calendar').clndr({
   template : $('#calendarTemplate').html(),
@@ -24,6 +33,8 @@ var startTime = moment()
 var endTime = startTime.clone().add(1, 'h');
 var dateFormat = '[<p><span class="year-text">]YYYY[</span><br>]ddd, MMM Do[</p>]';
 var timeFormat = 'LT'
+
+var location;
 
 var settings = {
   logLevel: "INFO"
@@ -191,6 +202,7 @@ $(".what-button-text").on("blur paste input", function(e){
     var ob = highlight($this.text());
     $this.html($this.text());
     if (ob.location) {
+      location = ob.location
       $this.html($this.text().replace(new RegExp(ob.location + '(?![\\s\\S]*' + ob.location + ')'), '<code class="location">$&</code>'))
       // FIXME this totally blew up Google and we overdid the load. Need to rate-limit calls
       $('.where-button').css({
@@ -293,8 +305,11 @@ function changeColor(e) {
   })
 }
 
-body.palette.forEach((color) => {
-  $('.color-module').append('<div class="color-ball" style="background-color: ' + color + '";><i class="ion-checkmark"></i></div>');
+body.palette.forEach((ob) => {
+  var newElem = '<div class="color-ball"';
+  newElem += ' data-toggle="tooltip" data-placement="bottom" title="' + ob.name + '"';
+  newElem += ' style="background-color: ' + ob.color + '";><i class="ion-checkmark"></i></div>';
+  $('.color-module').append(newElem);
 });
 
 $('.form-times.startDate').html(startTime.format(dateFormat));
@@ -316,6 +331,7 @@ function debugKey(e) {
 
 // EVENT BINDINGS
 $(document).ready(function() {
+  $('[data-toggle="tooltip"]').tooltip()
   // HI.startClapper();
   HI.on(['ctrl-enter', 'shift-enter', '⌘-enter'], submit);
   HI.on(['ctrl-+', 'alt-a', '⌘-a'], addPerson);
