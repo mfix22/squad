@@ -17,44 +17,10 @@ var address_reg = /\bat\s(.*?)(?:(?!(\sat|\sfrom|\son)).)*/ig;
 var date_reg = /(\d{1,2}[\/-]\d{1,2}[\/-](\d{4}|\d{2})\b)|(\d{1,2}[\/-]\d{1,2}\b)|today|tomorrow|monday|tuesday|wednesday|thursday|friday|saturday|sunday/ig;
 var repeat_action_reg = /(repeat|rep\.)\s+([MTWRFSN][T]{0,1}[W]{0,1}[R]{0,1}[F]{0,1}[S]{0,1}[N]{0,1}|daily|weekly|monthly|yearly)\b/gi
 
-
-// $('.form-times').scroll(function() {
-//   console.log('here');
-//   $(this).html(parseInt($(this).html() + 1));
-// })
 var startTime = moment()
 var endTime = startTime.clone().add(1, 'h');
 var dateFormat = '[<p><span class="year-text">]YYYY[</span><br>]ddd, MMM Do[</p>]';
 var timeFormat = 'LT'
-
-var place = "888 North Brannan"
-
-
-$('.form-times.startDate').mousewheel(function(event) {
-  event.preventDefault();
-  // console.log(event.deltaX, event.deltaY, event.deltaFactor);
-  startTime.add(Math.floor(event.deltaY), 'd');
-  updateStartTimeDisplay();
-});
-
-$('.form-times.endDate').mousewheel(function(event) {
-  event.preventDefault();
-  endTime.add(Math.floor(event.deltaY), 'd')
-  updateEndTimeDisplay();
-});
-
-
-$('.form-times.startTime').mousewheel(function(event) {
-  event.preventDefault();
-  startTime.add(Math.floor(event.deltaY), 'm')
-  updateStartTimeDisplay();
-});
-
-$('.form-times.endTime').mousewheel(function(event) {
-  event.preventDefault();
-  endTime.add(Math.floor(event.deltaY), 'm')
-  updateEndTimeDisplay();
-});
 
 function updateEndTimeDisplay() {
   checkTimeWarning()
@@ -77,7 +43,7 @@ function checkTimeWarning() {
 
 function generateMapsImage(str) {
   var  a = "url(" + 'http://maps.googleapis.com/maps/api/staticmap?center=' + str.split(new RegExp("\\s+")).join('+') + '&zoom=14&scale=false&size=300x300&maptype=roadmap&format=png' + str.split(new RegExp("\\s+")).join('+') + ')'
-  return a
+  return a;
 }
 
 function chompLeft(s, prefix) {
@@ -197,13 +163,13 @@ $(".what-button-text").on("blur paste input", function(e){
     if (ob.location) {
       $this.html($this.text().replace(new RegExp(ob.location + '(?![\\s\\S]*' + ob.location + ')'), '<code class="location">$&</code>'))
       // FIXME this totally blew up Google and we overdid the load. Need to rate-limit calls
-      // $('.where-button').css({
-      //   'background-image' : generateMapsImage(ob.location)
-      // }).find('.where-button-text').text(ob.location);
+      $('.where-button').css({
+        // 'background-image' : generateMapsImage(ob.location)
+      }).find('.where-button-text').text(ob.location);
     } else {
-      // $('.where-button').css({
-      //   'background-image' : ''
-      // }).find('.where-button-text').text('');
+      $('.where-button').css({
+        // 'background-image' : ''
+      }).find('.where-button-text').text('');
     }
     if (ob.startDate_regex) {
       $this.html($this.html().replace(ob.startDate_regex, '<code class="date">' + ob.startDate_regex + '</code>'));
@@ -261,13 +227,9 @@ function addPerson(event, key, code) {
   return false;
 }
 
+
 function submit(event, key, code) {
   event.preventDefault();
-  var str = event.code
-  if (event.ctrlKey) str = 'ctrl+' + str
-  if (event.shiftKey) str = 'shift+' + str
-  if (event.altKey) str = 'alt+' + str
-  HI.log.info(str)
   if ($('.cal-form-submit').hasClass('active')){
     console.log('Submitted');
   }
@@ -277,37 +239,77 @@ function clapOnClapOff(event, key, code) {
   console.log('Clap');
 }
 
-function focus(event, key, code) {
-  var str = event.code
-  if (event.ctrlKey) str = 'ctrl+' + str
-  if (event.shiftKey) str = 'shift+' + str
-  if (event.altKey) str = 'alt+' + str
-  console.log(str);
+function focusWhatBox(event, key, code) {
   $('#sentence').focus();
 }
 
-var settings = {listenEvents: ["keydown", "keypress", "keyup", "click", "dblclick", "wheel", "contextmenu",
-"compositionstart", "compositionupdate", "compositionend", "cut", "copy",
-"paste", "select", "scroll", "pointerdown", "pointerup"]};
+function openColorModule(event) {
+  $('.module').toggleClass('active');
+}
+$(".form-container .row").click(function(e) {
+  e.stopPropagation();
+});
+
+$('.color-ball').click(function changeColor(e) {
+  // e.stopPropagation()
+  $('.form-container').css({
+    'border-color' : $(this).css('background-color')
+  })
+});
+
+var settings = {
+  logLevel: "INFO"
+};
 // Provide the settings when instantiating:
 var HI = new HumanInput(window, settings);
-HI.filter = function(e) {
-  if (e.type === 'keydown') {
-    var str = event.code
-    if (event.ctrlKey) str = 'ctrl+' + str
-    if (event.shiftKey) str = 'shift+' + str
-    if (event.altKey) str = 'alt+' + str
-    console.log(str);
-  }
-  return true;
-};
-HI.on(['ctrl-enter', 'shift-enter'], submit);
-HI.on(['ctrl-+', 'alt-a'], addPerson);
+// HI.startClapper();
+// HI.filter = function(e) {
+//   if (e.type === 'keydown') {
+//     var str = event.code
+//     if (event.ctrlKey) str = 'ctrl+' + str
+//     if (event.shiftKey) str = 'shift+' + str
+//     if (event.altKey) str = 'alt+' + str
+//     HI.log.debug(str)
+//   }
+//   return true;
+// };
+HI.on(['ctrl-enter', 'shift-enter', '⌘-enter'], submit);
+HI.on(['ctrl-+', 'alt-a', '⌘-a'], addPerson);
 HI.on(['doubleclap', 'clap'], clapOnClapOff);
-HI.on('ctrl-/', focus);
+HI.on('ctrl-/', focusWhatBox);
 
+$('.form-container').click(openColorModule);
 $('.with-button-node.add').click(addPerson);
+$('.cal-form-submit').click(submit);
+
 $('.form-times.startDate').html(startTime.format(dateFormat));
 $('.form-times.endDate').html(endTime.format(dateFormat));
 $('.form-times.startTime').html(startTime.format(timeFormat));
 $('.form-times.endTime').html(endTime.format(timeFormat));
+
+
+$('.form-times.startDate').mousewheel(function(event) {
+  event.preventDefault();
+  // console.log(event.deltaX, event.deltaY, event.deltaFactor);
+  startTime.add(Math.floor(event.deltaY), 'd');
+  updateStartTimeDisplay();
+});
+
+$('.form-times.endDate').mousewheel(function(event) {
+  event.preventDefault();
+  endTime.add(Math.floor(event.deltaY), 'd')
+  updateEndTimeDisplay();
+});
+
+
+$('.form-times.startTime').mousewheel(function(event) {
+  event.preventDefault();
+  startTime.add(Math.floor(event.deltaY), 'm')
+  updateStartTimeDisplay();
+});
+
+$('.form-times.endTime').mousewheel(function(event) {
+  event.preventDefault();
+  endTime.add(Math.floor(event.deltaY), 'm')
+  updateEndTimeDisplay();
+});

@@ -12,18 +12,14 @@ code {
   padding: 1px 3px;
   border: 1px solid #E8E8E8;
   border-radius: 0.2rem; }
-
-code.location {
-  color: #66FF66; }
-
-code.time {
-  color: #ff6666; }
-
-code.date {
-  color: #6666ff; }
-
-code.repeat {
-  color: #ffa566; }
+  code .location {
+    color: #66FF66; }
+  code .time {
+    color: #ff6666; }
+  code .date {
+    color: #6666ff; }
+  code .repeat {
+    color: #ffa566; }
 
 .calendarContainer {
   font-size: 24px;
@@ -99,7 +95,7 @@ code.repeat {
   font-weight: 400;
   font-size: 20px; }
 
-.flex-center, .form-container .cal-form-submit, .form-times, .with-button, .with-button .with-button-node, .where-button {
+.flex-center, .form-container .cal-form-submit, .form-times, .with-button, .with-button .with-button-node, .where-button, .color-module {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -110,9 +106,24 @@ code.repeat {
   margin: 20px;
   width: 600px;
   height: 400px;
-  border: 2px solid #555;
+  border: 10px solid #555;
   overflow: visible;
   position: relative; }
+  .form-container .module {
+    display: none;
+    z-index: 5;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; }
+    .form-container .module.active {
+      position: absolute;
+      display: block;
+      background-color: rgba(0, 0, 0, 0.5); }
+    .form-container .module .module-container {
+      position: relative;
+      width: 100%;
+      height: 100%; }
   .form-container .cal-form-submit {
     position: absolute;
     z-index: 2;
@@ -239,5 +250,43 @@ code.repeat {
   display: block;
   color: #bbb;
   cursor: text; }
+
+.color-module {
+  flex-flow: row wrap;
+  flex-wrap: wrap;
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 20px; }
+  .color-module .color-ball {
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+    background-color: #3333ff;
+    margin: 0% 5%;
+    transition: transform 300ms ease-in-out; }
+    .color-module .color-ball:hover {
+      cursor: pointer;
+      transform: scale(1.2); }
+    .color-module .color-ball.color1 {
+      background-color: #5555ff; }
+    .color-module .color-ball.color2 {
+      background-color: #A8B6BF; }
+    .color-module .color-ball.color3 {
+      background-color: #1F4F5C; }
+    .color-module .color-ball.color4 {
+      background-color: #002035; }
+    .color-module .color-ball.color5 {
+      background-color: #FB3333; }
+    .color-module .color-ball.color6 {
+      background-color: #55FF55; }
+    .color-module .color-ball.color7 {
+      background-color: #F0DB4F; }
+    .color-module .color-ball.color8 {
+      background-color: #FF5555; }
 
 /*# sourceMappingURL=main.css.map */
