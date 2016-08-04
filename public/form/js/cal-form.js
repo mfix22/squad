@@ -1,13 +1,16 @@
-var events = [
-  { date: '2016-08-10', title: 'Code this Calendar', location: 'Home' },
-  { date: '2016-08-10', title: 'Word at Coffee Shop', location: 'Mazarine' },
-  { date: '2016-08-10', title: 'Pride Parade', location: 'Castro' },
-  { date: '2016-08-09',    title: 'Mike\'s Birthday', location: 'San Francisco' },
-  { date: '2017-08-04',    title: 'Emily\'s 22nd Birthday', location: 'Who Knows Where?' }
-];
+var body = {
+  events : [
+    { date: '2016-08-10', title: 'Code this Calendar', location: 'Home' },
+    { date: '2016-08-10', title: 'Word at Coffee Shop', location: 'Mazarine' },
+    { date: '2016-08-10', title: 'Pride Parade', location: 'Castro' },
+    { date: '2016-08-09', title: 'Mike\'s Birthday', location: 'San Francisco' },
+    { date: '2017-08-04', title: 'Emily\'s 22nd Birthday', location: 'Who Knows Where?' }
+  ],
+  palette : ['#5555ff','#A8B6BF','#1F4F5C','#002035','#FB3333','#55FF55','#F0DB4F','#FF5555']
+}
 var $cal = $('#calendar').clndr({
   template : $('#calendarTemplate').html(),
-  events : events,
+  events : body.events,
   forceSixRows : true
 });
 
@@ -31,6 +34,28 @@ function updateStartTimeDisplay() {
   checkTimeWarning()
   $('.form-times.startTime').html(startTime.format(timeFormat));
   $('.form-times.startDate').html(startTime.format(dateFormat));
+}
+
+function timeScrollHandler(event) {
+  event.preventDefault();
+  var $this = $(this);
+  checkTimeWarning()
+  if ($this.hasClass('startTime')) {
+    startTime.add(Math.floor(event.deltaY), 'm')
+    $('.form-times.startTime').html(startTime.format(timeFormat));
+  }
+  if ($this.hasClass('endTime')) {
+    endTime.add(Math.floor(event.deltaY), 'm')
+    $('.form-times.endTime').html(endTime.format(timeFormat));
+  }
+  if ($this.hasClass('startDate')) {
+    startTime.add(Math.floor(event.deltaY), 'd')
+    $('.form-times.startDate').html(startTime.format(dateFormat));
+  }
+  if ($this.hasClass('endDate')) {
+    endTime.add(Math.floor(event.deltaY), 'd')
+    $('.form-times.endDate').html(endTime.format(dateFormat));
+  }
 }
 
 function checkTimeWarning() {
@@ -230,8 +255,10 @@ function addPerson(event, key, code) {
 
 function submit(event, key, code) {
   event.preventDefault();
-  if ($('.cal-form-submit').hasClass('active')){
-    console.log('Submitted');
+  event.stopPropagation();
+  var $this = $(this);
+  if ($this.hasClass('active')){
+    $(this).parent().addClass('collapsed');
   }
 }
 
@@ -244,72 +271,66 @@ function focusWhatBox(event, key, code) {
 }
 
 function openColorModule(event) {
-  $('.module').toggleClass('active');
+  event.preventDefault();
+  if (!$(this).hasClass('collapsed')) $('.module.color').toggleClass('active');
 }
-$(".form-container .row").click(function(e) {
-  e.stopPropagation();
-});
 
-$('.color-ball').click(function changeColor(e) {
+function displayChangeColorHelp(event) {
+  
+}
+function changeColor(e) {
   // e.stopPropagation()
-  $('.form-container').css({
+  $(this).siblings().removeClass('selected');
+  $(this).addClass('selected');
+  $('.form-container, .form-container .row, .form-container .row .cal-form-buttons, .form-times').css({
     'border-color' : $(this).css('background-color')
   })
+}
+
+body.palette.forEach((color) => {
+  $('.color-module').append('<div class="color-ball" style="background-color: ' + color + '";><i class="ion-checkmark"></i></div>');
 });
-
-var settings = {
-  logLevel: "INFO"
-};
-// Provide the settings when instantiating:
-var HI = new HumanInput(window, settings);
-// HI.startClapper();
-// HI.filter = function(e) {
-//   if (e.type === 'keydown') {
-//     var str = event.code
-//     if (event.ctrlKey) str = 'ctrl+' + str
-//     if (event.shiftKey) str = 'shift+' + str
-//     if (event.altKey) str = 'alt+' + str
-//     HI.log.debug(str)
-//   }
-//   return true;
-// };
-HI.on(['ctrl-enter', 'shift-enter', '⌘-enter'], submit);
-HI.on(['ctrl-+', 'alt-a', '⌘-a'], addPerson);
-HI.on(['doubleclap', 'clap'], clapOnClapOff);
-HI.on('ctrl-/', focusWhatBox);
-
-$('.form-container').click(openColorModule);
-$('.with-button-node.add').click(addPerson);
-$('.cal-form-submit').click(submit);
 
 $('.form-times.startDate').html(startTime.format(dateFormat));
 $('.form-times.endDate').html(endTime.format(dateFormat));
 $('.form-times.startTime').html(startTime.format(timeFormat));
 $('.form-times.endTime').html(endTime.format(timeFormat));
 
-
-$('.form-times.startDate').mousewheel(function(event) {
-  event.preventDefault();
-  // console.log(event.deltaX, event.deltaY, event.deltaFactor);
-  startTime.add(Math.floor(event.deltaY), 'd');
-  updateStartTimeDisplay();
-});
-
-$('.form-times.endDate').mousewheel(function(event) {
-  event.preventDefault();
-  endTime.add(Math.floor(event.deltaY), 'd')
-  updateEndTimeDisplay();
-});
+function debugKey(e) {
+  if (e.type === 'keydown') {
+    var str = e.code
+    if (e.ctrlKey) str = 'ctrl+' + str
+    if (e.shiftKey) str = 'shift+' + str
+    if (e.altKey) str = 'alt+' + str
+    HI.log.debug(str)
+  }
+  return true;
+};
 
 
-$('.form-times.startTime').mousewheel(function(event) {
-  event.preventDefault();
-  startTime.add(Math.floor(event.deltaY), 'm')
-  updateStartTimeDisplay();
-});
+// EVENT BINDINGS
+$(document).ready(function() {
 
-$('.form-times.endTime').mousewheel(function(event) {
-  event.preventDefault();
-  endTime.add(Math.floor(event.deltaY), 'm')
-  updateEndTimeDisplay();
+  var settings = {
+    logLevel: "INFO"
+  };
+  var HI = new HumanInput(window, settings);
+  // HI.startClapper();
+  HI.on(['ctrl-enter', 'shift-enter', '⌘-enter'], submit);
+  HI.on(['ctrl-+', 'alt-a', '⌘-a'], addPerson);
+  HI.on(['doubleclap', 'clap'], clapOnClapOff);
+  HI.on('ctrl-/', focusWhatBox);
+  HI.on('ctrl-l', openColorModule);
+
+  $('.form-container').click(openColorModule);
+  $('.form-container').hover(displayChangeColorHelp);
+  $('.color-ball').click(changeColor);
+  $('.with-button-node.add').click(addPerson);
+  $('.cal-form-submit').click(submit);
+  $(".form-container .row").click(function(e) {
+    e.stopPropagation();
+  });
+
+  $('.form-times').mousewheel(timeScrollHandler);
+
 });
