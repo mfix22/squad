@@ -184,8 +184,8 @@ code
     position: absolute
     @extend .flex-center
     z-index: 2
-    top: 50%
-    left: 100%
+    top: 48%
+    left: 50%
     border-radius: 100%
     width: 50px
     height: 50px
@@ -193,12 +193,12 @@ code
     background-color: $body-grey
     cursor: pointer
     transform: scale(0)
+    transform-origin: center
 
     &.active
       background-color: saturate($primary, 20%)
       transition: all 300ms ease-in-out
       transform: scale(1)
-      transform-origin: center
 
     &:hover
       /*darken(#8f8fb4, 20%)*/
@@ -251,7 +251,7 @@ code
   justify-content: center
   align-items: center
   border: 1px solid $form-border-color
-  font-size: 16px
+  font-size: 14px
   cursor: url('../img/finger.png'), auto
   &.startTime, &.endTime
     font-size: 20px

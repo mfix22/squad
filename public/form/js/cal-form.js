@@ -25,6 +25,11 @@ var endTime = startTime.clone().add(1, 'h');
 var dateFormat = '[<p><span class="year-text">]YYYY[</span><br>]ddd, MMM Do[</p>]';
 var timeFormat = 'LT'
 
+var settings = {
+  logLevel: "INFO"
+};
+var HI = new HumanInput(window, settings);
+
 function updateEndTimeDisplay() {
   checkTimeWarning()
   $('.form-times.endTime').html(endTime.format(timeFormat));
@@ -60,9 +65,9 @@ function timeScrollHandler(event) {
 
 function checkTimeWarning() {
   if (endTime.isBefore(startTime)) {
-    $('.form-times.endTime, .form-times.endDate').addClass('warning');
-  } else {
-    $('.form-times.endTime, .form-times.endDate').removeClass('warning');
+    HI.trigger('timewarning:add');
+  } else if ($('.form-times').hasClass('warning')){
+    HI.trigger('timewarning:remove');
   }
 }
 
@@ -176,7 +181,7 @@ $(".what-button-text").on("blur paste input", function(e){
   // var cursorPos = getCharacterOffsetWithin(window.getSelection().getRangeAt(0), document.getElementById('sentence'));
   // console.log('c:', cursorPos);
  if($this.data("lastval") != $this.text()){
-    if ($this.text().trim() != '') {
+    if ($this.text().trim() != '' && !$('.form-times').hasClass('warning')) {
       $('.cal-form-submit').addClass('active');
     } else {
       $('.cal-form-submit').removeClass('active');
@@ -229,7 +234,8 @@ $(".what-button-text").on("blur paste input", function(e){
       endTime.minute(t.minute());
       updateEndTimeDisplay();
     }
-    if (!ob.endTime_regex && !ob.endDate_regex) {
+    if (ob.startTime_regex && !ob.endTime_regex && !ob.endDate_regex) {
+      console.log('okay');
       endTime = startTime.clone().add(1, 'h');
       updateEndTimeDisplay();
     }
@@ -276,7 +282,7 @@ function openColorModule(event) {
 }
 
 function displayChangeColorHelp(event) {
-  
+
 }
 function changeColor(e) {
   // e.stopPropagation()
@@ -310,17 +316,23 @@ function debugKey(e) {
 
 // EVENT BINDINGS
 $(document).ready(function() {
-
-  var settings = {
-    logLevel: "INFO"
-  };
-  var HI = new HumanInput(window, settings);
   // HI.startClapper();
   HI.on(['ctrl-enter', 'shift-enter', '⌘-enter'], submit);
   HI.on(['ctrl-+', 'alt-a', '⌘-a'], addPerson);
   HI.on(['doubleclap', 'clap'], clapOnClapOff);
   HI.on('ctrl-/', focusWhatBox);
   HI.on('ctrl-l', openColorModule);
+  HI.on('timewarning:add', function(e) {
+    $('.form-times.endTime, .form-times.endDate').addClass('warning');
+    $('.cal-form-submit').removeClass('active');
+  });
+  HI.on('timewarning:remove', function(e) {
+    console.log('timewarning:remove');
+    $('.form-times.endTime, .form-times.endDate').removeClass('warning');
+    if ($('.what-button-text').text().trim() != '') {
+      $('.cal-form-submit').addClass('active');
+    }
+  });
 
   $('.form-container').click(openColorModule);
   $('.form-container').hover(displayChangeColorHelp);

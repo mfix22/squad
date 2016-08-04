@@ -148,20 +148,20 @@ code {
   .form-container .cal-form-submit {
     position: absolute;
     z-index: 2;
-    top: 50%;
-    left: 100%;
+    top: 48%;
+    left: 50%;
     border-radius: 100%;
     width: 50px;
     height: 50px;
     margin: -25px 0 0 -25px;
     background-color: #333;
     cursor: pointer;
-    transform: scale(0); }
+    transform: scale(0);
+    transform-origin: center; }
     .form-container .cal-form-submit.active {
       background-color: #4040d4;
       transition: all 300ms ease-in-out;
-      transform: scale(1);
-      transform-origin: center; }
+      transform: scale(1); }
     .form-container .cal-form-submit:hover {
       /*darken(#8f8fb4, 20%) */
       background-color: #4d4d4d; }
@@ -204,7 +204,7 @@ code {
   justify-content: center;
   align-items: center;
   border: 1px solid #555;
-  font-size: 16px;
+  font-size: 14px;
   cursor: url("../img/finger.png"), auto; }
   .form-times.startTime, .form-times.endTime {
     font-size: 20px; }
