@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+      <title>Squad</title>
+      <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
+      <link rel="stylesheet" type="text/css" href="/assets/css/animate.css">
+      <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+  </head>
+  <body>
+    <div>
+      <p>{{firstName}} {{lastName}}</p>
+      <p>{{username}}</p>
+      <a href="mailto:{{email}}">{{email}}</a>
+      <a href="/logout" id="logout">
+        <button class="btn btn-warning">Logout</button>
+      </a>
+      <button id="calendar-import" class="btn btn-primary">Import Calendar</button>
+      <div id="calendar" class="clearfix">
+        <script type="text/template" id="calendarTemplate">
+          <div class="container calendarContainer">
+            <div class="row">
+              <div class="col-md-2">
+                <ul class="calendar-list">
+                  <li class="calendar-list-elem">
+                    <div class="calendar-list-bullet" style="background-color:{{defaultCalendar.color}};
+                                                             border-color: {{defaultCalendar.color}};">
+                    </div>
+                    {{defaultCalendar.title}}
+                  </li>
+                  {{#each calendars}}
+                    <li class="calendar-list-elem">
+                      <div class="calendar-list-bullet" style="background-color:{{this.color}};
+                                                               border-color: {{this.color}};">
+                      </div>
+                      {{this.title}}
+                    </li>
+                  {{/each}}
+                </ul>
+              </div>
+              <div class="col-md-10">
+                <div class="row control-row">
+                  <div class="col-md-12">
+                    <div class="clndr-controls">
+                      <div class="col-md-4 control">
+                        <div class="clndr-previous-button">&lt;</div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="current-month"><%= month %> <%= year %></div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="clndr-next-button control">&gt;</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 schedule">
+                    <div class="calendar-table-wrapper">
+                      <table class="calendar-table">
+                        <thead>
+                          <tr class="header-day-row">
+                            <% _.each(daysOfTheWeek, function(day) { %>
+                              <td class="header-day"><%= day %></td>
+                            <% }); %>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% for(var i = 0; i < numberOfRows; i++){ %>
+                            <tr>
+                            <% for(var j = 0; j < 7; j++){ %>
+                            <% var d = j + i * 7; %>
+                              <td class='<%= days[d].classes %>'>
+                                <div class='day-contents'><%= days[d].day %></div>
+                              </td>
+                            <% } %>
+                            </tr>
+                          <% } %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="col-md-6 agenda">
+                    <div class="row">
+                      <div class="event-listing-title">EVENTS THIS MONTH</div>
+                    </div>
+                    <% _.each(eventsThisMonth, function(event) { %>
+                      <div class="event-package">
+                        <div class="event-item-name"><%= event.title %></div>
+                        <div class="event-item-location"><%= event.location %> - <%= moment(event.date).format("MMM Do") %></div>
+                      </div>
+                    <% }); %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </script>
+      </div>
+    </div>
+
+    <div class="clearfix">
+      <script src="https://apis.google.com/js/platform.js" async defer></script>
+      <!-- <script src="https://code.jquery.com/jquery-3.0.0.min.js"   integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script> -->
+      <script type="text/javascript" src="/assets/js/jquery.js"></script>
+      <script type="text/javascript" src="/assets/js/moment.js"></script>
+      <script type="text/javascript" src="/assets/js/underscore.js"></script>
+      <script type="text/javascript" src="/assets/js/clndr.js"></script>
+      <script type="text/javascript" src="/assets/js/homepage.js"></script>
+    </div>
+
+  </body>
+</html>

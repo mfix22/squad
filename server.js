@@ -21,6 +21,7 @@ var app = express();
 var port = process.env.PORT || 8080;
 
 mongoose.connect("mongodb://localhost/squad");
+// mongoose.Promise =  require('q').Promise;
 
 app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
@@ -29,20 +30,26 @@ app.use(express.static(__dirname + '/dist'));  // set the static files location 
 app.use(express.static(__dirname + '/public')); 
 app.use(logger('dev'));
 app.use(cookieParser());
+// TODO confirm this
+app.disable('etag');
 
 // app.engine('html', engines.handlebars);
 // app.set('view engine', 'html');
 // app.set('views', __dirname + '/views');
 
 
+var User = require('./server-app/user/userModel');
+var Calendar = require('./server-app/calendar/calendarModel')
+var Event = require('./server-app/event/eventModel')
 
 
-
+app.use('/', require('./server-app/auth/authController'));
 app.use('/api/e', require('./server-app/event/eventController.js'));
-app.use('/u', require('./server-app/user/userRoutes'));
-
+app.use('/u', require('./server-app/user/userController'));
+app.use('/c', require('./server-app/calendar/calendarController'));
 
 app.use(function(err, req, res, next){
+  console.log(err);
   res.status(500).json(err);
 });
 

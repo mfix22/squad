@@ -7,4 +7,9 @@ node_modules
 .DS_Store
 npm-debug.log
 .env
+
 dist
+public/assets/*
+*.sass-cache
+*.css.map
+.gitignore

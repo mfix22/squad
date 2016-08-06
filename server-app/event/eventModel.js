@@ -26,7 +26,13 @@ var eventSchema = mongoose.Schema({
     attendees    : [{
         id      :   String,
         creator :   Boolean
-    }]
+    }],
+    // prevent duplicates being created on upload
+    google_id : {
+      type : String,
+      unique : true,
+      sparse : true
+    }
 });
 
 eventSchema.statics.getById = function (id, cb) {

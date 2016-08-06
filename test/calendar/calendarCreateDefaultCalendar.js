@@ -1,6 +1,7 @@
 var User = require('../app/user/userModel');
-var View = require('../app/view/viewModel');
+var Calendar = require('../app/calendar/calendarModel');
 var mongoose = require('mongoose');
+var assert = require('assert');
 
 var connStr = 'mongodb://localhost/squad-test';
 mongoose.connect(connStr, function(err) {
@@ -8,23 +9,20 @@ mongoose.connect(connStr, function(err) {
     console.log('Successfully connected to MongoDB');
 });
 
+var defaultCal = new Calendar({'title' : 'Life'});
+defaultCal.save();
+
 // create a user a new user
 var testUser = new User({
     username: 'test-user',
     password: 'test-password',
-    email : 'test-email'
+    email : 'test-email',
+    defaultCalendarId : defaultCal._id
 });
 
-var testView1 = new View({});
-
-// successful add
-testUser.addView(testView1._id);
-console.log(JSON.stringify(testUser, null, 4));
-
-// unsuccessful add
-testUser.addView(testView1._id);
-console.log(JSON.stringify(testUser, null, 4));
-
-User.findByIdAndRemove(testUser._id, function(err){
+Calendar.findById(testUser.defaultCalendarId, function(err, cal){
+  console.log(err || JSON.stringify(cal, null, 4));
+  assert(cal);
+  assert.equal(cal.title, "Life");
   mongoose.connection.close();
 });
