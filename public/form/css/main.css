@@ -132,7 +132,10 @@ code {
   overflow: visible;
   position: relative;
   transition: all 300ms ease-in-out;
-  transform-origin: center; }
+  transform-origin: center;
+  opacity: 0.3; }
+  .form-container.focus {
+    opacity: 1; }
   .form-container:not(.collapsed) {
     cursor: pointer; }
   .form-container .success {
@@ -267,6 +270,7 @@ code {
   overflow: hidden; }
   .where-button .location-input {
     position: absolute;
+    z-index: 100;
     display: inline-block;
     font-size: 10px;
     bottom: 10px;

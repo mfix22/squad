@@ -187,15 +187,15 @@ function highlight(sentence) {
 
   return parsed;
 }
-$(".what-button-text").on("blur paste input", function(e){
+$(".what-button-text").on("paste input", function(e){
   var $this = $(this);
   // var cursorPos = getCharacterOffsetWithin(window.getSelection().getRangeAt(0), document.getElementById('sentence'));
   // console.log('c:', cursorPos);
  if($this.data("lastval") != $this.text()){
     if ($this.text().trim() != '' && !$('.form-times').hasClass('warning')) {
-      $('.cal-form-submit').addClass('active');
+      $('.form-container.focus .cal-form-submit').addClass('active');
     } else {
-      $('.cal-form-submit').removeClass('active');
+      $('.form-container.focus .cal-form-submit').removeClass('active');
     }
     $this.data("lastval", $this.text());
     //change action
@@ -253,7 +253,7 @@ $(".what-button-text").on("blur paste input", function(e){
     // $this.html($this.html().replace(repeat_action_reg, '<code class="repeat">$&</code>'));
   };
   // TODO fix cursor bug. This is just a hack
-  setEndOfContenteditable(document.getElementById('sentence'));
+  setEndOfContenteditable($this.get(0));
 });
 
 var numPeople = 0
@@ -282,7 +282,7 @@ function submit(e) {
     'title' : $('#sentence').text()
   };
   console.log(res);
-  $('.form-container').addClass('collapsed');
+  $('.form-container.focus').addClass('collapsed');
 }
 
 function clapOnClapOff(event) {
@@ -295,19 +295,21 @@ function focusWhatBox(event, key, code) {
 
 function openColorModule(event) {
   event.preventDefault();
-  if (!$(this).hasClass('collapsed')) $('.module.color').toggleClass('active');
+  if (!$(this).hasClass('collapsed')) $('.form-container.focus .module.color').toggleClass('active');
 }
 
-function displayChangeColorHelp(event) {
-
+function changeFormFocus(event) {
+  $('.form-container.focus').removeClass('focus');
+  $(this).addClass('focus')
 }
 function changeColor(e) {
   // e.stopPropagation()
-  $(this).siblings().removeClass('selected');
-  $(this).addClass('selected');
-  $('.form-container, .form-container .row, .form-container .row .cal-form-buttons, .form-times').css({
-    'border-color' : $(this).css('background-color')
-  })
+  var $this = $(this);
+  $this.siblings().removeClass('selected');
+  $this.addClass('selected');
+  $('.form-container.focus, .form-container.focus .row .cal-form-buttons, .form-container.focus .form-times').css({
+    'border-color' : $this.css('background-color')
+  });
 }
 
 body.palette.forEach((ob) => {
@@ -345,16 +347,16 @@ $(document).ready(function() {
   HI.on('ctrl-l', openColorModule);
   HI.on('timewarning:add', function(e) {
     $('.form-times.endTime, .form-times.endDate').addClass('warning');
-    $('.cal-form-submit').removeClass('active');
+    $('.form-container.focus .cal-form-submit').removeClass('active');
   });
   HI.on('timewarning:remove', function(e) {
     $('.form-times.endTime, .form-times.endDate').removeClass('warning');
     if ($('.what-button-text').text().trim() != '') {
-      $('.cal-form-submit').addClass('active');
+      $('.form-container.focus .cal-form-submit').addClass('active');
     }
   });
 
-  $('.form-container').hover(displayChangeColorHelp);
+  $('.form-container').hover(changeFormFocus);
   $('.form-container').click(openColorModule);
   $('.color-ball').click(changeColor);
   $('.with-button-node.add').click(addPerson);

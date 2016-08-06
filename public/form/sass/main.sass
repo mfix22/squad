@@ -160,6 +160,11 @@ code
   transition: all 300ms ease-in-out
   transform-origin: center
 
+  opacity: 0.3
+
+  &.focus
+    opacity: 1
+
   &:not(.collapsed)
     cursor: pointer
 
@@ -319,6 +324,7 @@ code
 
   .location-input
     position: absolute
+    z-index: 100
     display: inline-block
     font-size: 10px
     bottom: 10px
