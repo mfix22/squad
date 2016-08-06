@@ -48,10 +48,6 @@ code
 .tooltip.bottom > .tooltip-arrow
   border-bottom-color: $body-grey
 
-
-#calendar
-  visibility: hidden
-
 .calendarContainer
   font-size: 24px
   font-family: 'Inconsolata', sans-serif
@@ -313,16 +309,31 @@ code
 
 .where-button
   @extend .flex-center
+  position: relative
   cursor: pointer
   background-position: center
   background-size: cover
   padding: 20px
   word-wrap:break-word
+  overflow: hidden
+
+  .location-input
+    position: absolute
+    display: inline-block
+    font-size: 10px
+    bottom: 10px
+    left: 50%
+    transform: translate(-50%, 100px)
+    transition: all 300ms ease-in-out
+    &:focus
+      transform: translate(-50%, 0px)
   i
     position: relative
     z-index: 3
     font-size: 42px
   &:hover
+    .location-input
+      transform: translate(-50%, 0px)
     i
       color: lighten($body-grey, 10%)
 
@@ -356,6 +367,7 @@ code
   border-radius: 20px
 
   h2
+    color: $body-light-grey
     margin: 5% 20% 0% 20%
   .color-ball
     @extend .flex-center

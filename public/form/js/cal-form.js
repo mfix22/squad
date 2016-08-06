@@ -29,12 +29,12 @@ var address_reg = /\bat\s(.*?)(?:(?!(\sat|\sfrom|\son)).)*/ig;
 var date_reg = /(\d{1,2}[\/-]\d{1,2}[\/-](\d{4}|\d{2})\b)|(\d{1,2}[\/-]\d{1,2}\b)|today|tomorrow|monday|tuesday|wednesday|thursday|friday|saturday|sunday/ig;
 var repeat_action_reg = /(repeat|rep\.)\s+([MTWRFSN][T]{0,1}[W]{0,1}[R]{0,1}[F]{0,1}[S]{0,1}[N]{0,1}|daily|weekly|monthly|yearly)\b/gi
 
-var startTime = moment()
-var endTime = startTime.clone().add(1, 'h');
 var dateFormat = '[<p><span class="year-text">]YYYY[</span><br>]ddd, MMM Do[</p>]';
 var timeFormat = 'LT'
 
-var location;
+var startTime = moment()
+var endTime = moment().add(1, 'h');
+var __location;
 
 var settings = {
   logLevel: "INFO"
@@ -202,7 +202,7 @@ $(".what-button-text").on("blur paste input", function(e){
     var ob = highlight($this.text());
     $this.html($this.text());
     if (ob.location) {
-      location = ob.location
+      __location = ob.location
       $this.html($this.text().replace(new RegExp(ob.location + '(?![\\s\\S]*' + ob.location + ')'), '<code class="location">$&</code>'))
       // FIXME this totally blew up Google and we overdid the load. Need to rate-limit calls
       $('.where-button').css({
@@ -230,7 +230,7 @@ $(".what-button-text").on("blur paste input", function(e){
       endTime.date(t.date());
       endTime.month(t.month());
       endTime.year(t.year());
-      updateStartTimeDisplay();
+      updateEndTimeDisplay();
     }
     if (ob.startTime_regex) {
       $this.html($this.html().replace(ob.startTime_regex, '<code class="time">' + ob.startTime_regex + '</code>'));
@@ -247,7 +247,6 @@ $(".what-button-text").on("blur paste input", function(e){
       updateEndTimeDisplay();
     }
     if (ob.startTime_regex && !ob.endTime_regex && !ob.endDate_regex) {
-      console.log('okay');
       endTime = startTime.clone().add(1, 'h');
       updateEndTimeDisplay();
     }
@@ -271,16 +270,22 @@ function addPerson(event, key, code) {
 }
 
 
-function submit(event, key, code) {
-  event.preventDefault();
-  event.stopPropagation();
-  var $this = $(this);
-  if ($this.hasClass('active')){
-    $(this).parent().addClass('collapsed');
+function submit(e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
   }
+  var res = {
+    'location' : __location,
+    'startTime' : startTime,
+    'endTime' : endTime,
+    'title' : $('#sentence').text()
+  };
+  console.log(res);
+  $('.form-container').addClass('collapsed');
 }
 
-function clapOnClapOff(event, key, code) {
+function clapOnClapOff(event) {
   console.log('Clap');
 }
 
@@ -331,7 +336,7 @@ function debugKey(e) {
 
 // EVENT BINDINGS
 $(document).ready(function() {
-  $('[data-toggle="tooltip"]').tooltip()
+  // $('[data-toggle="tooltip"]').tooltip()
   // HI.startClapper();
   HI.on(['ctrl-enter', 'shift-enter', '⌘-enter'], submit);
   HI.on(['ctrl-+', 'alt-a', '⌘-a'], addPerson);
@@ -343,15 +348,14 @@ $(document).ready(function() {
     $('.cal-form-submit').removeClass('active');
   });
   HI.on('timewarning:remove', function(e) {
-    console.log('timewarning:remove');
     $('.form-times.endTime, .form-times.endDate').removeClass('warning');
     if ($('.what-button-text').text().trim() != '') {
       $('.cal-form-submit').addClass('active');
     }
   });
 
-  $('.form-container').click(openColorModule);
   $('.form-container').hover(displayChangeColorHelp);
+  $('.form-container').click(openColorModule);
   $('.color-ball').click(changeColor);
   $('.with-button-node.add').click(addPerson);
   $('.cal-form-submit').click(submit);

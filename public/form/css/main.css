@@ -37,9 +37,6 @@ code {
 .tooltip.bottom > .tooltip-arrow {
   border-bottom-color: #333; }
 
-#calendar {
-  visibility: hidden; }
-
 .calendarContainer {
   font-size: 24px;
   font-family: "Inconsolata", sans-serif; }
@@ -262,14 +259,28 @@ code {
       background-image: url("https://scontent-dft4-2.xx.fbcdn.net/v/t1.0-9/13185_10205520827774417_8458942004873631409_n.jpg?oh=048e70e523532ee11d11dc047e481e9f&oe=5815AC1A"); }
 
 .where-button {
+  position: relative;
   cursor: pointer;
   background-position: center;
   background-size: cover;
-  padding: 20px; }
+  padding: 20px;
+  overflow: hidden; }
+  .where-button .location-input {
+    position: absolute;
+    display: inline-block;
+    font-size: 10px;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%, 100px);
+    transition: all 300ms ease-in-out; }
+    .where-button .location-input:focus {
+      transform: translate(-50%, 0px); }
   .where-button i {
     position: relative;
     z-index: 3;
     font-size: 42px; }
+  .where-button:hover .location-input {
+    transform: translate(-50%, 0px); }
   .where-button:hover i {
     color: #4d4d4d; }
 
@@ -299,6 +310,7 @@ code {
   background-color: white;
   border-radius: 20px; }
   .color-module h2 {
+    color: #555;
     margin: 5% 20% 0% 20%; }
   .color-module .color-ball {
     height: 50px;
