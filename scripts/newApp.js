@@ -36,7 +36,7 @@ function replace(inputFile, outputFile){
     });
 }
 
-replace(path.join(__dirname,'/controllerTemplate.txt'), controllerDest);
+replace(path.join(__dirname,'/templates/controllerTemplate.txt'), controllerDest);
 console.log("Created: "+ controllerDest);
-replace(path.join(__dirname, '/modelTemplate.txt'), modelDest);
+replace(path.join(__dirname, '/templates/modelTemplate.txt'), modelDest);
 console.log("Created: "+ modelDest);
