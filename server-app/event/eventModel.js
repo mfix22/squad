@@ -7,7 +7,7 @@ var eventSchema = mongoose.Schema({
         requestedUserID: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
         requestedUserName: String,
         status: Number,
-        location: {
+        locations: {
             long: Number,
             lat: Number,
             address: String,
@@ -17,8 +17,10 @@ var eventSchema = mongoose.Schema({
             country: String
         }
     }],
-    startTime    : Date,
-    endTime 	 : Date,
+    meetingTimes: [{
+      startTime    : Date,
+      endTime 	 : Date,
+    }],
     description  : String,
     dateCreated  : { type: Date, default: Date.now },
     attendees    : [{

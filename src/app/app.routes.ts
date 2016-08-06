@@ -11,13 +11,14 @@ export const routes: RouterConfig = [
     component: EventListComponent
   },
   {
-    path: 'e/:id',
-    component: EventDetailComponent
-  },
-  {
     path: 'e/create',
     component: EventAddComponent
   },
+  {
+    path: 'e/:id',
+    component: EventDetailComponent
+  },
+
 ];
 
 export const APP_ROUTER_PROVIDERS = [

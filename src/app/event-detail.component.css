@@ -27,3 +27,9 @@ button:disabled {
   color: #ccc; 
   cursor: auto;
 }
+#title{
+  margin-left: 50;
+  font-weight: bold;
+  font-family: Arial;
+  font-size: 80px;
+}

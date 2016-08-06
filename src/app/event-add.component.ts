@@ -8,9 +8,7 @@ import { EventService }         from './event.service';
   styles:  [require('./event-add.component.css')],
 })
 export class EventAddComponent implements OnInit {
-  events: Event[];
   errorMessage: string;
-  selectedEvent: Event;
   addingEvent = false;
   error: any;
   constructor(
@@ -18,22 +16,21 @@ export class EventAddComponent implements OnInit {
     private eventService: EventService) { }
   addEvent() {
     this.addingEvent = true;
-    this.selectedEvent = null;
   }
   close(savedEvent: Event) {
     this.addingEvent = false;
     if (savedEvent) { this.router.navigate(['/']); }
   }
-  deleteEvent(myEvent: Event, event: any) {
-    event.stopPropagation();
-    this.eventService
-        .delete(myEvent)
-        .then(res => {
-          this.events = this.events.filter(h => h !== event);
-          if (this.selectedEvent === event) { this.selectedEvent = null; }
-        })
-        .catch(error => this.error = error);
-  }
+  // deleteEvent(myEvent: Event, event: any) {
+  //   event.stopPropagation();
+  //   this.eventService
+  //       .delete(myEvent)
+  //       .then(res => {
+  //         this.events = this.events.filter(h => h !== event);
+  //         if (this.selectedEvent === event) { this.selectedEvent = null; }
+  //       })
+  //       .catch(error => this.error = error);
+  // }
   ngOnInit() {
 
   }

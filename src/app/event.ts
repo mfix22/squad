@@ -16,8 +16,10 @@ export class Event {
             country: string;
         }
     }];
-    startTime    : Date;
-    endTime 	 : Date;
+		meetingTimes: [{
+      startTime    : Date;
+      endTime 	 : Date;
+    }];
     description  : string
     dateCreated  : Date;
     attendees    : [{
