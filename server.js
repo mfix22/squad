@@ -55,7 +55,7 @@ app.use(function(err, req, res, next){
 
 
 app.get('*', function(req, res) {
-		res.sendFile(__dirname +'/dist/index.html');
+		res.sendFile(__dirname +'/public/index.html');
 });
 
 app.listen(port);
