@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom';
-import Test from './components/Test';
+import EventForm from './components/EventForm';
 module.exports = function() {
   ReactDOM.render(
-    <Test/>,
-    document.getElementById('test')
+    <EventForm/>,
+    document.getElementById('form')
   );
 }

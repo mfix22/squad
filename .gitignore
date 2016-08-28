@@ -9,7 +9,6 @@ npm-debug.log
 .env
 
 dist
-public/assets/*
+public/*
 *.sass-cache
 *.css.map
-.gitignore
