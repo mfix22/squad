@@ -1,9 +1,0 @@
-var mongoose = require('mongoose');
-
-var ObjectId = mongoose.Schema.Types.ObjectId;
-
-var {{lower}}Schema = mongoose.Schema({
-    //add your schema here
-});
-
-module.exports = mongoose.model('{{upper}}', {{lower}}Schema);
