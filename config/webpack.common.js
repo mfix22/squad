@@ -1,24 +1,28 @@
 var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var helpers = require('./helpers');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+var extractCSS = new ExtractTextPlugin('styles/[name].css');
+
 
 module.exports = {
   entry: {
-    'polyfills': './client-app/polyfills.ts',
-    'vendor': './client-app/vendor.ts',
-    'app': './client-app/main.ts'
+    'app': './client-app/index.js'
   },
-
   resolve: {
-    extensions: ['', '.js', '.ts']
+    extensions: ['', '.js', '.jsx', '.css', '.scss']
   },
 
   module: {
     loaders: [
       {
-        test: /\.ts$/,
-        loader: 'ts'
+        test: /\.jsx?$/,
+        loader: 'babel',
+        exclude: /node_modules/,
+        query: {
+          cacheDirectory: true,
+          presets: ['react', 'es2015']
+        }
       },
       {
         test: /\.html$/,
@@ -29,25 +33,21 @@ module.exports = {
         loader: 'file?name=assets/[name].[hash].[ext]'
       },
       {
-        test: /\.css$/,
-        exclude: helpers.root('client-app', 'app'),
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
-      },
-      {
-        test: /\.css$/,
-        include: helpers.root('client-app', 'app'),
-        loader: 'raw'
+        test: /\.sass$/,
+        loader: extractCSS.extract(['css','sass'])
       }
     ]
   },
 
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
-      name: ['app', 'vendor', 'polyfills']
+      name: ['app']
     }),
-
-    new HtmlWebpackPlugin({
-      template: 'client-app/index.html'
-    })
+    new webpack.ProvidePlugin({
+       $: "jquery",
+       jQuery: "jquery",
+       React : 'react'
+   }),
+   extractCSS
   ]
 };
