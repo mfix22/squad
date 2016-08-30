@@ -1,7 +1,7 @@
-import './bootstrap.js'
-import './hi.js'
-import './jquery.mousewheel.min.js'
-import './clndr.js'
+import './vendor/bootstrap.js'
+import './vendor/hi.js'
+import './vendor/jquery.mousewheel.min.js'
+import './vendor/clndr.js'
 var $ = require('jquery');
 var moment = require('moment');
 var _ = require('underscore');

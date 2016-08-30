@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/form'
+import '../../assets/styles/form'
 import WhatButton from './WhatButton'
 import WhereButton from './WhereButton'
 import WhenButton from './WhenButton'
@@ -13,7 +13,7 @@ import ColorPickerModule from './ColorPickerModule'
 let EventForm = React.createClass({
   componentDidMount : function() {
     console.log('Mounted');
-    require('../vendor/cal-form.js')();
+    require('../../assets/scripts/cal-form.js')();
   },
 
   render: function() {
