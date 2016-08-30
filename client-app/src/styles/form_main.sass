@@ -229,26 +229,24 @@ code
       color: white
 
 
-  .row
-    height: 50%
-    width: 100%
-    max-width: 100%
-    margin: 0
+.cal-form-buttons
+  height: 50%
+  vertical-align: middle
+  padding: 0
+  margin: 0
+  border: 2px solid $form-border-color
+  cursor: auto
+  box-sizing: border-box
 
-    .cal-form-buttons
-      height: 100%
-      vertical-align: middle
-      padding: 0
-      margin: 0
-      border: 2px solid $form-border-color
-      cursor: auto
-
-      .row
-        height: 50%
-
+  &.cal-form-bottom-buttons
+    width: 200px
+    display: inline-block
 
 .what-button
   cursor: auto
+  display: flex
+  justify-content: center
+  align-items: center
   .what-button-text
     font-size: 24px
     max-width: 70%
@@ -261,13 +259,14 @@ code
 
 
 .form-times
-  @extend .flex-center
-  height: 100%
+  display: inline-block
+  box-sizing: border-box
+  height: 50%
+  width: 50%
   padding: 0
   margin: 0
-  display: flex
-  justify-content: center
-  align-items: center
+  text-align: center
+  vertical-align: middle
   border: 1px solid $form-border-color
   font-size: 14px
   cursor: url('../img/finger.png'), auto
@@ -278,7 +277,6 @@ code
   @extend .flex-center
   flex-flow: row wrap
   flex-wrap: wrap
-  height: 100%
   font-size: 32px
 
   .with-button-node
@@ -318,7 +316,6 @@ code
   cursor: pointer
   background-position: center
   background-size: cover
-  padding: 20px
   word-wrap:break-word
   overflow: hidden
 
