@@ -12,6 +12,7 @@
     "webpack-watch": "webpack -w",
     "new-app": "node scripts/newApp.js"
   },
+  
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "1.15.1",
