@@ -9,8 +9,5 @@ def process_line(str)
 end
 
 ARGF.each_with_index do |line,idx|
-  if idx == 0
-  else
-    puts process_line(line)
-  end
+  puts process_line(line) if idx > 0
 end
