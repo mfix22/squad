@@ -2,7 +2,7 @@
   "name": "squad",
   "version": "1.0.0",
   "description": "Squad Application",
-  "main": "app.js",
+  "main": "index.jsx",
   "scripts": {
     "test": "mocha",
     "start": "concurrently --kill-others 'npm run webpack-watch' 'npm run dev-server' ",
@@ -12,7 +12,6 @@
     "webpack-watch": "webpack -w",
     "new-app": "node scripts/newApp.js"
   },
-  
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "1.15.1",
@@ -27,13 +26,15 @@
     "moment": "^2.13.0",
     "mongoose": "4.4.17",
     "morgan": "1.7.0",
+    "node-uuid": "^1.4.7",
     "pm2": "^1.1.3",
     "q": "^1.4.1",
-    "react": "^15.3.1",
+    "react": "^15.3.2",
     "react-document-title": "^2.0.2",
     "react-dom": "^15.3.1",
+    "react-redux": "^4.4.5",
     "react-router": "^2.4.1",
-    "redux": "^3.5.2",
+    "redux": "^3.6.0",
     "request": "2.72.0",
     "sendgrid-web": "0.0.5",
     "string": "^3.3.1",

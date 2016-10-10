@@ -1,10 +1,10 @@
 import React from 'react'
 import Calendar from './Calendar'
 
-const App = () => {
+const App = () => (
   <div>
-    <Calendar/>
+    <Calendar />
   </div>
-}
+)
 
 export default App
