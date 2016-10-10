@@ -2,7 +2,7 @@
   "name": "squad",
   "version": "1.0.0",
   "description": "Squad Application",
-  "main": "app.js",
+  "main": "index.jsx",
   "scripts": {
     "test": "mocha",
     "start": "concurrently --kill-others 'npm run webpack-watch' 'npm run dev-server' ",

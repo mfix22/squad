@@ -1,19 +1,27 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Event from './Event'
 
-const Calendar = ({ events }) => {
+let Calendar = ({ events }) => (
   <div>
     {
-      <div>
-        events.map((calEvent) => {
+      events.map((calEvent) => {
+        console.log(calEvent);
+        return (
           <Event
-            key = {calEvent.id}
-            {...calEvent}
+            key={calEvent.id}
+            details={calEvent}
           />
-        })
-      <div>
+        )
+      })
     }
   </div>
-}
+)
+
+const mapStateToProps = (state) => ({
+  events: state.events
+})
+
+Calendar = connect(mapStateToProps)(Calendar);
 
 export default Calendar

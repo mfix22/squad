@@ -1,11 +1,19 @@
 import React from 'react'
+import moment from 'moment'
 
-const Event = ({title, date, location}) => {
-  <div>
-    <p className="event_title">{ title }</p>
-    <p className="event_time">{ date }</p>
-    <p className="event_location">{ location }</p>
-  </div>
+const Event = ({details}) => {
+  return (
+    <div
+      style={{
+        color: 'white',
+        backgroundColor: details.color || '#1c4b9c'
+      }}
+    >
+      <p className="event_title">{ details.title }</p>
+      <p className="event_time">{ moment(details.time).format('LT YYYY ddd, MMM Do') }</p>
+      <p className="event_location">{ details.location }</p>
+    </div>
+  )
 }
 
 export default Event
