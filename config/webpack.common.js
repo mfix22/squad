@@ -11,7 +11,7 @@ const sassLoaders = [
 
 module.exports = {
   entry: {
-    'app': './client-app/index.js'
+    'app': './client-app/src/app.jsx'
   },
   resolve: {
     extensions: ['', '.js', '.jsx', '.css', '.sass', '.scss']
