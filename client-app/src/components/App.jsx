@@ -1,5 +1,5 @@
 import React from 'react'
-import Calendar from './calendar'
+import Calendar from './Calendar'
 
 const App = () => {
   <div>
