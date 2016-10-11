@@ -6,13 +6,17 @@ import Event from './Event'
 const DateColumn = ({day, events, width}) => {
   return (
     <div
+      className='dateColumn'
       style={{
         display : 'inline-block',
         width: width,
-        height: '100%'
+        height: '100%',
+        verticalAlign : 'top',
       }}
     >
-      <p>{moment(day).format('dddd M/D')}</p>
+      <div>
+        <p className="header">{moment(day).format('dddd M/D')}</p>
+      </div>
       {
         events.filter((e) => {
           return moment(e.time).isSame(day, 'day');
