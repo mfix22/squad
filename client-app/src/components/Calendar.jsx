@@ -1,16 +1,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Event from './Event'
+import DateColumn from './DateColumn'
+require('../styles/app.scss');
 
 let Calendar = ({ events }) => (
   <div>
     {
-      events.map((calEvent) => {
-        console.log(calEvent);
+      ['2016-09-10', '2016-10-10', '2016-11-10', '2016-12-10'].map((day) => {
         return (
-          <Event
-            key={calEvent.id}
-            details={calEvent}
+          <DateColumn
+            width={`${100 / 4}%`}
+            key={day}
+            day={day}
+            events={events}
           />
         )
       })

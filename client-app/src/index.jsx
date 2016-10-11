@@ -11,7 +11,8 @@ const fakeState = {
       id : 1,
       title : 'Birthday',
       time : '2016-09-10T12:45:46-05:00',
-      location : 'Home'
+      location : 'Home',
+      color: '#f284a8'
     },
     {
       id : 2,

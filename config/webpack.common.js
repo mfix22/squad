@@ -41,14 +41,11 @@ module.exports = {
       //   loader: ['style', 'css', 'sass']
       // },
       {
-        test: /\.sass$/,
+        test: /\.scss$/,
         loader: ExtractTextPlugin.extract('style-loader', sassLoaders.join('!'))
       }
     ]
   },
-  // sassLoader : {
-  //   includePaths: [path.resolve(__dirname, "./some-folder")]
-  // }
 
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
