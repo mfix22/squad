@@ -5,7 +5,7 @@
   "main": "index.jsx",
   "scripts": {
     "test": "mocha",
-    "start": "concurrently --kill-others 'npm run webpack-watch' 'npm run dev-server' ",
+    "start": "concurrently --kill-others \"npm run webpack-watch\" \"npm run dev-server\" ",
     "database": "mongod",
     "poststart": "start chrome http://localhost:8080/",
     "dev-server": "nodemon server.js",
