@@ -3,3 +3,10 @@
     text-align: center;
   }
 }
+
+.calendarEvent {
+  border-radius: 3px;
+  margin: 4px;
+  padding: 4px;
+  text-overflow: ellipsis;
+}

@@ -4,6 +4,7 @@ import moment from 'moment'
 const Event = ({details}) => {
   return (
     <div
+      className="calendarEvent"
       style={{
         color: 'white',
         backgroundColor: details.color || '#1c4b9c'

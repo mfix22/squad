@@ -4,20 +4,21 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import App from './components/App'
 import reducer from './reducers'
+import moment from 'moment'
 
 const fakeState = {
   events : [
     {
       id : 1,
       title : 'Birthday',
-      time : '2016-09-10T12:45:46-05:00',
+      time : moment().format(),
       location : 'Home',
       color: '#f284a8'
     },
     {
       id : 2,
       title : `Meeting @ Aldo's`,
-      time : '2016-10-10T17:45:46-05:00',
+      time :  moment().add(1,'d').format(),
       location : `Aldo's Cafe`
     },
   ]

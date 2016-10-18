@@ -8,3 +8,7 @@ body, html {
 p {
   margin: 0px;
 }
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}
