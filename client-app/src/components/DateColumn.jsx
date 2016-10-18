@@ -8,10 +8,7 @@ const DateColumn = ({day, events, width}) => {
     <div
       className='dateColumn'
       style={{
-        display : 'inline-block',
         width: width,
-        height: '100%',
-        verticalAlign : 'top',
       }}
     >
       <div>

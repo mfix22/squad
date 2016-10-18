@@ -6,9 +6,6 @@ const WeekRow = ({days, events}) => {
   return (
     <div
       className='weekRow'
-      style={{
-        height: '100%',
-      }}
     >
       {
         days.map((day) => {

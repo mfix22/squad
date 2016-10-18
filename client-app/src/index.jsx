@@ -21,6 +21,20 @@ const fakeState = {
       time :  moment().add(1,'d').format(),
       location : `Aldo's Cafe`
     },
+    {
+      id : 3,
+      title : `Test Meeting w/ some B`,
+      time :  moment().add(1,'d').format(),
+      location : `ECB`,
+      color: '#239207'
+    },
+    {
+      id : 4,
+      title : `HELP`,
+      time :  moment().add(5,'d').format(),
+      location : `ECB`,
+      color: '#cced00'
+    },
   ]
 }
 

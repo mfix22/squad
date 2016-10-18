@@ -1,13 +1,13 @@
 import React from 'react'
 import moment from 'moment'
 
-const Event = ({details}) => {
+const Event = ({details, height}) => {
   return (
     <div
       className="calendarEvent"
       style={{
         color: 'white',
-        backgroundColor: details.color || '#1c4b9c'
+        backgroundColor: details.color || '#1c4b9c',
       }}
     >
       <p className="event_title">{ details.title }</p>
