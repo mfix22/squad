@@ -2,6 +2,11 @@ import React from 'react'
 import moment from 'moment'
 import Event from './Event'
 
+const isThisMonth = (refDate, otherDate) => {
+  const ref = moment(refDate);
+  const day = moment(otherDate);
+  return ref.month() === day.month() && ref.year() === day.year()
+}
 
 const DateColumn = ({day, events, width}) => {
   const weekView = false;
@@ -10,6 +15,7 @@ const DateColumn = ({day, events, width}) => {
       className='dateColumn'
       style={{
         width: width,
+        opacity : (isThisMonth(day)) ? 1 : 0.4
       }}
     >
       <div>

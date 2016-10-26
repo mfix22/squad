@@ -1,5 +1,5 @@
 .calendar {
-  border: 4px solid grey;
+
 }
 
 .weekRow {
@@ -10,8 +10,7 @@
 .dateColumn {
   position: relative;
   display : inline-block;
-  border-left: 2px solid grey;
-  border-right: 2px solid grey;
+  border-left: 4px solid grey;
   height: 100%;
   vertical-align: top;
 
