@@ -1,11 +1,9 @@
 .calendar {
-  display: flex;
-  align-items: stretch;
   border: 4px solid grey;
 }
 
 .weekRow {
-  height: 500px;
+  height: 100px;
   width: 100%;
 }
 
@@ -27,5 +25,8 @@
   border-radius: 3px;
   padding: 4px;
   margin: 4px;
-  text-overflow: ellipsis;
+  font-size: 12px;
+
+  overflow-y: hidden;
+  max-height: 30px;
 }

@@ -4,6 +4,7 @@ import Event from './Event'
 
 
 const DateColumn = ({day, events, width}) => {
+  const weekView = false;
   return (
     <div
       className='dateColumn'
@@ -12,7 +13,7 @@ const DateColumn = ({day, events, width}) => {
       }}
     >
       <div>
-        <p className="header">{moment(day).format('dddd M/D')}</p>
+        <p className="header">{moment(day).format((weekView) ? 'dddd M/D' : 'M/D')}</p>
       </div>
       {
         events.filter((e) => {

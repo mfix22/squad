@@ -7,6 +7,7 @@ import reducer from './reducers'
 import moment from 'moment'
 
 const fakeState = {
+  date : moment(),
   events : [
     {
       id : 1,
@@ -34,7 +35,7 @@ const fakeState = {
       time :  moment().add(5,'d').format(),
       location : `ECB`,
       color: '#cced00'
-    },
+    }
   ]
 }
 

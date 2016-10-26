@@ -6,25 +6,38 @@ import moment from 'moment'
 
 require('../styles/app.scss');
 
-// TODO make this not ugly
 function getDateArray(numDays=7, startIndex=0){
-  return Array(numDays).fill('').map((key, index) => {
+  return [...Array(numDays).keys()].map((key, index) => {
     return moment().add(index + startIndex, 'd').format();
   });
 }
 
-let Calendar = ({ events }) => {
+function getDays(today, numDays = 42) {
+  // if numDays < 10, create a week view with dayOfTheWeek offset
+  return [...Array(numDays).keys()].map(i => (numDays < 10) ? i : i - moment().date())
+                            .map(offset => moment().day(offset).format())
+}
+
+const Calendar = ({ events }) => {
+  const days = getDays(null, 42);
   return (
     <div className="module calendar">
-      <WeekRow events={events} days={getDateArray(7,0)}/>
+      <WeekRow events={events} days={days.slice(0,7)}/>
+      <WeekRow events={events} days={days.slice(7,14)}/>
+      <WeekRow events={events} days={days.slice(14,21)}/>
+      <WeekRow events={events} days={days.slice(21,28)}/>
+      <WeekRow events={events} days={days.slice(28,35)}/>
+      <WeekRow events={events} days={days.slice(35,42)}/>
     </div>
   )
 }
 
-const mapStateToProps = (state) => ({
-  events: state.events
-})
+const mapStateToProps = (state) => {
+  return {
+    events : state.events
+  }
+}
 
-Calendar = connect(mapStateToProps)(Calendar);
 
-export default Calendar
+
+export default connect(mapStateToProps)(Calendar)
