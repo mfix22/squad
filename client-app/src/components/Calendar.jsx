@@ -12,14 +12,14 @@ function getDateArray(numDays=7, startIndex=0){
   });
 }
 
-function getDays(today, numDays = 42) {
+function getDays(refDate, numDays = 42) {
   // if numDays < 10, create a week view with dayOfTheWeek offset
-  return [...Array(numDays).keys()].map(i => (numDays < 10) ? i : i - moment().date())
-                            .map(offset => moment().day(offset).format())
+  return [...Array(numDays).keys()].map(i => (numDays < 10) ? i : i - moment(refDate).date())
+                            .map(offset => moment(refDate).day(offset).format())
 }
 
-const Calendar = ({ events }) => {
-  const days = getDays(null, 42);
+const Calendar = ({ events, referenceDate }) => {
+  const days = getDays(referenceDate, 42);
   return (
     <div className="module calendar">
       <WeekRow events={events} days={days.slice(0,7)}/>
@@ -34,7 +34,8 @@ const Calendar = ({ events }) => {
 
 const mapStateToProps = (state) => {
   return {
-    events : state.events
+    referenceDate : state.date,
+    events : state.events,
   }
 }
 
