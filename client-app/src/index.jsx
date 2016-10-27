@@ -5,6 +5,7 @@ import { render } from 'react-dom'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import createLogger from 'redux-logger';
+import thunk from 'redux-thunk';
 
 import App from './components/App'
 import reducer from './reducers'
@@ -44,7 +45,7 @@ const fakeState = {
   ]
 }
 
-const store = createStore(reducer, fakeState, applyMiddleware(createLogger()))
+const store = createStore(reducer, fakeState, applyMiddleware(thunk, createLogger()))
 
 render(
   <Provider store={store}>
