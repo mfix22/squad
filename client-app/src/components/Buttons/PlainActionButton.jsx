@@ -3,20 +3,20 @@ import { connect } from 'react-redux'
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon'
 
-const NextButton = ({ onClick }) => (
+const PlainActionButton = ({ action, onClick, label}) => (
   <FlatButton
     primary={true}
-    label=">"
+    label={label}
     onMouseUp={onClick}
   />
 )
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onClick : () => {
-      dispatch({ type : 'VIEW_NEXT_MONTH' });
+      dispatch({ type : ownProps.action });
     }
   }
 }
 
-export default connect(null, mapDispatchToProps)(NextButton)
+export default connect(null, mapDispatchToProps)(PlainActionButton)

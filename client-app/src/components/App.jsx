@@ -1,9 +1,11 @@
 import React from 'react'
 import Calendar from './Calendar'
-import NextButton from './NextButton'
+import NextButton from './Buttons/NextButton'
+import PrevButton from './Buttons/PrevButton'
 
 const App = () => (
   <div>
+    <PrevButton/>
     <NextButton/>
     <Calendar />
   </div>
