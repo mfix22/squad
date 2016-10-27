@@ -5,18 +5,20 @@ const VIEW_PREV_WEEK = 'VIEW_PREV_WEEK';
 const VIEW_NEXT_MONTH = 'VIEW_NEXT_MONTH';
 const VIEW_PREV_MONTH = 'VIEW_PREV_MONTH';
 
-const date = (state = moment().format(), action) => {
+const date = (state, action) => {
+  if (!state) return moment().format();
+
   switch (action.type) {
     case VIEW_TODAY :
       return moment().format();
     case VIEW_NEXT_WEEK:
-      return state.date.clone().add(1, 'w')
+      return moment(state).add(1, 'w').format()
     case VIEW_PREV_WEEK:
-      return state.date.clone().subtract(1, 'w')
+      return moment(state).subtract(1, 'w').format()
     case VIEW_NEXT_MONTH:
-      return state.date.clone().add(1, 'm')
+      return moment(state).add(1, 'M').format()
     case VIEW_PREV_MONTH:
-      return state.date.clone().subtract(1, 'm')
+      return moment(state).subtract(1, 'M').format()
     default:
       return state
   }

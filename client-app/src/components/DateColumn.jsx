@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import moment from 'moment'
 import Event from './Event'
 
@@ -8,14 +9,14 @@ const isThisMonth = (refDate, otherDate) => {
   return ref.month() === day.month() && ref.year() === day.year()
 }
 
-const DateColumn = ({day, events, width}) => {
+const DateColumn = ({refDate, day, events, width}) => {
   const weekView = false;
   return (
     <div
       className='dateColumn'
       style={{
         width: width,
-        opacity : (isThisMonth(day)) ? 1 : 0.4
+        opacity : (isThisMonth(refDate, day)) ? 1 : 0.4
       }}
     >
       <div>
@@ -37,4 +38,10 @@ const DateColumn = ({day, events, width}) => {
   )
 }
 
-export default DateColumn
+const mapStateToProps = (state) => {
+  return {
+    refDate : state.date,
+  }
+}
+
+export default connect(mapStateToProps)(DateColumn)

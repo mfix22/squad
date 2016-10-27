@@ -1,13 +1,18 @@
 import React from 'react'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import { render } from 'react-dom'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
+import createLogger from 'redux-logger';
+
 import App from './components/App'
 import reducer from './reducers'
 import moment from 'moment'
 
+injectTapEventPlugin();
+
 const fakeState = {
-  date : moment(),
   events : [
     {
       id : 1,
@@ -39,11 +44,13 @@ const fakeState = {
   ]
 }
 
-const store = createStore(reducer, fakeState)
+const store = createStore(reducer, fakeState, applyMiddleware(createLogger()))
 
 render(
   <Provider store={store}>
-    <App />
+    <MuiThemeProvider>
+      <App />
+    </MuiThemeProvider>
   </Provider>,
   document.getElementById('root')
 )
