@@ -2,7 +2,6 @@ var express = require('express');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var dotenv = require('dotenv');
-var engines = require('consolidate');
 var cookieParser = require('cookie-parser');
 var app = express();
 
