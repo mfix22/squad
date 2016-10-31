@@ -13,6 +13,7 @@
     "new-app": "node scripts/newApp.js"
   },
   "dependencies": {
+    "axios": "^0.15.2",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "1.15.1",
     "connect-mongo": "^1.2.0",
