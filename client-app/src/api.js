@@ -5,21 +5,19 @@ const client = axios.create({
   responseType: 'json'
 })
 
-function fetchEvents() {
-  return function(dispatch) {
-    return client.get('/events').then((response) => {
-      console.log(response);
-      return dispatch({
-        type : 'RECEIVE_EVENTS',
-        events : response.data
-      })
-    }).catch((err) => {
-      return dispatch({
-        type : 'ERROR',
-        err
-      })
+const fetchEvents = (dispatch, getState) => {
+  return client.get('/events').then((response) => {
+    console.log(response);
+    return dispatch({
+      type : 'RECEIVE_EVENTS',
+      events : response.data
     })
-  }
+  }).catch((err) => {
+    return dispatch({
+      type : 'ERROR',
+      err
+    })
+  })
 }
 
 export { fetchEvents }

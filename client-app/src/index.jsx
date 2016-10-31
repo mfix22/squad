@@ -12,7 +12,7 @@ import { fetchEvents } from './api'
 injectTapEventPlugin();
 
 const store = configureStore();
-store.dispatch(fetchEvents());
+store.dispatch(fetchEvents);
 
 render(
   <Provider store={store}>
