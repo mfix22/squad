@@ -11,7 +11,10 @@ function fetchEvents() {
         events : response.data
       })
     }).catch((err) => {
-      throw err;
+      return dispatch({
+        type : 'ERROR',
+        err
+      })
     })
   }
 }
