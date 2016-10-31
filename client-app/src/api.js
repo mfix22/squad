@@ -1,10 +1,13 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://api.squadup.io';
+const client = axios.create({
+  baseURL:'http://api.squadup.io',
+  responseType: 'json'
+})
 
 function fetchEvents() {
   return function(dispatch) {
-    return axios.get('/events').then((response) => {
+    return client.get('/events').then((response) => {
       console.log(response);
       return dispatch({
         type : 'RECEIVE_EVENTS',
