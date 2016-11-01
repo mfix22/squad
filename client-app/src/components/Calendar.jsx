@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import moment from 'moment'
 import DateColumn from './DateColumn'
 import WeekRow from './WeekRow'
-import moment from 'moment'
 
 require('../styles/app.scss');
 
@@ -14,20 +14,27 @@ function getDateArray(numDays=7, startIndex=0){
 
 function getDays(refDate, numDays = 42) {
   // if numDays < 10, create a week view with dayOfTheWeek offset
-  return [...Array(numDays).keys()].map(i => (numDays < 10) ? i : i - moment(refDate).date())
-                            .map(offset => moment(refDate).day(offset).format())
+  if (numDays <= 10) return [[...Array(numDays).keys()].map((offset) => moment(refDate).day(offset).format())]
+  const numWeeks = Math.ceil(numDays / 7);
+  const correctedNumDays = numWeeks * 7
+
+  const a =  [...Array(correctedNumDays).keys()].map(i => i - moment(refDate).date())
+                                   .map(offset => moment(refDate).day(offset).format())
+
+  // TODO change this to use reduce and not look like trash
+  const b = [];
+  while (a.length) b.push(a.splice(0, 7))
+
+  return b;
 }
 
-const Calendar = ({ events, referenceDate }) => {
-  const days = getDays(referenceDate, 42);
+const Calendar = ({ events, referenceDate, daysInView }) => {
+  const days = getDays(referenceDate, daysInView);
   return (
     <div className="module calendar">
-      <WeekRow events={events} days={days.slice(0,7)}/>
-      <WeekRow events={events} days={days.slice(7,14)}/>
-      <WeekRow events={events} days={days.slice(14,21)}/>
-      <WeekRow events={events} days={days.slice(21,28)}/>
-      <WeekRow events={events} days={days.slice(28,35)}/>
-      <WeekRow events={events} days={days.slice(35,42)}/>
+      {
+        days.map((week, key) => (<WeekRow key={key} events={events} numSibs={days.length} days={week}/>))
+      }
     </div>
   )
 }
@@ -38,7 +45,5 @@ const mapStateToProps = (state) => {
     events : state.events,
   }
 }
-
-
 
 export default connect(mapStateToProps)(Calendar)
