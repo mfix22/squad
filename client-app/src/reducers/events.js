@@ -1,4 +1,4 @@
-import { v4 } from 'node-uuid'
+// import { v4 } from 'node-uuid'
 
 const ADD_EVENT = 'ADD_EVENT';
 const RECEIVE_EVENTS = 'RECEIVE_EVENTS'
