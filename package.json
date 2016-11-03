@@ -5,6 +5,7 @@
   "main": "index.jsx",
   "scripts": {
     "test": "jest",
+    "test:nocache" : "jest --no-cache",
     "start": "concurrently --kill-others \"npm run webpack-watch\" \"npm run dev-server\" ",
     "database": "mongod",
     "poststart": "start chrome http://localhost:8080/",
@@ -90,7 +91,9 @@
     "url": "git+https://github.com/SquadCalendar/squad.git"
   },
   "jest": {
-    "testRegex": "(/test/.*\\.js)$"
+    "verbose" : true,
+    "testRegex": "(/test/.*\\.spec\\.js)$",
+    "moduleFileExtensions": ["jsx", "js", "json"]
   },
   "author": "Squad",
   "license": "ISC",
