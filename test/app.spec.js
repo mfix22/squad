@@ -4,6 +4,7 @@ const { createStore, applyMiddleware } = require('redux');
 const thunk = require('redux-thunk').default;
 const createLogger = require('redux-logger');
 const reducer = require('../client-app/src/reducers/index').default;
+const deepFreeze = require('deep-freeze')
 
 const VIEW_TODAY = 'VIEW_TODAY';
 const VIEW_NEXT_WEEK = 'VIEW_NEXT_WEEK';
@@ -118,12 +119,15 @@ describe('Rehydrate fake state', function() {
 describe('Dispatch RECEIVE_EVENTS', function() {
   it('simulates receiving events from the server', () => {
     const store = createStore(reducer)
+    // ensure store is immutable
+    deepFreeze(store);
+    const prevDate = store.getState().date
     store.dispatch({
       type : RECEIVE_EVENTS,
       events : fakeState.events
     })
     expect(store.getState()).to.deep.equal({
-      date : moment().format(),
+      date : prevDate,
       events : fakeState.events
     })
   })
