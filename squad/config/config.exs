@@ -12,7 +12,6 @@ config :squad,
 # Configures the endpoint
 config :squad, Squad.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "hMkM5pL+6oPdXGceZnvQUn3FUAazz9wE54UK/ifsE6U7toD8hyfB3ZvLNGHFCTIM",
   render_errors: [view: Squad.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Squad.PubSub,
            adapter: Phoenix.PubSub.PG2]
