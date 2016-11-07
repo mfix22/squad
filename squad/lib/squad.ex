@@ -9,7 +9,8 @@ defmodule Squad do
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
-      supervisor(Squad.Repo, []),
+      # TODO re-enable when the database is real
+      #supervisor(Squad.Repo, []),
       # Start the endpoint when the application starts
       supervisor(Squad.Endpoint, []),
       # Start your own worker by calling: Squad.Worker.start_link(arg1, arg2, arg3)

@@ -50,6 +50,12 @@ defmodule Squad.Web do
     end
   end
 
+  def view do
+    quote do
+      use Phoenix.View, root: "web/templates"
+    end
+  end
+
   @doc """
   When used, dispatch to the appropriate controller/view/etc.
   """

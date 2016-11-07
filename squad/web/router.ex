@@ -7,6 +7,8 @@ defmodule Squad.Router do
 
   scope "/", Squad do
     pipe_through :api
-    get "/", ApiController, :index
+    get "/event/:id", ApiController, :show
+    get "/events", ApiController, :show
+    get "/healthcheck", ApiController, :healthcheck
   end
 end
