@@ -6,9 +6,11 @@ import TodayButton from '../buttons/TodayButton'
 
 const ControlBar = () => (
   <div className="controlBar">
-    <PrevButton />
-    <TodayButton />
-    <NextButton />
+    <div className="buttonContainer">
+      <PrevButton />
+      <TodayButton />
+      <NextButton />
+    </div>
   </div>
 )
 
