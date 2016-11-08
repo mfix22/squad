@@ -1,17 +1,9 @@
 import React from 'react'
 
-import Calendar from './Calendar'
-import NextButton from './Buttons/NextButton'
-import PrevButton from './Buttons/PrevButton'
-import TodayButton from './Buttons/TodayButton'
+import Scheduler from '../pages/Scheduler'
 
 const App = () => (
-  <div>
-    <PrevButton/>
-    <TodayButton/>
-    <NextButton/>
-    <Calendar />
-  </div>
+  <Scheduler />
 )
 
 export default App
