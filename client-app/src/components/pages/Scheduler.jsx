@@ -1,10 +1,10 @@
 import React from 'react'
 
-import Calendar from '../components/Calendar'
-import NextButton from '../components/Buttons/NextButton'
-import PrevButton from '../components/Buttons/PrevButton'
-import TodayButton from '../components/Buttons/TodayButton'
-import Paper from '../components/Paper'
+import Calendar from '../calendar/Calendar'
+import NextButton from '../buttons/NextButton'
+import PrevButton from '../buttons/PrevButton'
+import TodayButton from '../buttons/TodayButton'
+import Paper from '../Paper'
 
 const Scheduler = () => (
   <div style={style.container}>

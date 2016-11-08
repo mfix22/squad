@@ -4,7 +4,7 @@ import moment from 'moment'
 import DateColumn from './DateColumn'
 import WeekRow from './WeekRow'
 
-require('../styles/app.scss');
+require('../../styles/app.scss');
 
 function getDateArray(numDays=7, startIndex=0){
   return [...Array(numDays).keys()].map((key, index) => {
