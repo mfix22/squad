@@ -27,6 +27,7 @@ function getDays(refDate, numDays = 42) {
   const numWeeks = Math.ceil(numDays / 7);
   const correctedNumDays = numWeeks * 7
 
+  // chunks days into week arrays of day arrays
   return [...Array(correctedNumDays).keys()].map(i => i - moment(refDate).date())
                                    .map(offset => moment(refDate).day(offset).format())
                                    .reduce((accum, next, i) => {
