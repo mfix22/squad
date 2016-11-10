@@ -31,11 +31,11 @@ defmodule Squad.Web do
       use Phoenix.Controller
 
       alias Squad.Repo
-      import Ecto
-      import Ecto.Query
+      #import Ecto
+      #import Ecto.Query
 
-      import Squad.Router.Helpers
-      import Squad.Gettext
+      #import Squad.Router.Helpers
+      #import Squad.Gettext
     end
   end
 
