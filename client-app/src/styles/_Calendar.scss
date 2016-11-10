@@ -31,6 +31,15 @@
   max-height: 30px;
 }
 
-.buttonContainer {
-  float: right;
+.controlBar {
+  .refDateHeaderWrapper {
+    margin-left: 10px;
+    float: left;
+  }
+  .rangeHeader {
+    font-size: 16px;
+  }
+  .buttonContainer {
+    float: right;
+  }
 }
