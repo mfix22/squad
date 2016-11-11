@@ -30,3 +30,16 @@
   overflow-y: hidden;
   max-height: 30px;
 }
+
+.controlBar {
+  .refDateHeaderWrapper {
+    margin-left: 10px;
+    float: left;
+  }
+  .rangeHeader {
+    font-size: 16px;
+  }
+  .buttonContainer {
+    float: right;
+  }
+}

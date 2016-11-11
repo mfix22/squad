@@ -1,10 +1,10 @@
-const { expect } = require('chai')
-const moment = require('moment')
-const { createStore, applyMiddleware } = require('redux');
-const thunk = require('redux-thunk').default;
-const createLogger = require('redux-logger');
-const reducer = require('../client-app/src/reducers/index').default;
-const deepFreeze = require('deep-freeze')
+import { expect } from 'chai'
+import moment from 'moment'
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+import createLogger from 'redux-logger'
+import reducer from '../client-app/src/reducers/index'
+import deepFreeze from 'deep-freeze'
 
 const VIEW_TODAY = 'VIEW_TODAY';
 const VIEW_NEXT_WEEK = 'VIEW_NEXT_WEEK';

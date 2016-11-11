@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Scheduler from '../pages/Scheduler'
+import Scheduler from './pages/Scheduler'
 
 const App = () => (
   <Scheduler />
