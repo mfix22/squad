@@ -1,16 +1,18 @@
 import React from 'react'
 import Paper from 'material-ui/Paper'
 
-const style = {
+const PaperExampleSimple = ({ style, children }) => (
+  <Paper style={Object.assign(styles, style)} zDepth={1}>
+    {children}
+  </Paper>
+)
+
+const styles = {
   height: 200,
   width: 200,
   margin: 20,
   textAlign: 'center',
   display: 'flex',
 }
-
-const PaperExampleSimple = (props) => (
-  <Paper style={Object.assign(style, props.style)} zDepth={1} children={props.children}/>
-)
 
 export default PaperExampleSimple

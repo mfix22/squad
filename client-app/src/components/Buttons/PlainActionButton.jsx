@@ -13,7 +13,7 @@ const PlainActionButton = ({ action, onClick, label}) => (
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    onClick : () => {
+    onClick: () => {
       dispatch({ type : ownProps.action });
     }
   }
