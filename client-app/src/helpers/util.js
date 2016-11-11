@@ -9,6 +9,12 @@ export const chunk = (a, c) => {
   }, Array(Math.ceil(a.length / c)).fill([]))
 }
 
+export const isThisMonth = (refDate, otherDate) => {
+  const ref = moment(refDate);
+  const day = moment(otherDate);
+  return ref.month() === day.month() && ref.year() === day.year()
+}
+
 const defaultNumDays = 35;
 
 export function getDays(refDate, numDays=defaultNumDays) {

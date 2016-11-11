@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import DateColumn from './DateColumn'
 import WeekRow from './WeekRow'
 
-import { getChunkedDays } from '../../helpers/array'
+import { getChunkedDays } from '../../helpers/util'
 
 require('../../styles/app.scss');
 

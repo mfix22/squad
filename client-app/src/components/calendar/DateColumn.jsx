@@ -3,11 +3,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import Event from './Event'
 
-const isThisMonth = (refDate, otherDate) => {
-  const ref = moment(refDate);
-  const day = moment(otherDate);
-  return ref.month() === day.month() && ref.year() === day.year()
-}
+import { isThisMonth } from '../../helpers/util'
 
 const DateColumn = ({refDate, day, events, width}) => {
   const weekView = false;
