@@ -47,8 +47,6 @@ const style = {
   },
   container: {
     display: 'flex',
-    width: '100vw',
-    height: '100vh',
     minHeight: '700px',
     minWidth: '1000px',
     justifyContent: 'center',
@@ -57,6 +55,8 @@ const style = {
   paperContainer: {
     display: 'flex',
     justifyContent: 'center',
+    maxWidth: '1600px',
+    width: '100%',
   },
   h2: {
     display: 'inlineBlock',
