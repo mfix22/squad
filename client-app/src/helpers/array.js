@@ -23,7 +23,7 @@ export function getDays(refDate, numDays=defaultNumDays) {
 
 export function getChunkedDays(refDate, numDays=defaultNumDays) {
   // if numDays < 10, create a week view with dayOfTheWeek offset
-  const days = getDays((refDate, numDays));
+  const days = getDays(refDate, numDays);
   if (numDays <= 10) return [days]
   // chunks days into week arrays of day arrays
   return chunk(days, 7)
