@@ -10,9 +10,18 @@
 .dateColumn {
   position: relative;
   display : inline-block;
-  border-left: 4px solid grey;
+  border-left: 1px solid grey;
+  border-right: 1px solid grey;
   height: 100%;
   vertical-align: top;
+
+  &:first-of-type {
+    border-left-width: 2px;
+  }
+  &:last-of-type {
+    border-right-width: 2px;
+  }
+
 
   .header {
     text-align: left;
