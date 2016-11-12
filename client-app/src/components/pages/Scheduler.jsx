@@ -1,4 +1,5 @@
 import React from 'react'
+import GooglePlaceAutocomplete from 'googlePlaceAutocomplete'
 
 import Paper from '../Paper'
 import AppBar from '../AppBar'
@@ -14,10 +15,16 @@ const Scheduler = () => (
     <AppBar />
     <div style={style.paperContainer}>
       <Paper style={style.form}>
-        <h2 style={style.h2}>Propose an Event</h2>
+        <h2 style={style.h2}>Propose an Event?</h2>
         <TextField hint="What are you planning?" label="What" />
         <TextField hint="At what time?" label="When" />
-        <TextField hint="Where at?" label="Where" />
+        {/* <TextField hint="Where at?" label="Where" /> */}
+        <GooglePlaceAutocomplete
+          hintText={'Where at?'}
+          onChange={() => {}}
+          onNewRequest={() => {}}
+          name={'location'}
+        />
         <TextField hint="Emails to invite?" label="Who" />
         {/* <RadioField /> */}
         <PlainActionButtonRaised label="Schedule" style={style.scheduleButton} />
@@ -50,6 +57,7 @@ const style = {
     minHeight: '700px',
     minWidth: '1000px',
     justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'column',
   },
   paperContainer: {
