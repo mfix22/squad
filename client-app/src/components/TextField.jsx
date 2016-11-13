@@ -3,22 +3,33 @@ import MaterialTextField from 'material-ui/TextField'
 
 import { color } from '../vars'
 
-/**
- * A simple example of `AppBar` with an icon on the right.
- * By default, the left icon is a navigation-menu.
- */
-const TextField = ({ hint, label }) => (
-  <MaterialTextField
-    hintText={hint}
-    floatingLabelText={label}
-    floatingLabelFixed
-  />
-)
+class TextField extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      value: '',
+    }
 
-const style = {
-  appBar: {
-    backgroundColor: color.green,
-  },
+    this.handleChange = this.handleChange.bind(this)
+  }
+
+  handleChange(event) {
+    this.setState({
+      value: event.target.value,
+    })
+  }
+
+  render() {
+    return (
+      <MaterialTextField
+        hintText={this.props.hint}
+        floatingLabelText={this.props.label}
+        floatingLabelFixed
+        value={this.state.value}
+        onChange={this.handleChange}
+      />
+    )
+  }
 }
 
 export default TextField
