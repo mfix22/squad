@@ -15,8 +15,8 @@ const ControlBar = ({ referenceDate, onChange, viewChoice }) => (
   <Toolbar className="controlBar">
     <ToolbarGroup firstChild className="refDateHeaderWrapper">
       <DropDownMenu value={0} onChange={() => {}}>
-        {getOrderedMonthArray(moment(referenceDate).format('MMMM YYYY')).map((month, index) => {
-          return <MenuItem key={index} value={index} primaryText={month} />
+        {getOrderedMonthArray(referenceDate).map((month, index) => {
+          return <MenuItem key={index} value={index} primaryText={month.format("MMMM YYYY")} />
         })}
       </DropDownMenu>
     </ToolbarGroup>
@@ -25,7 +25,6 @@ const ControlBar = ({ referenceDate, onChange, viewChoice }) => (
       <DropDownMenu value={viewChoice} onChange={onChange}>
         <MenuItem value="4_DAY" primaryText="4 Day" />
         <MenuItem value="WEEK" primaryText="Week" />
-        <MenuItem value="2_WEEK" primaryText="2 Week" />
         <MenuItem value="MONTH" primaryText="Month" />
       </DropDownMenu>
       <PrevButton />

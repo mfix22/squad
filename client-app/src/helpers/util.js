@@ -36,27 +36,5 @@ export function getChunkedDays(refDate, numDays = defaultNumDays) {
 }
 
 export function getOrderedMonthArray(date) {
-  const res = []
-  let [month, year] = date.split(' ')
-  year = parseInt(year, 10)
-
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-  const index = months.indexOf(month)
-
-  if (!index) {
-    return []
-  }
-
-  // [month, end]
-  let i = index
-  for (; i < months.length; i++) {
-    res.push(`${months[i]} ${year}`)
-  }
-
-  // [start, month)
-  for (i = 0; i < index; i++) {
-    res.push(`${months[i]} ${year + 1}`)
-  }
-
-  return res
+  return [...Array(12).keys()].map((month, index) => moment(date).add(index, 'M'))
 }
