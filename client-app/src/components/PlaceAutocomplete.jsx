@@ -1,9 +1,7 @@
 import React from 'react'
-import MaterialTextField from 'material-ui/TextField'
+import GooglePlaceAutocomplete from 'googlePlaceAutocomplete'
 
-import { color } from '../vars'
-
-class TextField extends React.Component {
+class PlaceAutocomplete extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -21,15 +19,14 @@ class TextField extends React.Component {
 
   render() {
     return (
-      <MaterialTextField
-        hintText={this.props.hint}
-        floatingLabelText={this.props.label}
-        floatingLabelFixed
-        value={this.state.value}
+      <GooglePlaceAutocomplete
+        hintText={this.props.hintText}
         onChange={this.handleChange}
+        onNewRequest={() => {}}
+        name={'location'}
       />
     )
   }
 }
 
-export default TextField
+export default PlaceAutocomplete

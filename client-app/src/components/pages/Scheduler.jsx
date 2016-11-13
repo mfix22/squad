@@ -1,31 +1,8 @@
 import React from 'react'
-
-import Paper from '../Paper'
+// import { connect } from 'react-redux'
 import AppBar from '../AppBar'
-import TextField from '../TextField'
-// import RadioField from '../RadioField'
-import { color } from '../../vars'
-
+import Form from '../Form'
 import CalendarPaper from '../calendar/CalendarPaper'
-import PlainActionButtonRaised from '../Buttons/PlainActionButtonRaised'
-
-const Scheduler = () => (
-  <div style={style.container}>
-    <AppBar />
-    <div style={style.paperContainer}>
-      <Paper style={style.form}>
-        <h2 style={style.h2}>Propose an Event</h2>
-        <TextField hint="What are you planning?" label="What" />
-        <TextField hint="At what time?" label="When" />
-        <TextField hint="Where at?" label="Where" />
-        <TextField hint="Emails to invite?" label="Who" />
-        {/* <RadioField /> */}
-        <PlainActionButtonRaised label="Schedule" style={style.scheduleButton} />
-      </Paper>
-      <CalendarPaper />
-    </div>
-  </div>
-)
 
 const style = {
   buttons: {
@@ -33,23 +10,12 @@ const style = {
     justifyContent: 'center',
     marginBottom: '24px',
   },
-  calendar: {
-    minWidth: '600px',
-    width: '60%',
-    height: '85%',
-  },
-  form: {
-    flexDirection: 'column',
-    minWidth: '300px',
-    width: '30%',
-    height: '85%',
-    padding: '24px 36px'
-  },
   container: {
     display: 'flex',
     minHeight: '700px',
     minWidth: '1000px',
     justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'column',
   },
   paperContainer: {
@@ -57,16 +23,36 @@ const style = {
     justifyContent: 'center',
     maxWidth: '1600px',
     width: '100%',
-  },
-  h2: {
-    display: 'inlineBlock',
-    margin: '0',
-  },
-  scheduleButton: {
-    backgroundColor: color.green,
-    width: '104px',
-    margin: '16px auto 0px auto'
   }
 }
 
-export default Scheduler
+class Scheduler extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+    }
+  }
+
+  render() {
+    return (
+      <div style={style.container}>
+        <AppBar />
+        <div style={style.paperContainer}>
+          <Form />
+          <CalendarPaper />
+        </div>
+      </div>
+    )
+  }
+}
+
+// const mapStateToProps = (state) => {
+//   return {
+//     dates: state.dates,
+//     times: state.times,
+//   }
+// }
+//
+// export default connect(mapStateToProps)(Scheduler)
+
+export default Scheduler;
