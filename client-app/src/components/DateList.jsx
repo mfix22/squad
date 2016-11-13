@@ -114,7 +114,6 @@ class DatePickerWithList extends React.Component {
           <Label labelFor="TimePicker" text="When" />
           <TimePicker
             hintText={this.props.hintTextTimeFrom}
-            container="inline"
             value={this.state.timeFrom}
             onChange={this.handleChangeTimeFrom}
             textFieldStyle={style.timePicker}
@@ -122,7 +121,6 @@ class DatePickerWithList extends React.Component {
           />
           <TimePicker
             hintText={this.props.hintTextTimeTo}
-            container="inline"
             value={this.state.timeTo}
             onChange={this.handleChangeTimeTo}
             textFieldStyle={style.timePicker}
@@ -131,7 +129,6 @@ class DatePickerWithList extends React.Component {
           <DatePicker
             value={this.state.date}
             hintText={this.props.hintTextDate}
-            container="inline"
             textFieldStyle={{ display: 'block' }}
             mode="landscape"
             onChange={this.handleChangeDate}

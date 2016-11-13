@@ -16,7 +16,7 @@ const ControlBar = ({ referenceDate, onChange, viewChoice }) => (
     <ToolbarGroup firstChild className="refDateHeaderWrapper">
       <DropDownMenu value={0} onChange={() => {}}>
         {getOrderedMonthArray(moment(referenceDate).format('MMMM YYYY')).map((month, index) => {
-          return <MenuItem value={index} primaryText={month} />
+          return <MenuItem key={index} value={index} primaryText={month} />
         })}
       </DropDownMenu>
     </ToolbarGroup>
@@ -37,8 +37,8 @@ const ControlBar = ({ referenceDate, onChange, viewChoice }) => (
 
 const mapStateToProps = (state) => {
   return {
-    referenceDate: state.date,
-    viewChoice : state.view,
+    referenceDate: state.date.value,
+    viewChoice : state.date.view,
   }
 }
 
@@ -46,7 +46,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onChange : (event, index, value) => {
       dispatch({
-        type : 'CHANGE_VIEW',
+        type : 'CHANGE_WINDOW',
         view : value,
       })
     }

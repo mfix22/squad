@@ -7,6 +7,20 @@ import { getChunkedDays } from '../../helpers/util'
 
 require('../../styles/app.scss');
 
+const getNumDaysInView = (view) => {
+  switch (view) {
+    case "4_DAY":
+      return 4
+    case "WEEK":
+      return 7
+    case "2_WEEK":
+      return 14
+    case "MONTH":
+    default:
+      return 35
+  }
+}
+
 const Calendar = ({ events, referenceDate, daysInView }) => {
   const days = getChunkedDays(referenceDate, daysInView);
   return (
@@ -20,8 +34,9 @@ const Calendar = ({ events, referenceDate, daysInView }) => {
 
 const mapStateToProps = (state) => {
   return {
-    referenceDate : state.date,
+    referenceDate : state.date.value,
     events : state.events,
+    daysInView : getNumDaysInView(state.date.view)
   }
 }
 

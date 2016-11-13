@@ -36,7 +36,7 @@ const DateColumn = ({refDate, day, events, width}) => {
 
 const mapStateToProps = (state) => {
   return {
-    refDate : state.date,
+    refDate : state.date.value,
   }
 }
 

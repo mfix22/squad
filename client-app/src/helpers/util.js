@@ -50,7 +50,6 @@ export function getOrderedMonthArray(date) {
   // [month, end]
   let i = index
   for (; i < months.length; i++) {
-    console.log(i)
     res.push(`${months[i]} ${year}`)
   }
 

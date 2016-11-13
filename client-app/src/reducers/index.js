@@ -6,7 +6,6 @@ import view from './view'
 const calendarReducers = combineReducers({
   date,
   events,
-  view,
 })
 
 export default calendarReducers
