@@ -6,9 +6,9 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import { ToolbarTitle } from 'material-ui/Toolbar';
 import MenuItem from 'material-ui/MenuItem';
 
-import NextButton from '../buttons/NextButton'
-import PrevButton from '../buttons/PrevButton'
-import TodayButton from '../buttons/TodayButton'
+import NextButton from '../Buttons/NextButton'
+import PrevButton from '../Buttons/PrevButton'
+import TodayButton from '../Buttons/TodayButton'
 
 const ControlBar = ({ referenceDate }) => (
   <div className="controlBar">

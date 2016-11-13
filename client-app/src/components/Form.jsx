@@ -43,7 +43,7 @@ class Form extends React.Component {
         {/* <TextFieldWithList hint="At what time(s)?" label="When" /> */}
         <DateList hintTextDate="On what day?" hintTextTimeFrom="Starting at?" hintTextTimeTo="Until?" />
         {/* <PlaceAutocomplete /> */}
-        <TextField hint="Emails to invite?" label="Who" />
+        <TextFieldWithList hint="Emails to invite?" label="Who" />
         {/* <RadioField /> */}
         <PlainActionButtonRaised label="Schedule" style={style.scheduleButton} />
       </Paper>
