@@ -61,6 +61,7 @@ class TextFieldWithList extends React.Component {
             floatingLabelFixed
             value={this.state.value}
             onChange={this.handleChange}
+            style={{ display: 'block' }}
           />
           <input style={{ display: 'none' }} type="submit" value="Submit" />
         </form>
