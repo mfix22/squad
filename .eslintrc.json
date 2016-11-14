@@ -1,0 +1,13 @@
+{
+    "extends": "airbnb",
+    "installedESLint": true,
+    "rules": {
+      "no-var": 0,
+      "func-names": 0,
+      "space-before-function-paren": 0,
+      "comma-dangle": 0,
+      "semi": 0,
+      "no-unexpected-multiline": 1,
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
+    }
+}
