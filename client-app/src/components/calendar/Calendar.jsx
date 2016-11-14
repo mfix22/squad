@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import DateColumn from './DateColumn'
 import WeekRow from './WeekRow'
 
 import { getChunkedDays, getNumDaysInView } from '../../helpers/util'
@@ -12,18 +11,16 @@ const Calendar = ({ events, referenceDate, daysInView }) => {
   return (
     <div className="module calendar">
       {
-        days.map((week, key) => (<WeekRow key={key} events={events} numSibs={days.length} days={week}/>))
+        days.map((week, key) => (<WeekRow key={key} events={events} numSibs={days.length} days={week} />))
       }
     </div>
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    referenceDate : state.date.value,
-    events : state.events,
-    daysInView : getNumDaysInView(state.date.view)
-  }
-}
+const mapStateToProps = state => ({
+  referenceDate: state.date.value,
+  events: state.events,
+  daysInView: getNumDaysInView(state.date.view)
+})
 
 export default connect(mapStateToProps)(Calendar)

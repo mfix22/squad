@@ -8,6 +8,9 @@
       "comma-dangle": 0,
       "semi": 0,
       "no-unexpected-multiline": 1,
-      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+      "max-len": 0,
+      "react/prop-types": 0,
+      "arrow-body-style": 0
     }
 }

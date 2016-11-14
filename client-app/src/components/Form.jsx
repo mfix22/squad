@@ -7,7 +7,8 @@ import TextFieldWithList from './TextFieldWithList'
 import DateList from './DateList'
 // import RadioField from '../RadioField'
 import { color } from '../vars'
-import PlainActionButtonRaised from './Buttons/PlainActionButtonRaised'
+import PlainActionButtonRaised from './buttons/PlainActionButtonRaised'
+import EmojiBar from './EmojiBar'
 
 const style = {
   form: {
@@ -40,7 +41,7 @@ class Form extends React.Component {
       <Paper style={style.form}>
         <h2 style={style.h2}>Propose an Event?</h2>
         <TextField hint="What are you planning?" label="What" />
-        <i className="material-icons" style={{ textAlign: "left", verticalAlign: "middle" }}>☕</i>
+        <EmojiBar />
         {/* <TextFieldWithList hint="At what time(s)?" label="When" /> */}
         <DateList hintTextDate="On what day?" hintTextTimeFrom="Starting at?" hintTextTimeTo="Until?" />
         {/* <PlaceAutocomplete /> */}

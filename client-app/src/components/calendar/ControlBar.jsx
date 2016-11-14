@@ -6,9 +6,9 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import { Toolbar, ToolbarTitle, ToolbarGroup } from 'material-ui/Toolbar';
 import MenuItem from 'material-ui/MenuItem';
 
-import NextButton from '../Buttons/NextButton'
-import PrevButton from '../Buttons/PrevButton'
-import TodayButton from '../Buttons/TodayButton'
+import NextButton from '../buttons/NextButton'
+import PrevButton from '../buttons/PrevButton'
+import TodayButton from '../buttons/TodayButton'
 import { getOrderedMonthArray, getNumDaysInView, getDays } from '../../helpers/util'
 import { color } from '../../vars'
 
@@ -25,13 +25,15 @@ const ControlBar = ({ referenceDate, onChange, viewChoice, header }) => (
   <Toolbar className="controlBar">
     <ToolbarGroup firstChild className="refDateHeaderWrapper">
       <DropDownMenu value={0} iconStyle={iconStyle} onChange={() => {}}>
-        {getOrderedMonthArray(referenceDate).map((month, index) => {
-          return <MenuItem key={index} value={index} primaryText={month.format("MMMM YYYY")} />
-        })}
+        {
+          getOrderedMonthArray(referenceDate).map((month, index) => (
+            <MenuItem key={index} value={index} primaryText={month.format('MMMM YYYY')} />
+          ))
+        }
       </DropDownMenu>
     </ToolbarGroup>
     <ToolbarTitle
-      style={{ fontSize : '14px', fontWeight: "bold" }}
+      style={{ fontSize: '14px', fontWeight: 'bold' }}
       className="rangeHeader"
       text={header}
     />
@@ -42,29 +44,25 @@ const ControlBar = ({ referenceDate, onChange, viewChoice, header }) => (
         <MenuItem value="MONTH" primaryText="Month" />
       </DropDownMenu>
       <PrevButton />
-      <TodayButton disabled={moment(referenceDate).isSame(moment(), 'day')}/>
+      <TodayButton disabled={moment(referenceDate).isSame(moment(), 'day')} />
       <NextButton />
     </div>
   </Toolbar>
 )
 
-const mapStateToProps = (state) => {
-  return {
-    referenceDate: state.date.value,
-    viewChoice : state.date.view,
-    header : formatCenterHeader(state.date)
-  }
-}
+const mapStateToProps = state => ({
+  referenceDate: state.date.value,
+  viewChoice: state.date.view,
+  header: formatCenterHeader(state.date)
+})
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onChange : (event, index, value) => {
-      dispatch({
-        type : 'CHANGE_WINDOW',
-        view : value,
-      })
-    }
+const mapDispatchToProps = dispatch => ({
+  onChange: (event, index, value) => {
+    dispatch({
+      type: 'CHANGE_WINDOW',
+      view: value,
+    })
   }
-}
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlBar)

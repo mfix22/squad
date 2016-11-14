@@ -3,7 +3,11 @@ import { connect } from 'react-redux'
 import RaisedButton from 'material-ui/RaisedButton'
 import { color } from '../../vars'
 
-const PlainActionButtonRaised = ({ action, onClick, label, style }) => (
+const styles = {
+  backgroundColor: color.green,
+}
+
+const PlainActionButtonRaised = ({ onClick, label, style }) => (
   <RaisedButton
     label={label}
     primary
@@ -11,10 +15,6 @@ const PlainActionButtonRaised = ({ action, onClick, label, style }) => (
     onMouseUp={onClick}
   />
 )
-
-const styles = {
-  backgroundColor: color.green,
-}
 
 // const mapDispatchToProps = (dispatch, ownProps) => {
 //   return {

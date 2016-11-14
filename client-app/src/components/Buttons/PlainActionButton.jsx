@@ -1,11 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon'
 
 const PlainActionButton = ({ disabled, style, action, onClick, label, children }) => (
   <FlatButton
-    primary={true}
+    primary
     label={label}
     onMouseUp={onClick}
     action={action}
@@ -19,7 +18,7 @@ const PlainActionButton = ({ disabled, style, action, onClick, label, children }
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onClick: () => {
-      dispatch({ type : ownProps.action });
+      dispatch({ type: ownProps.action });
     }
   }
 }
