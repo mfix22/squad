@@ -11,15 +11,19 @@ import PrevButton from '../Buttons/PrevButton'
 import TodayButton from '../Buttons/TodayButton'
 import { getOrderedMonthArray, getNumDaysInView, getDays } from '../../helpers/util'
 
-const formatCenterHeader = (referenceDate) => {
-  const days = getDays(referenceDate, getNumDaysInView());
+const formatCenterHeader = (date) => {
+  const days = getDays(date.value, getNumDaysInView(date.view));
   return `${moment(days[0]).format('M/D')} - ${moment(days[days.length - 1]).format('M/D')}`
 }
 
-const ControlBar = ({ referenceDate, onChange, viewChoice }) => (
+const iconStyle = {
+  fill : "#008042"
+}
+
+const ControlBar = ({ referenceDate, onChange, viewChoice, header }) => (
   <Toolbar className="controlBar">
     <ToolbarGroup firstChild className="refDateHeaderWrapper">
-      <DropDownMenu value={0} onChange={() => {}}>
+      <DropDownMenu value={0} iconStyle={iconStyle} onChange={() => {}}>
         {getOrderedMonthArray(referenceDate).map((month, index) => {
           return <MenuItem key={index} value={index} primaryText={month.format("MMMM YYYY")} />
         })}
@@ -28,10 +32,10 @@ const ControlBar = ({ referenceDate, onChange, viewChoice }) => (
     <ToolbarTitle
       style={{ fontSize : '14px', fontWeight: "bold" }}
       className="rangeHeader"
-      text={formatCenterHeader(referenceDate)}
+      text={header}
     />
     <div className="buttonContainer">
-      <DropDownMenu value={viewChoice} onChange={onChange}>
+      <DropDownMenu iconStyle={iconStyle} value={viewChoice} onChange={onChange}>
         <MenuItem value="4_DAY" primaryText="4 Day" />
         <MenuItem value="WEEK" primaryText="Week" />
         <MenuItem value="MONTH" primaryText="Month" />
@@ -47,6 +51,7 @@ const mapStateToProps = (state) => {
   return {
     referenceDate: state.date.value,
     viewChoice : state.date.view,
+    header : formatCenterHeader(state.date)
   }
 }
 
