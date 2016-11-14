@@ -7,7 +7,7 @@ const PlainActionButtonRaised = ({ action, onClick, label, style }) => (
   <RaisedButton
     label={label}
     primary
-    style={Object.assign(styles, style)}
+    style={Object.assign(styles || {}, style)}
     onMouseUp={onClick}
   />
 )
