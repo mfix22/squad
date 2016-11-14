@@ -3,13 +3,14 @@ import { connect } from 'react-redux'
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon'
 
-const PlainActionButton = ({ style, action, onClick, label, children }) => (
+const PlainActionButton = ({ disabled, style, action, onClick, label, children }) => (
   <FlatButton
     primary={true}
     label={label}
     onMouseUp={onClick}
     action={action}
     style={style}
+    disabled={disabled}
   >
     {children}
   </FlatButton>

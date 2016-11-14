@@ -41,7 +41,7 @@ const ControlBar = ({ referenceDate, onChange, viewChoice, header }) => (
         <MenuItem value="MONTH" primaryText="Month" />
       </DropDownMenu>
       <PrevButton />
-      <TodayButton />
+      <TodayButton disabled={moment(referenceDate).isSame(moment(), 'day')}/>
       <NextButton />
     </div>
   </Toolbar>
