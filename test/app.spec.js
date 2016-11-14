@@ -7,10 +7,8 @@ import reducer from '../client-app/src/reducers/index'
 import deepFreeze from 'deep-freeze'
 
 const VIEW_TODAY = 'VIEW_TODAY';
-const VIEW_NEXT_WEEK = 'VIEW_NEXT_WEEK';
-const VIEW_PREV_WEEK = 'VIEW_PREV_WEEK';
-const VIEW_NEXT_MONTH = 'VIEW_NEXT_MONTH';
-const VIEW_PREV_MONTH = 'VIEW_PREV_MONTH';
+const VIEW_NEXT = 'VIEW_NEXT';
+const VIEW_PREV = 'VIEW_PREV';
 const RECEIVE_EVENTS = 'RECEIVE_EVENTS'
 
 const fakeState = {
@@ -51,66 +49,50 @@ describe('Dispatch VIEW_TODAY', function() {
 		store.dispatch({
 			type : VIEW_TODAY
 		});
-		expect(store.getState().date).to.equal(moment().format())
+		expect(store.getState().date.value).to.equal(moment().format())
   });
   it('no matter what', () => {
     const store = createStore(reducer)
-    store.dispatch({ type : VIEW_PREV_WEEK });
-    store.dispatch({ type : VIEW_NEXT_MONTH });
-    store.dispatch({ type : VIEW_NEXT_WEEK });
-    store.dispatch({ type : VIEW_NEXT_MONTH });
+    store.dispatch({ type : VIEW_PREV });
+    store.dispatch({ type : VIEW_NEXT });
+    store.dispatch({ type : VIEW_NEXT });
+    store.dispatch({ type : VIEW_NEXT });
 
     store.dispatch({ type : VIEW_TODAY });
-    expect(store.getState().date).to.equal(moment().format())
+    expect(store.getState().date.value).to.equal(moment().format())
   });
 });
 
-describe('Dispatch VIEW_NEXT_MONTH', function() {
-  it('changes reference date to one month from now', () => {
+describe('Dispatch VIEW_NEXT', function() {
+  it('changes reference date to one month from now by default', () => {
     const store = createStore(reducer)
+    const state = store.getState();
 		store.dispatch({
-			type : VIEW_NEXT_MONTH
+			type : VIEW_NEXT
 		});
-		expect(store.getState().date).to.equal(moment().add(1, 'M').format())
+		expect(store.getState().date.value).to.equal(moment(state.date.value).add(1, 'M').format())
   });
 });
 
-
-describe('Dispatch VIEW_PREV_MONTH', function() {
-  it('changes reference date to previous month', () => {
-    const store = createStore(reducer)
-		store.dispatch({
-			type : VIEW_PREV_MONTH
-		});
-		expect(store.getState().date).to.equal(moment().add(-1, 'M').format())
-  });
-});
-
-describe('Dispatch VIEW_NEXT_WEEK', function() {
-  it('changes reference date to next week', () => {
-    const store = createStore(reducer)
-		store.dispatch({
-			type : VIEW_NEXT_WEEK
-		});
-		expect(store.getState().date).to.equal(moment().add(1, 'w').format())
-  });
-});
-
-describe('Dispatch VIEW_PREV_WEEK', function() {
-  it('changes reference date to previous week', () => {
-    const store = createStore(reducer)
-		store.dispatch({
-			type : VIEW_PREV_WEEK
-		});
-		expect(store.getState().date).to.equal(moment().add(-1, 'w').format())
-  });
-});
+//
+// describe('Dispatch VIEW_PREV_MONTH', function() {
+//   it('changes reference date to previous month', () => {
+//     const store = createStore(reducer)
+// 		store.dispatch({
+// 			type : VIEW_PREV_MONTH
+// 		});
+// 		expect(store.getState().date).to.equal(moment().add(-1, 'M').format())
+//   });
+// });
 
 describe('Rehydrate fake state', function() {
   it('imports preloaded state', () => {
     const store = createStore(reducer, fakeState)
     expect(store.getState()).to.deep.equal({
-      date : moment().format(),
+      date : {
+        value : moment().format(),
+        view : "MONTH"
+      },
       events : fakeState.events
     })
   })

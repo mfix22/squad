@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import moment from 'moment'
-import { chunk, getDays, getChunkedDays, isThisMonth } from '../client-app/src/helpers/util'
+import { chunk, getDays, getChunkedDays, isThisMonth, getOrderedMonthArray} from '../client-app/src/helpers/util'
 
 describe('Chunk Array', function() {
   it('Creates array of array with length X (with remainder)', () => {
@@ -70,3 +70,13 @@ describe('Date Comparisons', function() {
     expect(isThisMonth(refDate.format(), nextMonth)).to.be.false;
   });
 });
+
+
+describe('Get ordered months', function () {
+  it('Gets next 12 months including current month', () => {
+    const date = "2016-10-26";
+    expect(getOrderedMonthArray(date).map(moment => moment.month())).to.deep.equal([
+      9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8
+    ])
+  })
+})
