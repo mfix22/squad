@@ -1,6 +1,6 @@
 import React from 'react'
 
-// import PlaceAutocomplete from './PlaceAutocomplete'
+import PlaceAutocomplete from './PlaceAutocomplete'
 import Paper from './Paper'
 import TextField from './TextField'
 import TextFieldWithList from './TextFieldWithList'
@@ -44,7 +44,7 @@ class Form extends React.Component {
         <EmojiBar />
         {/* <TextFieldWithList hint="At what time(s)?" label="When" /> */}
         <DateList hintTextDate="On what day?" hintTextTimeFrom="Starting at?" hintTextTimeTo="Until?" />
-        {/* <PlaceAutocomplete /> */}
+        <PlaceAutocomplete />
         <TextFieldWithList hint="Emails to invite?" label="Who" />
         {/* <RadioField /> */}
         <PlainActionButtonRaised label="Schedule" style={style.scheduleButton} />

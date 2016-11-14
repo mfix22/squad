@@ -1,8 +1,6 @@
 import React from 'react'
 import MaterialTextField from 'material-ui/TextField'
 
-import { color } from '../vars'
-
 class TextField extends React.Component {
   constructor(props) {
     super(props)

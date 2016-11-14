@@ -4,7 +4,8 @@ const style = {
   marginRight: '10px',
   cursor: 'pointer',
   display: 'inline-block',
-  height: '20px',
+  height: '32px',
+  verticalAlign: 'top'
 }
 
 const EmojiBar = () => (
