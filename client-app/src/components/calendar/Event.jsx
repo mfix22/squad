@@ -1,7 +1,6 @@
 import React from 'react'
-import moment from 'moment'
 
-const Event = ({details, height}) => {
+const Event = ({ details }) => {
   return (
     <div
       className="calendarEvent"
@@ -12,7 +11,7 @@ const Event = ({details, height}) => {
     >
       <p className="event_title">{ details.title }</p>
       {
-        /*<p className="event_time">{ moment(details.time).format('LT YYYY ddd, MMM Do') }</p>
+        /* <p className="event_time">{ moment(details.time).format('LT YYYY ddd, MMM Do') }</p>
         <p className="event_location">{ details.location }</p>*/
       }
     </div>

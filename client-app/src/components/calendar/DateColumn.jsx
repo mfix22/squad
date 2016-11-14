@@ -5,14 +5,14 @@ import Event from './Event'
 
 import { isThisMonth } from '../../helpers/util'
 
-const DateColumn = ({refDate, window, day, events, width}) => {
+const DateColumn = ({ refDate, window, day, events, width }) => {
   const weekView = false;
   return (
     <div
-      className='dateColumn'
+      className="dateColumn"
       style={{
-        width: width,
-        opacity : (isThisMonth(refDate, day) || window !== "MONTH") ? 1 : 0.4
+        width,
+        opacity: (isThisMonth(refDate, day) || window !== 'MONTH') ? 1 : 0.4
       }}
     >
       <div>
@@ -36,8 +36,8 @@ const DateColumn = ({refDate, window, day, events, width}) => {
 
 const mapStateToProps = (state) => {
   return {
-    refDate : state.date.value,
-    window : state.date.view
+    refDate: state.date.value,
+    window: state.date.view
   }
 }
 
