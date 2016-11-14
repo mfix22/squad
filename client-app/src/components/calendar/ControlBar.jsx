@@ -10,6 +10,7 @@ import NextButton from '../Buttons/NextButton'
 import PrevButton from '../Buttons/PrevButton'
 import TodayButton from '../Buttons/TodayButton'
 import { getOrderedMonthArray, getNumDaysInView, getDays } from '../../helpers/util'
+import { color } from '../../vars'
 
 const formatCenterHeader = (date) => {
   const days = getDays(date.value, getNumDaysInView(date.view));
@@ -17,7 +18,7 @@ const formatCenterHeader = (date) => {
 }
 
 const iconStyle = {
-  fill : "#008042"
+  fill: color.green
 }
 
 const ControlBar = ({ referenceDate, onChange, viewChoice, header }) => (

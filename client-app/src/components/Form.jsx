@@ -40,6 +40,7 @@ class Form extends React.Component {
       <Paper style={style.form}>
         <h2 style={style.h2}>Propose an Event?</h2>
         <TextField hint="What are you planning?" label="What" />
+        <i className="material-icons" style={{ textAlign: "left", verticalAlign: "middle" }}>☕</i>
         {/* <TextFieldWithList hint="At what time(s)?" label="When" /> */}
         <DateList hintTextDate="On what day?" hintTextTimeFrom="Starting at?" hintTextTimeTo="Until?" />
         {/* <PlaceAutocomplete /> */}
