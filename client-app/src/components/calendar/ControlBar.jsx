@@ -9,7 +9,12 @@ import MenuItem from 'material-ui/MenuItem';
 import NextButton from '../Buttons/NextButton'
 import PrevButton from '../Buttons/PrevButton'
 import TodayButton from '../Buttons/TodayButton'
-import { getOrderedMonthArray } from '../../helpers/util'
+import { getOrderedMonthArray, getNumDaysInView, getDays } from '../../helpers/util'
+
+const formatCenterHeader = (referenceDate) => {
+  const days = getDays(referenceDate, getNumDaysInView());
+  return `${moment(days[0]).format('M/D')} - ${moment(days[days.length - 1]).format('M/D')}`
+}
 
 const ControlBar = ({ referenceDate, onChange, viewChoice }) => (
   <Toolbar className="controlBar">
@@ -20,7 +25,11 @@ const ControlBar = ({ referenceDate, onChange, viewChoice }) => (
         })}
       </DropDownMenu>
     </ToolbarGroup>
-    <ToolbarTitle style={{ fontSize : '16px', fontWeight: "bold" }} className="rangeHeader" text="11/5 - 11/7" />
+    <ToolbarTitle
+      style={{ fontSize : '14px', fontWeight: "bold" }}
+      className="rangeHeader"
+      text={formatCenterHeader(referenceDate)}
+    />
     <div className="buttonContainer">
       <DropDownMenu value={viewChoice} onChange={onChange}>
         <MenuItem value="4_DAY" primaryText="4 Day" />

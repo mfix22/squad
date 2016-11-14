@@ -9,6 +9,20 @@ export const chunk = (a, c) => {
   }, Array(Math.ceil(a.length / c)).fill([]))
 }
 
+export const getNumDaysInView = (view) => {
+  switch (view) {
+    case "4_DAY":
+      return 4
+    case "WEEK":
+      return 7
+    case "2_WEEK":
+      return 14
+    case "MONTH":
+    default:
+      return 35
+  }
+}
+
 export const isThisMonth = (refDate, otherDate) => {
   const ref = moment(refDate);
   const day = moment(otherDate);

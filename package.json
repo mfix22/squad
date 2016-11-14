@@ -10,8 +10,7 @@
     "database": "mongod",
     "poststart": "start chrome http://localhost:8080/",
     "dev-server": "nodemon server.js",
-    "webpack-watch": "webpack -w",
-    "new-app": "node scripts/newApp.js"
+    "webpack-watch": "webpack -w"
   },
   "dependencies": {
     "axios": "^0.15.2",
