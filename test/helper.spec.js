@@ -75,8 +75,12 @@ describe('Date Comparisons', function() {
 describe('Get ordered months', function () {
   it('Gets next 12 months including current month', () => {
     const date = "2016-10-26";
-    expect(getOrderedMonthArray(date).map(moment => moment.month())).to.deep.equal([
+    const months = getOrderedMonthArray(date);
+    expect(months.map(moment => moment.month())).to.deep.equal([
       9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8
+    ])
+    expect(months.map(moment => moment.year())).to.deep.equal([
+      2016, 2016, 2016, 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017
     ])
   })
 })
