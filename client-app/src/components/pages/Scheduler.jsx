@@ -55,4 +55,4 @@ class Scheduler extends React.Component {
 //
 // export default connect(mapStateToProps)(Scheduler)
 
-export default Scheduler;
+export default Scheduler

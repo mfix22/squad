@@ -4,6 +4,6 @@ import thunk from 'redux-thunk';
 
 import reducer from '../reducers'
 
-const configureStore = (preloadedState) => createStore(reducer, preloadedState, applyMiddleware(thunk, createLogger()))
+const configureStore = preloadedState => createStore(reducer, preloadedState, applyMiddleware(thunk, createLogger()))
 
 export default configureStore;

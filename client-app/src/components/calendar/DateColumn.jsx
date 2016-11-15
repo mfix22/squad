@@ -6,7 +6,7 @@ import Event from './Event'
 import { isThisMonth } from '../../helpers/util'
 
 const DateColumn = ({ refDate, window, day, events, width }) => {
-  const weekView = false;
+  const weekView = false
   return (
     <div
       className="dateColumn"
@@ -20,7 +20,7 @@ const DateColumn = ({ refDate, window, day, events, width }) => {
       </div>
       {
         events.filter((e) => {
-          return moment(e.time).isSame(day, 'day');
+          return moment(e.time).isSame(day, 'day')
         }).map((calEvent) => {
           return (
             <Event

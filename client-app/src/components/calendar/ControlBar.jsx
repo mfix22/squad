@@ -2,9 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
-import DropDownMenu from 'material-ui/DropDownMenu';
-import { Toolbar, ToolbarTitle, ToolbarGroup } from 'material-ui/Toolbar';
-import MenuItem from 'material-ui/MenuItem';
+import DropDownMenu from 'material-ui/DropDownMenu'
+import { Toolbar, ToolbarTitle, ToolbarGroup } from 'material-ui/Toolbar'
+import MenuItem from 'material-ui/MenuItem'
 
 import NextButton from '../buttons/NextButton'
 import PrevButton from '../buttons/PrevButton'
@@ -13,7 +13,7 @@ import { getOrderedMonthArray, getNumDaysInView, getDays } from '../../helpers/u
 import { color } from '../../vars'
 
 const formatCenterHeader = (date) => {
-  const days = getDays(date.value, getNumDaysInView(date.view));
+  const days = getDays(date.value, getNumDaysInView(date.view))
   return `${moment(days[0]).format('M/D')} - ${moment(days[days.length - 1]).format('M/D')}`
 }
 

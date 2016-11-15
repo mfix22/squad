@@ -1,13 +1,12 @@
 import React from 'react'
-import moment from 'moment'
 import DateColumn from './DateColumn'
 
-const WeekRow = ({days, events, numSibs}) => {
+const WeekRow = ({ days, events, numSibs }) => {
   return (
     <div
-      className='weekRow'
+      className="weekRow"
       style={{
-        height : `${(600) / numSibs}px`
+        height: `${(600) / numSibs}px`
       }}
     >
       {

@@ -1,11 +1,5 @@
 import React from 'react'
 
-import { color } from '../vars'
-
-const Label = ({ labelFor, text }) => (
-  <label htmlFor={labelFor} style={styles}>{text}</label>
-)
-
 const styles = {
   position: 'absolute',
   lineHeight: '22px',
@@ -21,5 +15,10 @@ const styles = {
   left: '0px',
   marginTop: '10px'
 }
+
+const Label = ({ labelFor, text }) => (
+  <label htmlFor={labelFor} style={styles}>{text}</label>
+)
+
 
 export default Label

@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import RaisedButton from 'material-ui/RaisedButton'
 import { color } from '../../vars'
 
@@ -26,4 +25,4 @@ const PlainActionButtonRaised = ({ onClick, label, style }) => (
 //
 // export default connect(null, mapDispatchToProps)(PlainActionButton)
 
-export default PlainActionButtonRaised;
+export default PlainActionButtonRaised

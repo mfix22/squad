@@ -1,9 +1,15 @@
 import React from 'react'
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
+import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 
-import { color } from '../vars'
+// import { color } from '../vars'
 
-const RadioField = (props) => (
+// const style = {
+//   appBar: {
+//     backgroundColor: color.green,
+//   },
+// }
+
+const RadioField = () => (
   <RadioButtonGroup name="notRight" labelPosition="right" >
     <RadioButton
       value="reverse"
@@ -16,10 +22,5 @@ const RadioField = (props) => (
   </RadioButtonGroup>
 )
 
-const style = {
-  appBar: {
-    backgroundColor: color.green,
-  },
-}
 
 export default RadioField

@@ -2,7 +2,6 @@
 
 const ADD_EVENT = 'ADD_EVENT';
 const RECEIVE_EVENTS = 'RECEIVE_EVENTS'
-const FETCH_EVENTS = 'FETCH_EVENTS'
 
 // const singleEvent = (state, action) => {
 //   switch (action.type) {
@@ -23,7 +22,7 @@ const events = (state = [], action) => {
     case ADD_EVENT :
       return [
         ...state,
-        singleEvent(null, action)
+        // singleEvent(null, action)
       ]
     case RECEIVE_EVENTS :
       return action.events

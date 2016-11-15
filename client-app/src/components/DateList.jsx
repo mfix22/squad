@@ -6,7 +6,6 @@ import FlatButton from 'material-ui/FlatButton'
 import Moment from 'moment'
 
 import Label from './Label'
-import PlainActionButton from './Buttons/PlainActionButton'
 
 const style = {
   form: {
@@ -99,7 +98,6 @@ class DatePickerWithList extends React.Component {
   }
 
   handleChipDelete(index) {
-    console.log(index)
     const arr = this.state.options
     arr.splice(index, 1)
     this.setState({
@@ -136,12 +134,11 @@ class DatePickerWithList extends React.Component {
           {/* <PlainActionButton label="Add option" onClick={this.handleSubmit} action="ADD_OPTION">
             <input type="submit" value="Submit" style={style.submit} />
           </PlainActionButton> */}
-          <FlatButton label="Add option" onClick={this.handleSubmit}></FlatButton>
+          <FlatButton label="Add option" onClick={this.handleSubmit} />
 
         </form>
         <div style={style.chips}>
           {this.state.options.map((option, index) => {
-            console.log(this.state.options)
             return <Chip key={index} style={style.chip} onRequestDelete={() => this.handleChipDelete(index)}>{optionToDisplayString(option)}</Chip>
           })}
         </div>
