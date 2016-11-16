@@ -7,7 +7,7 @@ import TextFieldWithList from './TextFieldWithList'
 import DateList from './DateList'
 // import RadioField from '../RadioField'
 import { color } from '../vars'
-import PlainActionButtonRaised from './Buttons/PlainActionButtonRaised'
+import PlainActionButtonRaised from './buttons/PlainActionButtonRaised'
 // import EmojiBar from './EmojiBar'
 
 const style = {

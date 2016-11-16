@@ -6,7 +6,7 @@ const CHANGE_TIME_FROM = 'CHANGE_TIME_FROM'
 const CHANGE_TIME_TO = 'CHANGE_TIME_TO'
 const CHANGE_DATE = 'CHANGE_DATE'
 
-const voteSort = (a, b) => {
+export const voteSort = (a, b) => {
   if (a.count === b.count) {
     return new Date(a.timeFrom) - new Date(b.timeFrom)
   }

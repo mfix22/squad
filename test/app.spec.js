@@ -3,8 +3,9 @@ import moment from 'moment'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
-import reducer from '../client-app/src/reducers/index'
 import deepFreeze from 'deep-freeze'
+import reducer from '../client-app/src/reducers/index'
+import { voteSort } from '../client-app/src/reducers/form'
 
 const VIEW_TODAY = 'VIEW_TODAY'
 const VIEW_NEXT = 'VIEW_NEXT'
@@ -69,9 +70,59 @@ describe('Date reducer', () => {
     })
     expect(store.getState().date.value).to.equal(moment(state.date.value).add(1, 'M').format())
   })
+  it('changes reference date to one month in the past by default on VIEW_PREV', () => {
+    const store = createStore(reducer)
+    const state = store.getState()
+    store.dispatch({
+      type: VIEW_PREV
+    })
+    expect(store.getState().date.value).to.equal(moment(state.date.value).add(-1, 'M').format())
+  })
+
+  it('changes number of days in view with CHANGE_WINDOW', () => {
+    const store = createStore(reducer)
+    const views = ['4_DAY', 'WEEK', '2_WEEK', 'MONTH']
+    views.forEach((view) => {
+      store.dispatch({
+        type: 'CHANGE_WINDOW',
+        view
+      })
+      expect(store.getState().date.view).to.equal(view)
+    })
+  })
 })
 
 describe('Form Reducer', () => {
+  it('should sort votes by vote count and then start date', () => {
+    let a = {
+      count: 0,
+      timeFrom: moment().format()
+    }
+    let b = {
+      count: 1,
+      timeFrom: moment().format()
+    }
+    expect(voteSort(a,b)).to.be.above(0)
+    b.count = 0;
+    expect(voteSort(a,b)).to.equal(0)
+    b = {
+      count: 0,
+      timeFrom: moment().add(1, 'd').format()
+    }
+    expect(voteSort(a,b)).to.be.below(0)
+  })
+  it('receive votes from RECEIVE_VOTES dispatch', () => {
+    const store = createStore(reducer)
+    store.dispatch({
+      type: 'RECEIVE_VOTES',
+      votes: [
+        {
+          id: 1
+        }
+      ]
+    })
+    expect(store.getState().form.votes).to.deep.equal([{ id: 1 }])
+  })
   it('should change from-time by dispatching CHANGE_TIME_FROM', () => {
     const store = createStore(reducer)
     store.dispatch({

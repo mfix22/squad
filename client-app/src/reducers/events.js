@@ -1,4 +1,3 @@
-const ADD_EVENT = 'ADD_EVENT'
 const RECEIVE_EVENTS = 'RECEIVE_EVENTS'
 
 // const singleEvent = (state, action) => {
@@ -17,11 +16,11 @@ const RECEIVE_EVENTS = 'RECEIVE_EVENTS'
 
 const events = (state = [], action) => {
   switch (action.type) {
-    case ADD_EVENT :
-      return [
-        ...state,
-        // singleEvent(null, action)
-      ]
+    // case ADD_EVENT :
+    //   return [
+    //     ...state,
+    //     // singleEvent(null, action)
+    //   ]
     case RECEIVE_EVENTS :
       return action.events
     default:
