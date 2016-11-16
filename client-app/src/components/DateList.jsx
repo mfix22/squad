@@ -55,6 +55,7 @@ const optionToDisplayString = (vote) => {
 
 const DatePickerWithList = ({
                               form,
+                              disabled,
                               hintTextTimeFrom,
                               hintTextTimeTo,
                               hintTextDate,
@@ -92,7 +93,7 @@ const DatePickerWithList = ({
         {/* <PlainActionButton label="Add option" onClick={this.handleSubmit} action="ADD_OPTION">
           <input type="submit" value="Submit" style={style.submit} />
         </PlainActionButton> */}
-        <FlatButton label="Add option" onClick={handleSubmit} />
+        <FlatButton label="Add option" disabled={disabled} onClick={handleSubmit} />
       </form>
       <div style={style.chips}>
         <Label labelFor="Chips" text="Options" />
@@ -116,7 +117,8 @@ const DatePickerWithList = ({
 }
 
 const mapStateToProps = state => ({
-  form: state.form
+  form: state.form,
+  disabled: !state.form.timeFrom || !state.from.timeTo || !state.from.date
 })
 
 const mapDispatchToProps = dispatch => ({

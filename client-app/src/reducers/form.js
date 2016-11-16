@@ -42,6 +42,7 @@ const votes = (state, action) => {
     }
     case ADD_VOTE: {
       const { timeFrom, timeTo, date } = state
+      if (!timeFrom || !timeTo || !date) return state
       return {
         timeFrom: null,
         timeTo: null,
