@@ -14,7 +14,7 @@ import { color } from './vars'
 injectTapEventPlugin()
 
 const store = configureStore()
-// store.dispatch(fetchEvents)
+store.dispatch(fetchEvents)
 store.dispatch(fetchVotes)
 
 const muiTheme = getMuiTheme({
