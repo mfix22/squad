@@ -14,17 +14,16 @@ const style = {
   form: {
     position: 'relative',
     paddingTop: '12px',
-    marginTop: '16px'
+    margin: '16px 0px 0px 0px'
   },
   timePicker: {
     width: '88px',
-    display: 'block',
+    marginRight: '16px',
+    float: 'left'
   },
-  timeFrom: {
-    position: 'absolute',
-  },
-  timeTo: {
-    marginLeft: '104px',
+  datePicker: {
+    width: '124px',
+    float: 'left'
   },
   submit: {
     cursor: 'pointer',
@@ -37,7 +36,8 @@ const style = {
     opacity: 0,
   },
   chips: {
-    marginTop: '8px',
+    paddingTop: '24px',
+    position: 'relative',
     display: 'flex',
     flexWrap: 'wrap'
   },
@@ -84,7 +84,7 @@ const DatePickerWithList = ({
           autoOk
           value={form.date}
           hintText={hintTextDate}
-          textFieldStyle={{ display: 'block' }}
+          textFieldStyle={style.datePicker}
           mode="landscape"
           onChange={handleChangeDate}
         />
@@ -92,9 +92,9 @@ const DatePickerWithList = ({
           <input type="submit" value="Submit" style={style.submit} />
         </PlainActionButton> */}
         <FlatButton label="Add option" onClick={handleSubmit} />
-
       </form>
       <div style={style.chips}>
+        <Label labelFor="Chips" text="Options" />
         {form.votes.map((vote, index) => {
           return (
             <Chip

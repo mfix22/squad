@@ -20,8 +20,7 @@ class TextField extends React.Component {
   render() {
     return (
       <MaterialTextField
-        hintText={this.props.hint}
-        floatingLabelText={this.props.label}
+        {...this.props}
         floatingLabelFixed
         value={this.state.value}
         onChange={this.handleChange}
