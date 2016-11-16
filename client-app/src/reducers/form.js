@@ -1,5 +1,3 @@
-import { v4 } from 'node-uuid'
-
 const ADD_VOTE = 'ADD_VOTE'
 const DELETE_VOTE = 'DELETE_VOTE'
 const RECEIVE_VOTES = 'RECEIVE_VOTES'
@@ -43,7 +41,7 @@ const votes = (state, action) => {
         date: null,
         votes: [
           {
-            id: v4(),
+            id: Math.random(),
             timeFrom,
             timeTo,
             date
