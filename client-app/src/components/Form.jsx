@@ -29,28 +29,20 @@ const style = {
   }
 }
 
-class Form extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-    }
-  }
-
-  render() {
-    return (
-      <Paper style={style.form}>
-        <h2 style={style.h2}>Propose an Event?</h2>
-        <TextField hint="What are you planning?" label="What" />
-        <EmojiBar />
-        {/* <TextFieldWithList hint="At what time(s)?" label="When" /> */}
-        <DateList hintTextDate="On what day?" hintTextTimeFrom="Starting at?" hintTextTimeTo="Until?" />
-        <PlaceAutocomplete />
-        <TextFieldWithList hint="Emails to invite?" label="Who" />
-        {/* <RadioField /> */}
-        <PlainActionButtonRaised label="Schedule" style={style.scheduleButton} />
-      </Paper>
-    )
-  }
+const Form = props => {
+  return (
+    <Paper style={style.form}>
+      <h2 style={style.h2}>Propose an Event?</h2>
+      <TextField hint="What are you planning?" label="What" />
+      <EmojiBar />
+      {/* <TextFieldWithList hint="At what time(s)?" label="When" /> */}
+      <DateList hintTextDate="On what day?" hintTextTimeFrom="Starting at?" hintTextTimeTo="Until?" />
+      <PlaceAutocomplete />
+      <TextFieldWithList hint="Emails to invite?" label="Who" />
+      {/* <RadioField /> */}
+      <PlainActionButtonRaised label="Schedule" style={style.scheduleButton} />
+    </Paper>
+  )
 }
 
 export default Form
