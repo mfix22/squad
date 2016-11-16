@@ -62,9 +62,14 @@ const Form = (props) => {
       <PlainActionButtonRaised
         label="Schedule"
         style={style.scheduleButton}
+        onClick={props.onSubmit}
       />
     </Paper>
   )
 }
+
+// const mapDispatchToProps = dispatch ({
+//   onSubmit:
+// })
 
 export default Form

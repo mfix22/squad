@@ -6,6 +6,13 @@ const CHANGE_TIME_FROM = 'CHANGE_TIME_FROM'
 const CHANGE_TIME_TO = 'CHANGE_TIME_TO'
 const CHANGE_DATE = 'CHANGE_DATE'
 
+const voteSort = (a, b) => {
+  if (a.count === b.count) {
+    return new Date(a.timeFrom) - new Date(b.timeFrom)
+  }
+  return b.count - a.count
+}
+
 const votes = (state, action) => {
   if (!state) {
     return {
@@ -30,7 +37,7 @@ const votes = (state, action) => {
       })
     case RECEIVE_VOTES: {
       return Object.assign({}, state, {
-        votes: action.votes
+        votes: action.votes.sort(voteSort)
       })
     }
     case ADD_VOTE: {
@@ -44,17 +51,18 @@ const votes = (state, action) => {
             id: Math.random(),
             timeFrom,
             timeTo,
-            date
+            date,
+            count: 0
           },
           ...state.votes
-        ]
+        ].sort(voteSort)
       }
     }
     case DELETE_VOTE:
       return Object.assign({}, state, {
         votes: state.votes.filter(vote =>
           vote.id !== action.id
-        )
+        ).sort(voteSort)
       })
     default:
       return state
