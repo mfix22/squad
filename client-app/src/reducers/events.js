@@ -1,6 +1,4 @@
-// import { v4 } from 'node-uuid'
-
-const ADD_EVENT = 'ADD_EVENT';
+const ADD_EVENT = 'ADD_EVENT'
 const RECEIVE_EVENTS = 'RECEIVE_EVENTS'
 
 // const singleEvent = (state, action) => {
