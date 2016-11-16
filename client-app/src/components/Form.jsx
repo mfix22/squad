@@ -7,8 +7,8 @@ import TextFieldWithList from './TextFieldWithList'
 import DateList from './DateList'
 // import RadioField from '../RadioField'
 import { color } from '../vars'
-import PlainActionButtonRaised from './buttons/PlainActionButtonRaised'
-import EmojiBar from './EmojiBar'
+import PlainActionButtonRaised from './Buttons/PlainActionButtonRaised'
+// import EmojiBar from './EmojiBar'
 
 const style = {
   form: {
@@ -29,7 +29,7 @@ const style = {
   }
 }
 
-const Form = props => {
+const Form = (props) => {
   return (
     <Paper style={style.form}>
       <h2 style={style.h2}>Propose an Event?</h2>
