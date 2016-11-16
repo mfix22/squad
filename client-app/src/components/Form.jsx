@@ -13,7 +13,7 @@ import PlainActionButtonRaised from './Buttons/PlainActionButtonRaised'
 const style = {
   form: {
     flexDirection: 'column',
-    minWidth: '300px',
+    minWidth: '360px',
     width: '30%',
     height: '85%',
     padding: '24px 36px'

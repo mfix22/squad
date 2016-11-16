@@ -38,6 +38,7 @@ const style = {
   chips: {
     paddingTop: '24px',
     position: 'relative',
+    width: '100%',
     display: 'flex',
     flexWrap: 'wrap'
   },
