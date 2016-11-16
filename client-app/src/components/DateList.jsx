@@ -52,7 +52,6 @@ const optionToDisplayString = (vote) => {
 
 const DatePickerWithList = ({
                               form,
-                              options,
                               hintTextTimeFrom,
                               hintTextTimeTo,
                               hintTextDate,
@@ -94,7 +93,7 @@ const DatePickerWithList = ({
 
       </form>
       <div style={style.chips}>
-        {options.map((vote) => {
+        {form.votes.map((vote) => {
           return <Chip key={vote.id} style={style.chip} onRequestDelete={() => handleChipDelete(vote.id)}>{optionToDisplayString(vote)}</Chip>
         })}
       </div>
@@ -103,7 +102,6 @@ const DatePickerWithList = ({
 }
 
 const mapStateToProps = state => ({
-  options: state.votes,
   form: state.form
 })
 

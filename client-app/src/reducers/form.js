@@ -1,14 +1,19 @@
+import { v4 } from 'node-uuid'
+
+const ADD_VOTE = 'ADD_VOTE'
+const DELETE_VOTE = 'DELETE_VOTE'
+
 const CHANGE_TIME_FROM = 'CHANGE_TIME_FROM'
 const CHANGE_TIME_TO = 'CHANGE_TIME_TO'
 const CHANGE_DATE = 'CHANGE_DATE'
-const ADD_VOTE = 'ADD_VOTE'
 
 const votes = (state, action) => {
   if (!state) {
     return {
       timeFrom: null,
       timeTo: null,
-      date: null
+      date: null,
+      votes: []
     }
   }
   switch (action.type) {
@@ -24,12 +29,29 @@ const votes = (state, action) => {
       return Object.assign({}, state, {
         date: action.date
       })
-    case ADD_VOTE:
+    case ADD_VOTE: {
+      const { timeFrom, timeTo, date } = state
       return {
         timeFrom: null,
         timeTo: null,
-        date: null
+        date: null,
+        votes: [
+          {
+            id: v4(),
+            timeFrom,
+            timeTo,
+            date
+          },
+          ...state.votes
+        ]
       }
+    }
+    case DELETE_VOTE:
+      return Object.assign({}, state, {
+        votes: state.votes.filter(vote =>
+          vote.id !== action.id
+        )
+      })
     default:
       return state
   }
