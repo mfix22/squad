@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "test:nocache": "jest --no-cache",
+    "test:coverage": "jest --coverage",
     "start": "concurrently --kill-others \"npm run webpack-watch\" \"npm run dev-server\" ",
     "database": "mongod",
     "poststart": "start chrome http://localhost:8080/",

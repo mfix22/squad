@@ -101,6 +101,54 @@ describe('Form Reducer', () => {
     })
     expect(store.getState().form.date).to.equal(moment().format())
   })
+  it('should add a vote with ADD_VOTE and clear the form', () => {
+    const store = createStore(reducer, {
+      form: {
+        timeFrom: moment().format(),
+        timeTo: moment().format(),
+        date: moment().format(),
+        votes: []
+      }
+    })
+    store.dispatch({ type: 'ADD_VOTE' })
+    expect(store.getState().form.votes).to.have.lengthOf(1)
+    const newVote = store.getState().form.votes[0]
+    const form = store.getState().form
+
+    expect(newVote.timeFrom).to.equal(moment().format())
+    expect(newVote.timeTo).to.equal(moment().format())
+    expect(newVote.date).to.equal(moment().format())
+
+    expect(form.timeFrom).to.be.null
+    expect(form.timeTo).to.be.null
+    expect(form.date).to.be.null
+  })
+  it('should remove a vote with DELETE_VOTE', () => {
+    const store = createStore(reducer, {
+      form: {
+        timeFrom: moment().format(),
+        timeTo: moment().format(),
+        date: moment().format(),
+        votes: [
+          {
+            id: 1,
+            timeFrom: moment().format(),
+            timeTo: moment().format(),
+            date: moment().format(),
+          },
+          {
+            id: 2,
+            timeFrom: moment().format(),
+            timeTo: moment().format(),
+            date: moment().format(),
+          }
+        ]
+      }
+    })
+    store.dispatch({ type: 'DELETE_VOTE', id: 1 })
+    expect(store.getState().form.votes).to.have.lengthOf(1)
+    expect(store.getState().form.votes[0].id).to.equal(2)
+  })
 })
 
 describe('Rehydrate fake state', () => {
