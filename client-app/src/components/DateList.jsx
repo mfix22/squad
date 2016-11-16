@@ -1,12 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Chip from 'material-ui/Chip'
+import Avatar from 'material-ui/Avatar'
 import DatePicker from 'material-ui/DatePicker'
 import TimePicker from 'material-ui/TimePicker'
 import FlatButton from 'material-ui/FlatButton'
 import moment from 'moment'
 
 import Label from './Label'
+import { color } from '../vars'
 
 const style = {
   form: {
@@ -93,8 +95,19 @@ const DatePickerWithList = ({
 
       </form>
       <div style={style.chips}>
-        {form.votes.map((vote) => {
-          return <Chip key={vote.id} style={style.chip} onRequestDelete={() => handleChipDelete(vote.id)}>{optionToDisplayString(vote)}</Chip>
+        {form.votes.map((vote, index) => {
+          return (
+            <Chip
+              key={vote.id}
+              style={style.chip}
+              onRequestDelete={() => handleChipDelete(vote.id)}
+            >
+              <Avatar size={24} backgroundColor={(index === 0) ? color.green : null}>
+                {vote.count}
+              </Avatar>
+              {optionToDisplayString(vote)}
+            </Chip>
+          )
         })}
       </div>
     </div>
