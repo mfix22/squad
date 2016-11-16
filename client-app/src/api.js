@@ -19,4 +19,19 @@ const fetchEvents = (dispatch, getState) => {
   })
 }
 
-export { fetchEvents }
+// TODO actually hook /vote to POST
+const fetchVotes = (dispatch) => {
+  return client.get('/vote').then((response) => {
+    return dispatch({
+      type: 'RECEIVE_VOTES',
+      votes: response.data
+    })
+  }).catch((err) => {
+    return dispatch({
+      type: 'ERROR',
+      err
+    })
+  })
+}
+
+export { fetchEvents, fetchVotes }

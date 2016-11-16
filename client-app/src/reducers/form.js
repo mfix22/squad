@@ -2,6 +2,7 @@ import { v4 } from 'node-uuid'
 
 const ADD_VOTE = 'ADD_VOTE'
 const DELETE_VOTE = 'DELETE_VOTE'
+const RECEIVE_VOTES = 'RECEIVE_VOTES'
 
 const CHANGE_TIME_FROM = 'CHANGE_TIME_FROM'
 const CHANGE_TIME_TO = 'CHANGE_TIME_TO'
@@ -29,6 +30,11 @@ const votes = (state, action) => {
       return Object.assign({}, state, {
         date: action.date
       })
+    case RECEIVE_VOTES: {
+      return Object.assign({}, state, {
+        votes: action.votes
+      })
+    }
     case ADD_VOTE: {
       const { timeFrom, timeTo, date } = state
       return {
