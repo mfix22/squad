@@ -34,7 +34,7 @@ const Form = props => {
     <Paper style={style.form}>
       <h2 style={style.h2}>Propose an Event?</h2>
       <TextField hint="What are you planning?" label="What" />
-      <EmojiBar />
+      {/* <EmojiBar /> */}
       {/* <TextFieldWithList hint="At what time(s)?" label="When" /> */}
       <DateList hintTextDate="On what day?" hintTextTimeFrom="Starting at?" hintTextTimeTo="Until?" />
       <PlaceAutocomplete />
