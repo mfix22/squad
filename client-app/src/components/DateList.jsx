@@ -48,8 +48,8 @@ const style = {
 
 const optionToDisplayString = (vote) => {
   return `${moment(vote.date).format('MMM Do YY')},
-    ${moment(vote.timeFrom).format('h:mmA')} -
-   ${moment(vote.timeTo).format('h:mmA')}`
+    ${moment(vote.timeFrom).format('LT')} -
+   ${moment(vote.timeTo).format('LT')}`
 }
 
 const DatePickerWithList = ({
