@@ -20,8 +20,8 @@ class PlaceAutocomplete extends React.Component {
   render() {
     return (
       <GooglePlaceAutocomplete
+        {...this.props}
         searchText={this.state.value}
-        hintText={'Location'}
         onChange={this.handleChange}
         onNewRequest={() => {}}
         name={'location'}
