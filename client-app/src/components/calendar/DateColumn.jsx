@@ -26,6 +26,7 @@ const DateColumn = ({ refDate, window, day, events, width }) => {
             <Event
               key={calEvent.id}
               details={calEvent}
+              view={window}
             />
           )
         })
