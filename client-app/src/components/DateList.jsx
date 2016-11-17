@@ -1,14 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Chip from 'material-ui/Chip'
-// import Avatar from 'material-ui/Avatar'
+import Avatar from 'material-ui/Avatar'
 import DatePicker from 'material-ui/DatePicker'
 import TimePicker from 'material-ui/TimePicker'
 import FlatButton from 'material-ui/FlatButton'
 import moment from 'moment'
 
 import Label from './Label'
-// import { color } from '../vars'
+import { sendVote } from '../api'
+import { color } from '../vars'
 import { CHANGE_TIME, CHANGE_DATE, ADD_OPTION, DELETE_OPTION } from '../actions'
 
 const style = {
@@ -61,6 +62,7 @@ const DatePickerWithList = ({
                               disabled,
                               hintTextTimeFrom,
                               hintTextDate,
+                              handleVote,
                               handleSubmit,
                               handleChangeTime,
                               handleChangeDate,
@@ -102,18 +104,16 @@ const DatePickerWithList = ({
       </form>
       <div style={style.chips}>
         <Label labelFor="Chips" text="Options" />
-        {options.map((option) => {
+        {options.map((option, index) => {
           return (
             <Chip
               key={option.id}
               style={style.chip}
               onRequestDelete={() => handleChipDelete(option.time)}
             >
-              {
-                /* <Avatar size={24} backgroundColor={(index === 0) ? color.green : null}>
-                  {vote.count}
-                </Avatar>*/
-              }
+              <Avatar onClick={() => handleVote(option)} size={24} backgroundColor={(index === 0) ? color.green : null}>
+                {option.count}
+              </Avatar>
               {optionToDisplayString(option)}
             </Chip>
           )
@@ -157,6 +157,9 @@ const mapDispatchToProps = dispatch => ({
       type: DELETE_OPTION,
       id
     })
+  },
+  handleVote: (option) => {
+    dispatch(sendVote(option.time))
   }
 })
 

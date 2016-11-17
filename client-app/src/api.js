@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment'
 import { RECEIVE_EVENT } from './actions'
 
 const client = axios.create({
@@ -22,4 +23,23 @@ const fetchEvents = (dispatch, getState) => {
   })
 }
 
-export { fetchEvents }
+const sendVote = (vote) => {
+  return (dispatch) => {
+    return client.get('/vote'/*, { // TODO change to post
+      time: moment(vote).unix()
+    }*/).then((response) => {
+      const { options } = response.data
+      return dispatch({
+        type: RECEIVE_EVENT,
+        options
+      })
+    }).catch((err) => {
+      return dispatch({
+        type: 'ERROR',
+        err
+      })
+    })
+  }
+}
+
+export { fetchEvents, sendVote }
