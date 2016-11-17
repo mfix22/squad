@@ -1,10 +1,10 @@
-const ADD_VOTE = 'ADD_VOTE'
-const DELETE_VOTE = 'DELETE_VOTE'
-const RECEIVE_EVENT = 'RECEIVE_EVENT'
-
-const CHANGE_TIME_FROM = 'CHANGE_TIME_FROM'
-const CHANGE_TIME_TO = 'CHANGE_TIME_TO'
-const CHANGE_DATE = 'CHANGE_DATE'
+import {
+  ADD_VOTE,
+  DELETE_VOTE,
+  CHANGE_TIME_FROM,
+  CHANGE_TIME_TO,
+  CHANGE_DATE
+} from '../actions'
 
 export const voteSort = (a, b) => {
   if (a.count === b.count) {

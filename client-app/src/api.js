@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { RECEIVE_EVENT } from './actions'
 
 const client = axios.create({
   baseURL: 'http://api.squadup.io',
@@ -9,7 +10,7 @@ const fetchEvents = (dispatch, getState) => {
   return client.get('/events').then((response) => {
     const { events, options } = response.data
     return dispatch({
-      type: 'RECEIVE_EVENT',
+      type: RECEIVE_EVENT,
       events,
       options
     })
@@ -21,19 +22,4 @@ const fetchEvents = (dispatch, getState) => {
   })
 }
 
-// TODO actually hook /vote to POST
-const fetchVotes = (dispatch) => {
-  return client.get('/vote').then((response) => {
-    return dispatch({
-      type: 'RECEIVE_VOTES',
-      votes: response.data
-    })
-  }).catch((err) => {
-    return dispatch({
-      type: 'ERROR',
-      err
-    })
-  })
-}
-
-export { fetchEvents, fetchVotes }
+export { fetchEvents }

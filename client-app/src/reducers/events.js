@@ -1,4 +1,4 @@
-const RECEIVE_EVENT = 'RECEIVE_EVENT'
+import { RECEIVE_EVENT } from '../actions'
 
 // const singleEvent = (state, action) => {
 //   switch (action.type) {

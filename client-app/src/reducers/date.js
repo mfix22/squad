@@ -1,9 +1,11 @@
 import moment from 'moment'
 
-const VIEW_TODAY = 'VIEW_TODAY'
-const VIEW_PREV = 'VIEW_PREV'
-const VIEW_NEXT = 'VIEW_NEXT'
-const CHANGE_WINDOW = 'CHANGE_WINDOW'
+import {
+  VIEW_TODAY,
+  VIEW_PREV,
+  VIEW_NEXT,
+  CHANGE_WINDOW,
+} from '../actions'
 
 const getNextViewDelta = (state) => {
   switch (state.view) {
