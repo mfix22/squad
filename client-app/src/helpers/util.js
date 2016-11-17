@@ -32,6 +32,7 @@ export const isThisMonth = (refDate, otherDate) => {
 const defaultNumDays = 35
 
 export function getDays(refDate, numDays = defaultNumDays) {
+  if (numDays <= 4) return [...Array(numDays).keys()].map(offset => moment(refDate).add(offset, 'd').format())
   if (numDays <= 10) return [...Array(numDays).keys()].map(offset => moment(refDate).day(offset).format())
   const numWeeks = Math.ceil(numDays / 7)
   const correctedNumDays = numWeeks * 7
