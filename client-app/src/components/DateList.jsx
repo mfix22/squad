@@ -1,14 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Chip from 'material-ui/Chip'
-import Avatar from 'material-ui/Avatar'
+// import Avatar from 'material-ui/Avatar'
 import DatePicker from 'material-ui/DatePicker'
 import TimePicker from 'material-ui/TimePicker'
 import FlatButton from 'material-ui/FlatButton'
 import moment from 'moment'
 
 import Label from './Label'
-import { color } from '../vars'
+// import { color } from '../vars'
+import { CHANGE_TIME, CHANGE_DATE, ADD_OPTION, DELETE_OPTION } from '../actions'
 
 const style = {
   form: {
@@ -47,21 +48,21 @@ const style = {
   }
 }
 
-const optionToDisplayString = (vote) => {
-  return `${moment(vote.date).format('MMM Do YY')},
-    ${moment(vote.timeFrom).format('LT')} -
-   ${moment(vote.timeTo).format('LT')}`
+const optionToDisplayString = (option) => {
+  return `${moment(option.time).format('MMM Do')},
+    ${moment(option.time).format('LT')} -
+   ${moment(option.time).add(1, 'h').format('LT')}`
 }
 
 const DatePickerWithList = ({
-                              form,
+                              time,
+                              date,
+                              options,
                               disabled,
                               hintTextTimeFrom,
-                              hintTextTimeTo,
                               hintTextDate,
                               handleSubmit,
-                              handleChangeTimeFrom,
-                              handleChangeTimeTo,
+                              handleChangeTime,
                               handleChangeDate,
                               handleChipDelete }) => {
   return (
@@ -70,21 +71,25 @@ const DatePickerWithList = ({
         <Label labelFor="TimePicker" text="When" />
         <TimePicker
           hintText={hintTextTimeFrom}
-          value={form.timeFrom}
-          onChange={handleChangeTimeFrom}
+          value={time}
+          onChange={handleChangeTime}
           textFieldStyle={style.timePicker}
           style={style.timeFrom}
         />
-        <TimePicker
-          hintText={hintTextTimeTo}
-          value={form.timeTo}
-          onChange={handleChangeTimeTo}
-          textFieldStyle={style.timePicker}
-          style={style.timeTo}
-        />
+        {
+          /*
+          <TimePicker
+            hintText={hintTextTimeTo}
+            value={form.timeTo}
+            onChange={handleChangeTimeTo}
+            textFieldStyle={style.timePicker}
+            style={style.timeTo}
+          />
+          */
+        }
         <DatePicker
           autoOk
-          value={form.date}
+          value={date}
           hintText={hintTextDate}
           textFieldStyle={style.datePicker}
           mode="landscape"
@@ -97,19 +102,19 @@ const DatePickerWithList = ({
       </form>
       <div style={style.chips}>
         <Label labelFor="Chips" text="Options" />
-        {form.votes.map((vote, index) => {
+        {options.map((option) => {
           return (
             <Chip
-              key={vote.id}
+              key={option.id}
               style={style.chip}
-              onRequestDelete={() => handleChipDelete(vote.id)}
+              onRequestDelete={() => handleChipDelete(option.time)}
             >
               {
-                /*<Avatar size={24} backgroundColor={(index === 0) ? color.green : null}>
+                /* <Avatar size={24} backgroundColor={(index === 0) ? color.green : null}>
                   {vote.count}
                 </Avatar>*/
               }
-              {optionToDisplayString(vote)}
+              {optionToDisplayString(option)}
             </Chip>
           )
         })}
@@ -118,39 +123,38 @@ const DatePickerWithList = ({
   )
 }
 
-const mapStateToProps = state => ({
-  form: state.form,
-  disabled: !state.form.timeFrom || !state.from.timeTo || !state.from.date
-})
+const mapStateToProps = (state) => {
+  const { time, date, options } = state.form
+  return {
+    options,
+    time: (!time) ? null : moment(time).toDate(),
+    date: (!date) ? null : moment(date).toDate(),
+    disabled: !time || !date // TODO|| !state.form.duration
+  }
+}
 
 const mapDispatchToProps = dispatch => ({
-  handleChangeTimeFrom: (e, time) => {
+  handleChangeTime: (e, time) => {
     dispatch({
-      type: 'CHANGE_TIME_FROM',
-      time
-    })
-  },
-  handleChangeTimeTo: (e, time) => {
-    dispatch({
-      type: 'CHANGE_TIME_TO',
+      type: CHANGE_TIME,
       time
     })
   },
   handleChangeDate: (e, date) => {
     dispatch({
-      type: 'CHANGE_DATE',
+      type: CHANGE_DATE,
       date
     })
   },
   handleSubmit: (e) => {
     e.preventDefault()
     dispatch({
-      type: 'ADD_VOTE'
+      type: ADD_OPTION
     })
   },
   handleChipDelete: (id) => {
     dispatch({
-      type: 'DELETE_VOTE',
+      type: DELETE_OPTION,
       id
     })
   }

@@ -1,9 +1,11 @@
+import moment from 'moment'
 import {
-  ADD_VOTE,
-  DELETE_VOTE,
-  CHANGE_TIME_FROM,
-  CHANGE_TIME_TO,
-  CHANGE_DATE
+  ADD_OPTION,
+  DELETE_OPTION,
+  CHANGE_TIME,
+  CHANGE_DATE,
+  RECEIVE_EVENT,
+  CHANGE_DURATION
 } from '../actions'
 
 export const voteSort = (a, b) => {
@@ -13,56 +15,69 @@ export const voteSort = (a, b) => {
   return b.count - a.count
 }
 
-const votes = (state, action) => {
+const form = (state, action) => {
   if (!state) {
     return {
-      timeFrom: null,
-      timeTo: null,
+      time: null,
       date: null,
-      votes: []
+      duration: 36000,
+      options: []
     }
   }
+  // TODO is there a better way to do change time and change date?
   switch (action.type) {
-    case CHANGE_TIME_FROM:
+    case CHANGE_TIME: {
+      if (!action.time) {
+        return Object.assign({}, state, {
+          time: null
+        })
+      }
+
       return Object.assign({}, state, {
-        timeFrom: action.time
+        time: moment(action.time)
       })
-    case CHANGE_TIME_TO:
+    }
+    case CHANGE_DATE: {
+      if (!action.date) {
+        return Object.assign({}, state, {
+          date: null
+        })
+      }
       return Object.assign({}, state, {
-        timeTo: action.time
+        date: moment(action.date).format()
       })
-    case CHANGE_DATE:
+    }
+    case CHANGE_DURATION:
+      // even if null
       return Object.assign({}, state, {
-        date: action.date
+        duration: action.duration
       })
     case RECEIVE_EVENT: {
       return Object.assign({}, state, {
-        votes: action.options.sort(voteSort)
+        options: action.options.sort(voteSort)
       })
     }
-    case ADD_VOTE: {
-      const { timeFrom, timeTo, date } = state
-      if (!timeFrom || !timeTo || !date) return state
+    case ADD_OPTION: {
+      const { time, duration } = state
+      if (!time || !duration) return state
       return {
-        timeFrom: null,
-        timeTo: null,
-        date: null,
-        votes: [
+        time: null,
+        duration: null,
+        options: [
           {
             id: Math.random(),
-            timeFrom,
-            timeTo,
-            date,
+            time,
+            duration,
             count: 0
           },
-          ...state.votes
+          ...state.options
         ].sort(voteSort)
       }
     }
-    case DELETE_VOTE:
+    case DELETE_OPTION:
       return Object.assign({}, state, {
-        votes: state.votes.filter(vote =>
-          vote.id !== action.id
+        options: state.options.filter(vote =>
+          vote.time !== action.id
         ).sort(voteSort)
       })
     default:
@@ -70,4 +85,4 @@ const votes = (state, action) => {
   }
 }
 
-export default votes
+export default form
