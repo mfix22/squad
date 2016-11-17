@@ -41,7 +41,7 @@ const date = (state, action) => {
   if (!state) {
     return {
       value: moment().format(),
-      view: 'MONTH'
+      view: '4_DAY'
     }
   }
   switch (action.type) {
