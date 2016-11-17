@@ -4,7 +4,7 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import deepFreeze from 'deep-freeze'
-import reducer from '../client-app/src/reducers/index'
+import reducer from '../client/reducers/index'
 
 const fakeState = {
   events: [

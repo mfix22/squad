@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import moment from 'moment'
 import { createStore } from 'redux'
-import reducer from '../client-app/src/reducers/index'
-import { voteSort } from '../client-app/src/reducers/form'
+import reducer from '../client/reducers/index'
+import { voteSort } from '../client/reducers/form'
 
 describe('Form Reducer', () => {
   it('should sort votes by vote count and then start date', () => {

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import moment from 'moment'
-import { chunk, getDays, getNumDaysInView, getChunkedDays, isThisMonth, getOrderedMonthArray } from '../client-app/src/helpers/util'
+import { chunk, getDays, getNumDaysInView, getChunkedDays, isThisMonth, getOrderedMonthArray } from '../client/helpers/util'
 
 describe('Date utils', () => {
   it('Gets list of day with refDate in relative week position if numDays < 10', () => {
