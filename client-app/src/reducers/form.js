@@ -24,7 +24,7 @@ const form = (state, action) => {
       options: []
     }
   }
-  // TODO is there a better way to do change time and change date?
+
   switch (action.type) {
     case CHANGE_TIME: {
       if (!action.time) {
