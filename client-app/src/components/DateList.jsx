@@ -111,7 +111,12 @@ const DatePickerWithList = ({
               style={style.chip}
               onRequestDelete={() => handleChipDelete(option.time)}
             >
-              <Avatar onClick={() => handleVote(option)} size={24} backgroundColor={(index === 0) ? color.green : null}>
+              <Avatar
+                onClick={() => handleVote(option)}
+                size={24}
+                style={{ cursor: 'pointer' }}
+                backgroundColor={(index === 0) ? color.green : null}
+              >
                 {option.count}
               </Avatar>
               {optionToDisplayString(option)}
