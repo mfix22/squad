@@ -7,9 +7,11 @@ const client = axios.create({
 
 const fetchEvents = (dispatch, getState) => {
   return client.get('/events').then((response) => {
+    const { events, options } = response.data
     return dispatch({
-      type: 'RECEIVE_EVENTS',
-      events: response.data
+      type: 'RECEIVE_EVENT',
+      events,
+      options
     })
   }).catch((err) => {
     return dispatch({

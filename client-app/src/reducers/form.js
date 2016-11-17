@@ -1,6 +1,6 @@
 const ADD_VOTE = 'ADD_VOTE'
 const DELETE_VOTE = 'DELETE_VOTE'
-const RECEIVE_VOTES = 'RECEIVE_VOTES'
+const RECEIVE_EVENT = 'RECEIVE_EVENT'
 
 const CHANGE_TIME_FROM = 'CHANGE_TIME_FROM'
 const CHANGE_TIME_TO = 'CHANGE_TIME_TO'
@@ -35,9 +35,9 @@ const votes = (state, action) => {
       return Object.assign({}, state, {
         date: action.date
       })
-    case RECEIVE_VOTES: {
+    case RECEIVE_EVENT: {
       return Object.assign({}, state, {
-        votes: action.votes.sort(voteSort)
+        votes: action.options.sort(voteSort)
       })
     }
     case ADD_VOTE: {

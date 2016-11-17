@@ -34,7 +34,7 @@
 
 ## /event
 
-### post :
+### POST :
 
 create new event. Owned by logged in user if available.
 
@@ -67,4 +67,34 @@ __Response__:
 
 An `Event`
 
-###
+## /vote/:id
+
+### POST :
+create a vote
+
+<br>
+
+__Request__:
+
+```json
+{
+  "time": 1234234324
+}
+```
+__Response__:
+An `Event`
+
+### DELETE :
+delete a vote
+
+<br>
+
+__Request__:
+
+```json
+{
+  "time": 1234234324
+}
+```
+__Response__:
+An `Event`

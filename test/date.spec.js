@@ -93,14 +93,14 @@ describe('Rehydrate fake state', () => {
   })
 })
 
-describe('Dispatch RECEIVE_EVENTS', () => {
+describe('Dispatch RECEIVE_EVENT', () => {
   it('simulates receiving events from the server', () => {
     const store = createStore(reducer)
     // ensure store is immutable
     deepFreeze(store)
     const prevDate = store.getState().date
     store.dispatch({
-      type: 'RECEIVE_EVENTS',
+      type: 'RECEIVE_EVENT',
       events: fakeState.events
     })
     expect(store.getState().events).to.deep.equal(fakeState.events)

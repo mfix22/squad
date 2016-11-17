@@ -104,9 +104,11 @@ const DatePickerWithList = ({
               style={style.chip}
               onRequestDelete={() => handleChipDelete(vote.id)}
             >
-              <Avatar size={24} backgroundColor={(index === 0) ? color.green : null}>
-                {vote.count}
-              </Avatar>
+              {
+                /*<Avatar size={24} backgroundColor={(index === 0) ? color.green : null}>
+                  {vote.count}
+                </Avatar>*/
+              }
               {optionToDisplayString(vote)}
             </Chip>
           )
