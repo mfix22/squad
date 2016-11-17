@@ -23,92 +23,62 @@ describe('Form Reducer', () => {
     }
     expect(voteSort(a,b)).to.be.below(0)
   })
-  it('receive votes from RECEIVE_VOTES dispatch', () => {
+
+  it('should change from-time by dispatching CHANGE_TIME', () => {
     const store = createStore(reducer)
     store.dispatch({
-      type: 'RECEIVE_VOTES',
-      votes: [
-        {
-          id: 1
-        }
-      ]
-    })
-    expect(store.getState().form.votes).to.deep.equal([{ id: 1 }])
-  })
-  it('should change from-time by dispatching CHANGE_TIME_FROM', () => {
-    const store = createStore(reducer)
-    store.dispatch({
-      type: 'CHANGE_TIME_FROM',
+      type: 'CHANGE_TIME',
       time: moment().format()
     })
-    expect(store.getState().form.timeFrom).to.equal(moment().format())
+    expect(moment(store.getState().form.time).format('LT')).to.equal(moment().format('LT'))
     store.dispatch({
-      type: 'CHANGE_TIME_FROM',
+      type: 'CHANGE_TIME',
       time: null
     })
-    expect(store.getState().form.timeFrom).to.equal(null)
-  })
-  it('should change from-time by dispatching CHANGE_TIME_TO', () => {
-    const store = createStore(reducer)
-    store.dispatch({
-      type: 'CHANGE_TIME_TO',
-      time: moment().format()
-    })
-    expect(store.getState().form.timeTo).to.equal(moment().format())
+    expect(store.getState().form.time).to.equal(null)
   })
   it('should change from-time by dispatching CHANGE_DATE', () => {
     const store = createStore(reducer)
     store.dispatch({
       type: 'CHANGE_DATE',
-      date: moment().format()
+      date: moment('2020-10-10').format()
     })
-    expect(store.getState().form.date).to.equal(moment().format())
+    expect(moment(store.getState().form.time).format('LL')).to.equal(moment('2020-10-10').format('LL'))
   })
-  it('should add a vote with ADD_VOTE and clear the form', () => {
+  it('should add a vote with ADD_OPTION and clear the form', () => {
     const store = createStore(reducer, {
       form: {
-        timeFrom: moment().format(),
-        timeTo: moment().format(),
-        date: moment().format(),
+        time: moment().format(),
         votes: []
       }
     })
-    store.dispatch({ type: 'ADD_VOTE' })
+    store.dispatch({ type: 'ADD_OPTION' })
     expect(store.getState().form.votes).to.have.lengthOf(1)
     const newVote = store.getState().form.votes[0]
     const form = store.getState().form
 
-    expect(newVote.timeFrom).to.equal(moment().format())
-    expect(newVote.timeTo).to.equal(moment().format())
-    expect(newVote.date).to.equal(moment().format())
+    expect(newVote.time).to.equal(moment().format())
+    expect(newVote.duration).to.equal(3600000)
 
-    expect(form.timeFrom).to.be.null
-    expect(form.timeTo).to.be.null
-    expect(form.date).to.be.null
+    expect(form.time).to.be.null
   })
-  it('should remove a vote with DELETE_VOTE', () => {
+  it('should remove a vote with DELETE_OPTION', () => {
     const store = createStore(reducer, {
       form: {
-        timeFrom: moment().format(),
-        timeTo: moment().format(),
-        date: moment().format(),
+        time: moment().format(),
         votes: [
           {
             id: 1,
-            timeFrom: moment().format(),
-            timeTo: moment().format(),
-            date: moment().format(),
+            time: moment().format(),
           },
           {
             id: 2,
-            timeFrom: moment().format(),
-            timeTo: moment().format(),
             date: moment().format(),
           }
         ]
       }
     })
-    store.dispatch({ type: 'DELETE_VOTE', id: 1 })
+    store.dispatch({ type: 'DELETE_OPTION', id: 1 })
     expect(store.getState().form.votes).to.have.lengthOf(1)
     expect(store.getState().form.votes[0].id).to.equal(2)
   })

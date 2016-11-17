@@ -21,8 +21,10 @@ const events = (state = [], action) => {
     //     ...state,
     //     // singleEvent(null, action)
     //   ]
-    case RECEIVE_EVENT :
+    case RECEIVE_EVENT: {
+      if (!action.events) return state
       return action.events
+    }
     default:
       return state
   }
