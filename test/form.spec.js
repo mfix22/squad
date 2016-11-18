@@ -24,7 +24,7 @@ describe('Form Reducer', () => {
     expect(voteSort(a,b)).to.be.below(0)
   })
 
-  it('should change from-time by dispatching CHANGE_TIME', () => {
+  it('should change time by dispatching CHANGE_TIME', () => {
     const store = createStore(reducer)
     store.dispatch({
       type: 'CHANGE_TIME',
@@ -37,24 +37,26 @@ describe('Form Reducer', () => {
     })
     expect(store.getState().form.time).to.equal(null)
   })
-  it('should change from-time by dispatching CHANGE_DATE', () => {
+  it('should change from by dispatching CHANGE_DATE', () => {
     const store = createStore(reducer)
     store.dispatch({
       type: 'CHANGE_DATE',
       date: moment('2020-10-10').format()
     })
-    expect(moment(store.getState().form.time).format('LL')).to.equal(moment('2020-10-10').format('LL'))
+    expect(moment(store.getState().form.date).format('LL')).to.equal(moment('2020-10-10').format('LL'))
   })
   it('should add a vote with ADD_OPTION and clear the form', () => {
     const store = createStore(reducer, {
       form: {
         time: moment().format(),
-        votes: []
+        date: moment().format(),
+        duration: 3600000,
+        options: []
       }
     })
     store.dispatch({ type: 'ADD_OPTION' })
-    expect(store.getState().form.votes).to.have.lengthOf(1)
-    const newVote = store.getState().form.votes[0]
+    expect(store.getState().form.options).to.have.lengthOf(1)
+    const newVote = store.getState().form.options[0]
     const form = store.getState().form
 
     expect(newVote.time).to.equal(moment().format())
@@ -66,20 +68,18 @@ describe('Form Reducer', () => {
     const store = createStore(reducer, {
       form: {
         time: moment().format(),
-        votes: [
+        options: [
           {
-            id: 1,
-            time: moment().format(),
+            time: 1,
           },
           {
-            id: 2,
-            date: moment().format(),
+            time: 2,
           }
         ]
       }
     })
     store.dispatch({ type: 'DELETE_OPTION', id: 1 })
-    expect(store.getState().form.votes).to.have.lengthOf(1)
-    expect(store.getState().form.votes[0].id).to.equal(2)
+    expect(store.getState().form.options).to.have.lengthOf(1)
+    expect(store.getState().form.options[0].time).to.equal(2)
   })
 })

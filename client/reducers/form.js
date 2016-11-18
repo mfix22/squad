@@ -53,6 +53,7 @@ const form = (state, action) => {
         duration: action.duration
       })
     case RECEIVE_EVENT: {
+      if (!action.options) return state
       return Object.assign({}, state, {
         options: action.options.sort(voteSort)
       })

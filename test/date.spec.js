@@ -7,33 +7,33 @@ import deepFreeze from 'deep-freeze'
 import reducer from '../client/reducers/index'
 
 const fakeState = {
-  events: [
+  "events": [
     {
-      id: 1,
-      title: 'Birthday',
-      time: '2016-11-12T16:35:09-05:00',
-      location: 'Home',
-      color: '#f284a8'
+        "id": 1,
+        "title": "Birthday",
+        "time": "2016-11-17T16:30:00-05:00",
+        "location": "Home",
+        "color": "#f284a8"
     },
     {
-      id: 2,
-      title: "Meeting @ Aldo's",
-      time: '2016-11-13T16:35:09-05:00',
-      location: "Aldo's Cafe"
+        "id": 2,
+        "title": "Meeting @ Aldo's",
+        "time": "2016-11-18T17:30:00-05:00",
+        "location": "Aldo's Cafe"
     },
     {
-      id: 3,
-      title: 'Test Meeting w/ some B',
-      time: '2016-11-11T16:35:09-05:00',
-      location: 'ECB',
-      color: '#239207'
+        "id": 3,
+        "title": "Test Meeting w/ some B",
+        "time": "2016-11-18T18:30:00-05:00",
+        "location": "ECB",
+        "color": "#239207"
     },
     {
-      id: 4,
-      title: 'HELP',
-      time: '2016-11-11T16:35:09-05:00',
-      location: 'ECB',
-      color: '#cced00'
+        "id": 4,
+        "title": "HELP",
+        "time": "2016-11-19T13:00:00-05:00",
+        "location": "ECB",
+        "color": "#cced00"
     }
   ]
 }
@@ -62,7 +62,7 @@ describe('Date reducer', () => {
     store.dispatch({
       type: 'VIEW_NEXT'
     })
-    expect(store.getState().date.value).to.equal(moment(state.date.value).add(1, 'M').format())
+    expect(store.getState().date.value).to.equal(moment(state.date.value).add(4, 'd').format())
   })
   it('changes reference date to one month in the past by default on VIEW_PREV', () => {
     const store = createStore(reducer)
@@ -70,7 +70,7 @@ describe('Date reducer', () => {
     store.dispatch({
       type: 'VIEW_PREV'
     })
-    expect(store.getState().date.value).to.equal(moment(state.date.value).add(-1, 'M').format())
+    expect(store.getState().date.value).to.equal(moment(state.date.value).add(-4, 'd').format())
   })
 
   it('changes number of days in view with CHANGE_WINDOW', () => {
@@ -98,7 +98,6 @@ describe('Dispatch RECEIVE_EVENT', () => {
     const store = createStore(reducer)
     // ensure store is immutable
     deepFreeze(store)
-    const prevDate = store.getState().date
     store.dispatch({
       type: 'RECEIVE_EVENT',
       events: fakeState.events
