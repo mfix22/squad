@@ -8,9 +8,11 @@ import {
   CHANGE_DURATION
 } from '../actions'
 
+const DEFAULT_DURATION = 30 * 60 * 1000
+
 export const voteSort = (a, b) => {
   if (a.count === b.count) {
-    return new Date(a.timeFrom) - new Date(b.timeFrom)
+    return moment(a.time).toDate() - moment(b.time).toDate()
   }
   return b.count - a.count
 }
@@ -20,7 +22,7 @@ const form = (state, action) => {
     return {
       time: null,
       date: null,
-      duration: 30 * 60 * 1000,
+      duration: DEFAULT_DURATION,
       options: []
     }
   }
@@ -34,7 +36,7 @@ const form = (state, action) => {
       }
 
       return Object.assign({}, state, {
-        time: moment(action.time)
+        time: moment(action.time).format()
       })
     }
     case CHANGE_DATE: {
@@ -48,7 +50,11 @@ const form = (state, action) => {
       })
     }
     case CHANGE_DURATION:
-      // even if null
+      if (!action.duration) {
+        return Object.assign({}, state, {
+          duration: DEFAULT_DURATION
+        })
+      }
       return Object.assign({}, state, {
         duration: action.duration
       })
@@ -59,16 +65,16 @@ const form = (state, action) => {
       })
     }
     case ADD_OPTION: {
-      const { time, duration } = state
+      const { time, duration, date } = state
       if (!time || !duration) return state
       return {
         time: null,
-        duration: null,
+        duration: DEFAULT_DURATION,
         options: [
           {
             id: Math.random(),
             time,
-            duration,
+            date,
             count: 0
           },
           ...state.options

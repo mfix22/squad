@@ -20,7 +20,7 @@ const style = {
     margin: '16px 0px 0px 0px'
   },
   timePicker: {
-    width: '96px',
+    width: '136px',
     marginRight: '16px',
     float: 'left'
   },
@@ -30,7 +30,7 @@ const style = {
     float: 'left'
   },
   datePicker: {
-    width: '124px',
+    width: '136px',
     float: 'left'
   },
   submit: {

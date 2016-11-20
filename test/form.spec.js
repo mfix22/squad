@@ -8,11 +8,11 @@ describe('Form Reducer', () => {
   it('should sort votes by vote count and then start date', () => {
     let a = {
       count: 0,
-      timeFrom: moment().format()
+      time: moment().format()
     }
     let b = {
       count: 1,
-      timeFrom: moment().format()
+      time: moment().format()
     }
     expect(voteSort(a,b)).to.be.above(0)
     b.count = 0;
@@ -21,6 +21,7 @@ describe('Form Reducer', () => {
       count: 0,
       timeFrom: moment().add(1, 'd').format()
     }
+    console.log(voteSort(a,b));
     expect(voteSort(a,b)).to.be.below(0)
   })
 
@@ -61,7 +62,7 @@ describe('Form Reducer', () => {
       type: 'CHANGE_DURATION',
       duration: null
     })
-    expect(store.getState().form.duration).to.be.null
+    expect(store.getState().form.duration).to.equal(30 * 60 * 1000)
   })
   it('should add a vote with ADD_OPTION and clear the form', () => {
     const store = createStore(reducer, {
@@ -78,7 +79,6 @@ describe('Form Reducer', () => {
     const form = store.getState().form
 
     expect(newVote.time).to.equal(moment().format())
-    expect(newVote.duration).to.equal(3600000)
 
     expect(form.time).to.be.null
   })
