@@ -6,6 +6,14 @@ import createLogger from 'redux-logger'
 import deepFreeze from 'deep-freeze'
 import reducer from '../client/reducers/index'
 
+import {
+  VIEW_TODAY,
+  VIEW_PREV,
+  VIEW_NEXT,
+  CHANGE_WINDOW,
+  RECEIVE_EVENT,
+} from '../client/actions'
+
 const fakeState = {
   "events": [
     {
@@ -39,46 +47,145 @@ const fakeState = {
 }
 
 describe('Date reducer', () => {
-  it('changes reference date to today on VIEW TODAY', () => {
+  it(`changes reference date to today on ${VIEW_TODAY}`, () => {
     const store = createStore(reducer)
     store.dispatch({
-      type: 'VIEW_TODAY'
+      type: VIEW_TODAY
     })
     expect(store.getState().date.value).to.equal(moment().format())
   })
   it('no matter what', () => {
     const store = createStore(reducer)
-    store.dispatch({ type: 'VIEW_PREV' })
-    store.dispatch({ type: 'VIEW_NEXT' })
-    store.dispatch({ type: 'VIEW_NEXT' })
-    store.dispatch({ type: 'VIEW_NEXT' })
+    store.dispatch({ type: VIEW_PREV })
+    store.dispatch({ type: VIEW_NEXT })
+    store.dispatch({ type: VIEW_NEXT })
+    store.dispatch({ type: VIEW_NEXT })
 
-    store.dispatch({ type: 'VIEW_TODAY' })
+    store.dispatch({ type: VIEW_TODAY })
     expect(store.getState().date.value).to.equal(moment().format())
   })
-  it('changes reference date to one month from now by default on VIEW_NEXT', () => {
-    const store = createStore(reducer)
-    const state = store.getState()
+  it(`changes reference date to one unit (depending on view) from now by default on ${VIEW_NEXT}`, () => {
+    let store = createStore(reducer)
+    let state = store.getState()
     store.dispatch({
-      type: 'VIEW_NEXT'
+      type: VIEW_NEXT
     })
     expect(store.getState().date.value).to.equal(moment(state.date.value).add(4, 'd').format())
-  })
-  it('changes reference date to one month in the past by default on VIEW_PREV', () => {
-    const store = createStore(reducer)
-    const state = store.getState()
+
+    store = createStore(reducer, {
+      date : {
+        view: 'WEEK'
+      }
+    })
+    state = store.getState()
+
     store.dispatch({
-      type: 'VIEW_PREV'
+      type: VIEW_NEXT
+    })
+    expect(store.getState().date.value).to.equal(moment(state.date.value).add(1, 'w').format())
+
+    store = createStore(reducer, {
+      date : {
+        view: '2_WEEK'
+      }
+    })
+    state = store.getState()
+
+    store.dispatch({
+      type: VIEW_NEXT
+    })
+    expect(store.getState().date.value).to.equal(moment(state.date.value).add(2, 'w').format())
+
+    store = createStore(reducer, {
+      date : {
+        view: 'MONTH'
+      }
+    })
+    state = store.getState()
+
+    store.dispatch({
+      type: VIEW_NEXT
+    })
+    expect(store.getState().date.value).to.equal(moment(state.date.value).add(1, 'M').format())
+
+
+    store = createStore(reducer, {
+      date : {
+        value: moment().format(),
+        view: 'UNKNOWN_VIEW'
+      }
+    })
+    const prevState = store.getState()
+    store.dispatch({
+      type: VIEW_NEXT
+    })
+    expect(store.getState()).to.deep.equal(prevState)
+
+  })
+  it(`changes reference date to one unit (depending on view) in the past by default on ${VIEW_PREV}`, () => {
+    let store = createStore(reducer)
+    let state = store.getState()
+    store.dispatch({
+      type: VIEW_PREV
     })
     expect(store.getState().date.value).to.equal(moment(state.date.value).add(-4, 'd').format())
+
+    store = createStore(reducer, {
+      date : {
+        view: 'WEEK'
+      }
+    })
+    state = store.getState()
+
+    store.dispatch({
+      type: VIEW_PREV
+    })
+    expect(store.getState().date.value).to.equal(moment(state.date.value).add(-1, 'w').format())
+
+    store = createStore(reducer, {
+      date : {
+        view: '2_WEEK'
+      }
+    })
+    state = store.getState()
+
+    store.dispatch({
+      type: VIEW_PREV
+    })
+    expect(store.getState().date.value).to.equal(moment(state.date.value).add(-2, 'w').format())
+
+    store = createStore(reducer, {
+      date : {
+        view: 'MONTH'
+      }
+    })
+    state = store.getState()
+
+    store.dispatch({
+      type: VIEW_PREV
+    })
+    expect(store.getState().date.value).to.equal(moment(state.date.value).add(-1, 'M').format())
+
+    store = createStore(reducer, {
+      date : {
+        value: moment().format(),
+        view: 'UNKNOWN_VIEW'
+      }
+    })
+    const prevState = store.getState()
+    store.dispatch({
+      type: VIEW_PREV
+    })
+    expect(store.getState()).to.deep.equal(prevState)
+
   })
 
-  it('changes number of days in view with CHANGE_WINDOW', () => {
+  it(`changes number of days in view with ${CHANGE_WINDOW}`, () => {
     const store = createStore(reducer)
     const views = ['4_DAY', 'WEEK', '2_WEEK', 'MONTH']
     views.forEach((view) => {
       store.dispatch({
-        type: 'CHANGE_WINDOW',
+        type: CHANGE_WINDOW,
         view
       })
       expect(store.getState().date.view).to.equal(view)
@@ -93,13 +200,13 @@ describe('Rehydrate fake state', () => {
   })
 })
 
-describe('Dispatch RECEIVE_EVENT', () => {
+describe(`Dispatch ${RECEIVE_EVENT}`, () => {
   it('simulates receiving events from the server', () => {
     const store = createStore(reducer)
     // ensure store is immutable
     deepFreeze(store)
     store.dispatch({
-      type: 'RECEIVE_EVENT',
+      type: RECEIVE_EVENT,
       events: fakeState.events
     })
     expect(store.getState().events).to.deep.equal(fakeState.events)

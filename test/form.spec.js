@@ -35,15 +35,33 @@ describe('Form Reducer', () => {
       type: 'CHANGE_TIME',
       time: null
     })
-    expect(store.getState().form.time).to.equal(null)
+    expect(store.getState().form.time).to.be.null
   })
-  it('should change from by dispatching CHANGE_DATE', () => {
+  it('should change date by dispatching CHANGE_DATE', () => {
     const store = createStore(reducer)
     store.dispatch({
       type: 'CHANGE_DATE',
       date: moment('2020-10-10').format()
     })
     expect(moment(store.getState().form.date).format('LL')).to.equal(moment('2020-10-10').format('LL'))
+    store.dispatch({
+      type: 'CHANGE_DATE',
+      date: null
+    })
+    expect(store.getState().form.date).to.be.null
+  })
+  it('should change duration by dispatching CHANGE_DURATION', () => {
+    const store = createStore(reducer)
+    store.dispatch({
+      type: 'CHANGE_DURATION',
+      duration: 60*60*1000
+    })
+    expect(store.getState().form.duration).to.equal(60*60*1000)
+    store.dispatch({
+      type: 'CHANGE_DURATION',
+      duration: null
+    })
+    expect(store.getState().form.duration).to.be.null
   })
   it('should add a vote with ADD_OPTION and clear the form', () => {
     const store = createStore(reducer, {
@@ -81,5 +99,38 @@ describe('Form Reducer', () => {
     store.dispatch({ type: 'DELETE_OPTION', id: 1 })
     expect(store.getState().form.options).to.have.lengthOf(1)
     expect(store.getState().form.options[0].time).to.equal(2)
+  })
+
+  it('simulates receiving options from the server', () => {
+    const options = [
+      {
+        "id":"ebc633cb-ed52-479a-8c57-dbd2c59bb700",
+        "time":"2016-11-16T04:00:03.165Z",
+        "count": 4
+      },
+      {
+        "id":"ebc633cb-ed52-479a-8c57-dbd2c59bb701",
+        "time":"2016-11-16T06:00:03.165Z",
+        "count": 1
+      },
+      {
+        "id":"ebc633cb-ed52-479a-8c57-dbd2c59bb702",
+        "time":"2016-11-16T07:00:03.165Z",
+        "count": 0
+      }
+    ]
+    const store = createStore(reducer)
+    store.dispatch({
+      type: 'RECEIVE_EVENT',
+      options
+    })
+    expect(store.getState().form.options).to.deep.equal(options)
+
+    const prevState = store.getState()
+    store.dispatch({
+      type: 'RECEIVE_EVENT',
+      options: null
+    })
+    expect(store.getState()).to.deep.equal(prevState)
   })
 })

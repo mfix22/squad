@@ -18,7 +18,7 @@ const getNextViewDelta = (state) => {
     case 'MONTH':
       return moment(state.value).add(1, 'M').format()
     default:
-      return state
+      return state.value
   }
 }
 
@@ -33,7 +33,7 @@ const getPrevViewDelta = (state) => {
     case 'MONTH':
       return moment(state.value).subtract(1, 'M').format()
     default:
-      return state
+      return state.value
   }
 }
 
