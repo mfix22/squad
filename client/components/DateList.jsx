@@ -172,8 +172,7 @@ const mapDispatchToProps = dispatch => ({
       date
     })
   },
-  handleChipAdd: (e) => {
-    e.preventDefault()
+  handleChipAdd: () => {
     dispatch({
       type: ADD_OPTION
     })
@@ -192,6 +191,9 @@ const mapDispatchToProps = dispatch => ({
       type: CHANGE_DURATION,
       duration: choice.value
     })
+  },
+  handleSubmit: (e) => {
+    e.preventDefault()
   }
 })
 
