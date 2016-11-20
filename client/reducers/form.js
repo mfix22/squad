@@ -20,7 +20,7 @@ const form = (state, action) => {
     return {
       time: null,
       date: null,
-      duration: 36000,
+      duration: 30 * 60 * 1000,
       options: []
     }
   }
