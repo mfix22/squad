@@ -1,23 +1,26 @@
-[
-  {
-    "id":"ebc633cb-ed52-479a-8c57-dbd2c59bb700",
-    "timeFrom":"2016-11-16T04:00:03.165Z",
-    "timeTo":"2016-11-16T05:00:06.844Z",
-    "date":"2016-12-25T06:00:00.000Z",
-    "count": 4
-  },
-  {
-    "id":"ebc633cb-ed52-479a-8c57-dbd2c59bb701",
-    "timeFrom":"2016-11-16T06:00:03.165Z",
-    "timeTo":"2016-11-16T07:00:06.844Z",
-    "date":"2016-12-25T06:00:00.000Z",
-    "count": 1
-  },
-  {
-    "id":"ebc633cb-ed52-479a-8c57-dbd2c59bb702",
-    "timeFrom":"2016-11-16T07:00:03.165Z",
-    "timeTo":"2016-11-16T08:00:06.844Z",
-    "date":"2016-12-25T06:00:00.000Z",
-    "count": 0
-  }
-]
+{
+  "title": "My Event",
+  "location": "HOME",
+  "emails": [
+    "test@test.com",
+    "boaty@mcboatface.coms"
+  ],
+  "duration": 3600000,
+  "options": [
+    {
+      "id":"ebc633cb-ed52-479a-8c57-dbd2c59bb700",
+      "time":"2016-11-16T04:00:03.165Z",
+      "count": 5
+    },
+    {
+      "id":"ebc633cb-ed52-479a-8c57-dbd2c59bb701",
+      "time":"2016-11-16T06:00:03.165Z",
+      "count": 1
+    },
+    {
+      "id":"ebc633cb-ed52-479a-8c57-dbd2c59bb702",
+      "time":"2016-11-16T07:00:03.165Z",
+      "count": 0
+    }
+  ]
+}

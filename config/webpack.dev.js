@@ -7,9 +7,9 @@ module.exports = webpackMerge(commonConfig, {
   devtool: 'source-map',
 
   entry: {
-    'app': './client-app/src/index.jsx'
+    'app': './client/index.jsx'
   },
-  
+
   output: {
     path: helpers.root('public'),
     publicPath: 'http://localhost:8080/',

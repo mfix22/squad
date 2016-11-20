@@ -8,14 +8,13 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
 import App from './components/App'
 import configureStore from './helpers/configureStore'
-import { fetchEvents, fetchVotes } from './api'
+import { fetchEvents } from './api'
 import { color } from './vars'
 
 injectTapEventPlugin()
 
 const store = configureStore()
 store.dispatch(fetchEvents)
-store.dispatch(fetchVotes)
 
 const muiTheme = getMuiTheme({
   palette: {

@@ -1,9 +1,11 @@
 import moment from 'moment'
 
-const VIEW_TODAY = 'VIEW_TODAY'
-const VIEW_PREV = 'VIEW_PREV'
-const VIEW_NEXT = 'VIEW_NEXT'
-const CHANGE_WINDOW = 'CHANGE_WINDOW'
+import {
+  VIEW_TODAY,
+  VIEW_PREV,
+  VIEW_NEXT,
+  CHANGE_WINDOW,
+} from '../actions'
 
 const getNextViewDelta = (state) => {
   switch (state.view) {
@@ -16,7 +18,7 @@ const getNextViewDelta = (state) => {
     case 'MONTH':
       return moment(state.value).add(1, 'M').format()
     default:
-      return state
+      return state.value
   }
 }
 
@@ -31,7 +33,7 @@ const getPrevViewDelta = (state) => {
     case 'MONTH':
       return moment(state.value).subtract(1, 'M').format()
     default:
-      return state
+      return state.value
   }
 }
 
@@ -39,7 +41,7 @@ const date = (state, action) => {
   if (!state) {
     return {
       value: moment().format(),
-      view: 'MONTH'
+      view: '4_DAY'
     }
   }
   switch (action.type) {
