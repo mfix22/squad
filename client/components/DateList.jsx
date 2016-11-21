@@ -73,6 +73,13 @@ const timeValues = baseValues.map(minutes => minutes * 60 * 1000).map(value => (
   value
 }))
 
+// const getRoundedTime = () => {
+//   const time = moment()
+//   const minutes = 30 - (time.minutes() % 30)
+//   const c = time.add(time.minutes() + minutes, 'm')
+//   return c.toDate()
+// }
+
 const DatePickerWithList = ({
                               time,
                               date,
