@@ -4,13 +4,12 @@ defmodule Squad.Event do
   # events is the DB table
   schema "events" do
     field :title, :string
-    field :color, :string
+    field :color, :string, default: "#121212"
     field :location, :string
   end
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, [:title, :color, :location])
-    |> validate_required([:title, :color, :location])
+  def changeset(event, changes \\ %{}) do
+    cast(event, changes, [:title, :color, :location])
+    |> validate_required([:title, :location])
   end
 end
