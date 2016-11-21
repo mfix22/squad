@@ -42,4 +42,23 @@ const sendVote = (vote) => {
   }
 }
 
-export { fetchEvents, sendVote }
+const sendEvent = (event) => {
+  return (dispatch) => {
+    return client.get('/event'/*, { // TODO change to post
+      time: moment(event).unix()
+    }*/).then((response) => {
+      const { options } = response.data
+      return dispatch({
+        type: RECEIVE_EVENT,
+        options
+      })
+    }).catch((err) => {
+      return dispatch({
+        type: 'ERROR',
+        err
+      })
+    })
+  }
+}
+
+export { fetchEvents, sendVote, sendEvent }

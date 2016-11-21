@@ -26,9 +26,6 @@ const style = {
     backgroundColor: color.green,
     width: '104px',
     margin: '16px auto 0px auto'
-  },
-  placeAutocomplete: {
-    marginTop: '16px'
   }
 }
 

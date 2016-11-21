@@ -5,12 +5,13 @@ import Avatar from 'material-ui/Avatar'
 import DatePicker from 'material-ui/DatePicker'
 import TimePicker from 'material-ui/TimePicker'
 import FlatButton from 'material-ui/FlatButton'
+import AutoComplete from 'material-ui/AutoComplete'
 import moment from 'moment'
 
 import Label from './Label'
 import { sendVote } from '../api'
 import { color } from '../vars'
-import { CHANGE_TIME, CHANGE_DATE, ADD_OPTION, DELETE_OPTION } from '../actions'
+import { CHANGE_TIME, CHANGE_DATE, CHANGE_DURATION, ADD_OPTION, DELETE_OPTION } from '../actions'
 
 const style = {
   form: {
@@ -19,12 +20,17 @@ const style = {
     margin: '16px 0px 0px 0px'
   },
   timePicker: {
-    width: '88px',
+    width: '136px',
     marginRight: '16px',
     float: 'left'
   },
+  durationPicker: {
+    width: '96px',
+    marginTop: '16px',
+    float: 'left'
+  },
   datePicker: {
-    width: '124px',
+    width: '136px',
     float: 'left'
   },
   submit: {
@@ -51,14 +57,26 @@ const style = {
 
 const optionToDisplayString = (option) => {
   return `${moment(option.time).format('MMM Do')},
-    ${moment(option.time).format('LT')} -
-   ${moment(option.time).add(1, 'h').format('LT')}`
+    ${moment(option.time).format('LT')}`
 }
+
+const humanize = (time) => {
+  if (time < 60 * 60 * 1000) return `${Math.floor(time / (60 * 1000))} minutes`
+  return `${time / (60 * 60 * 1000)} hours`
+}
+
+// TODO add more times
+const baseValues = [30, 60, 15, 90, 120, 45].map(minutes => minutes * 60 * 1000)
+const timeValues = baseValues.map(value => ({
+  text: humanize(value),
+  value
+}))
 
 const DatePickerWithList = ({
                               time,
                               date,
                               options,
+                              duration,
                               disabled,
                               hintTextTimeFrom,
                               hintTextDate,
@@ -66,6 +84,8 @@ const DatePickerWithList = ({
                               handleSubmit,
                               handleChangeTime,
                               handleChangeDate,
+                              handleChangeDuration,
+                              handleChipAdd,
                               handleChipDelete }) => {
   return (
     <div>
@@ -76,19 +96,7 @@ const DatePickerWithList = ({
           value={time}
           onChange={handleChangeTime}
           textFieldStyle={style.timePicker}
-          style={style.timeFrom}
         />
-        {
-          /*
-          <TimePicker
-            hintText={hintTextTimeTo}
-            value={form.timeTo}
-            onChange={handleChangeTimeTo}
-            textFieldStyle={style.timePicker}
-            style={style.timeTo}
-          />
-          */
-        }
         <DatePicker
           autoOk
           value={date}
@@ -100,7 +108,7 @@ const DatePickerWithList = ({
         {/* <PlainActionButton label="Add option" onClick={this.handleSubmit} action="ADD_OPTION">
           <input type="submit" value="Submit" style={style.submit} />
         </PlainActionButton> */}
-        <FlatButton label="Add option" disabled={disabled} onClick={handleSubmit} />
+        <FlatButton label="Add option" disabled={disabled} onClick={handleChipAdd} />
       </form>
       <div style={style.chips}>
         <Label labelFor="Chips" text="Options" />
@@ -124,17 +132,30 @@ const DatePickerWithList = ({
           )
         })}
       </div>
+      <AutoComplete
+        openOnFocus
+        hintText={humanize(duration)}
+        dataSource={timeValues}
+        dataSourceConfig={{ text: 'text', value: 'value' }}
+        filter={AutoComplete.fuzzyFilter}
+        maxSearchResults={5}
+        style={style.durationPicker}
+        onNewRequest={handleChangeDuration}
+        floatingLabelFixed
+        floatingLabelText="How long?"
+      />
     </div>
   )
 }
 
 const mapStateToProps = (state) => {
-  const { time, date, options } = state.form
+  const { time, date, options, duration } = state.form
   return {
     options,
     time: (!time) ? null : moment(time).toDate(),
     date: (!date) ? null : moment(date).toDate(),
-    disabled: !time || !date // TODO|| !state.form.duration
+    duration,
+    disabled: !time || !date
   }
 }
 
@@ -151,8 +172,7 @@ const mapDispatchToProps = dispatch => ({
       date
     })
   },
-  handleSubmit: (e) => {
-    e.preventDefault()
+  handleChipAdd: () => {
     dispatch({
       type: ADD_OPTION
     })
@@ -165,6 +185,15 @@ const mapDispatchToProps = dispatch => ({
   },
   handleVote: (option) => {
     dispatch(sendVote(option.time))
+  },
+  handleChangeDuration: (choice) => {
+    dispatch({
+      type: CHANGE_DURATION,
+      duration: choice.value
+    })
+  },
+  handleSubmit: (e) => {
+    e.preventDefault()
   }
 })
 
