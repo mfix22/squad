@@ -1,4 +1,5 @@
 body, html {
+  -webkit-font-smoothing: antialiased;
   padding: 0px;
   margin: 0px;
   height: 100%;
@@ -11,4 +12,7 @@ p {
 
 *, *::after, *::before {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  position: relative;
 }

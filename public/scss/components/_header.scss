@@ -1,0 +1,28 @@
+.site__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .site__logo {
+    display: inline-block;
+  }
+
+  nav {
+    display: inline-block;
+
+    .nav__links {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+
+      li {
+        display: inline-block;
+
+        a {
+          text-decoration: none;
+          color: 
+        }
+      }
+    }
+  }
+}
