@@ -44,7 +44,7 @@ const sendVote = (vote) => {
 
 const sendEvent = () => {
   return (dispatch, getState) => {
-    return client.get('/event'/* , { // TODO change to post
+    return client.get('/events'/* , { // TODO change to post
       time: moment(event).unix()
     }*/).then((response) => {
       const { options } = response.data
