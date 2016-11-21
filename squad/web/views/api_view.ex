@@ -15,6 +15,13 @@ defmodule Squad.ApiView do
     }
   end
 
+  def render("show_error.json", %{error: error }) do
+    %{
+      "error" => true,
+      "message" => error.message
+    }
+  end
+
   def render("400.json", _params) do
     %{
       "error" => "Bad request"
