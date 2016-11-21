@@ -3,7 +3,6 @@ import moment from 'moment'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
-import deepFreeze from 'deep-freeze'
 import reducer from '../client/reducers/index'
 
 import {
@@ -204,7 +203,6 @@ describe(`Dispatch ${RECEIVE_EVENT}`, () => {
   it('simulates receiving events from the server', () => {
     const store = createStore(reducer)
     // ensure store is immutable
-    deepFreeze(store)
     store.dispatch({
       type: RECEIVE_EVENT,
       events: fakeState.events
