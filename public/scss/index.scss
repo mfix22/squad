@@ -2,10 +2,14 @@
 @import '../../client/styles/reset';
 
 // Base imports
+@import 'base/global';
 @import 'base/grid';
-@import 'base/typography';
 @import 'base/variables';
+@import 'base/typography';
 
 // Components
+@import 'components/material';
 @import 'components/header';
 @import 'components/hero';
+@import 'components/info';
+@import 'components/footer';

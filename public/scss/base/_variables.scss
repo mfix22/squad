@@ -1,3 +1,12 @@
+/* Color */
+$grey: #757575;
+$green: #54c458;
 
-// Color pallet
-$green: #54C458;
+/* Typography */
+$baseFontSize: 18; // in pixels. This would result in 22px on desktop
+$baseLineHeight: 1.5; // how large the line height is as a multiple of font size
+$leading: $baseLineHeight * 1rem;
+$serif: 'Georgia', 'Times New Roman', serif;
+$sans-serif: 'San Francisco', 'BlinkMacSystemFont', -apple-system, 'Helvetica Neue', Helvetica, sans-serif;
+// Rate of growth for headings
+$scale: 1.414;
