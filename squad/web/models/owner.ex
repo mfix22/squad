@@ -1,10 +1,10 @@
-defmodule Squad.Owner do
+defmodule Squad.Token do
   use Squad.Web, :model
 
   # events is the DB table
-  schema "owners" do
+  schema "tokens" do
     field :key, :string
-    field :event, :integer
+    belongs_to :event, Squad.Event
   end
 
   def gen_key (event_id) do

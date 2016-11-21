@@ -13,18 +13,31 @@ defmodule Squad.ApiController do
   # TODO: get this working
   def create_event(conn, params) do
     alias Squad.Event
-    alias Squad.Owner
+    alias Squad.Token
     alias Plug.Conn
 
     event = Event.changeset(%Event{}, params)
 
+    owner_key = Token.gen_key(32423)
+    owner = Token.changeset(%Token{}, %{
+      key: owner_key
+    })
+
+    result =
+      event
+      |> Event.put_assoc(:tokens, owner)
+      |> Squad.Repo.insert!
+
+    render conn, "show_event.json", %{ event: result }
+
+  end
+    @docp """
+
     case Squad.Repo.insert(event) do
       { :ok, inserted_event } ->
-        owner_key = Owner.gen_key(inserted_event.id)
-        IO.puts owner_key
-        owner = Owner.changeset(%Owner{}, %{
-          key: owner_key,
-          event: inserted_event.id
+        owner_key = Token.gen_key(inserted_event.id)
+        owner = Token.changeset(%Token{}, %{
+          key: owner_key
         })
         case Squad.Repo.insert(owner) do
           { :ok, inserted_owner } ->
@@ -38,5 +51,6 @@ defmodule Squad.ApiController do
           %{ error: %{ message: "Invalid event data."} }
     end
   end
+ """
 
 end
