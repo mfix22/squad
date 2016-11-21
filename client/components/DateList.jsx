@@ -9,7 +9,7 @@ import AutoComplete from 'material-ui/AutoComplete'
 import moment from 'moment'
 
 import Label from './Label'
-import { sendVote } from '../api'
+import { sendVote, sendEvent } from '../api'
 import { color } from '../vars'
 import { CHANGE_TIME, CHANGE_DATE, CHANGE_DURATION, ADD_OPTION, DELETE_OPTION } from '../actions'
 
@@ -197,6 +197,7 @@ const mapDispatchToProps = dispatch => ({
   },
   handleSubmit: (e) => {
     e.preventDefault()
+    dispatch(sendEvent())
   }
 })
 
