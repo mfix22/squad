@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/public/index.html`)
 })
 
-app.get('/app', (req, res) => {
+app.get('/new', (req, res) => {
   res.sendFile(`${__dirname}/public/app.html`)
 })
 
