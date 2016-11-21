@@ -56,8 +56,7 @@ const style = {
 }
 
 const optionToDisplayString = (option) => {
-  return `${moment(option.time).format('MMM Do')},
-    ${moment(option.time).format('LT')}`
+  return `${moment(option).format('MMM Do')}, ${moment(option).format('LT')}`
 }
 
 const humanize = (time) => {
@@ -113,11 +112,13 @@ const DatePickerWithList = ({
       <div style={style.chips}>
         <Label labelFor="Chips" text="Options" />
         {options.map((option, index) => {
+          const timeKey = Object(option).keys()[0]
+          const count = option[timeKey]
           return (
             <Chip
-              key={option.id}
+              key={index}
               style={style.chip}
-              onRequestDelete={() => handleChipDelete(option.time)}
+              onRequestDelete={() => handleChipDelete(timeKey)}
             >
               <Avatar
                 onClick={() => handleVote(option)}
@@ -125,9 +126,9 @@ const DatePickerWithList = ({
                 style={{ cursor: 'pointer' }}
                 backgroundColor={(index === 0) ? color.green : null}
               >
-                {option.count}
+                {count}
               </Avatar>
-              {optionToDisplayString(option)}
+              {optionToDisplayString(timeKey)}
             </Chip>
           )
         })}
@@ -177,10 +178,10 @@ const mapDispatchToProps = dispatch => ({
       type: ADD_OPTION
     })
   },
-  handleChipDelete: (id) => {
+  handleChipDelete: (time) => {
     dispatch({
       type: DELETE_OPTION,
-      id
+      time
     })
   },
   handleVote: (option) => {

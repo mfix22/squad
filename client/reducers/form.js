@@ -65,17 +65,24 @@ const form = (state, action) => {
       })
     }
     case ADD_OPTION: {
-      const { time, duration, date } = state
-      if (!time || !duration) return state
+      const { duration } = state
+      if (!state.time || !state.date || !duration) return state
+      const date = moment(state.date)
+      const time = moment(state.time)
+      const newTime = moment({
+        year: date.year(),
+        month: date.month(),
+        day: date.date(),
+        hour: time.hour(),
+        minute: time.minute()
+      }).format()
+
       return {
         time: null,
         duration: DEFAULT_DURATION,
         options: [
           {
-            id: Math.random(),
-            time,
-            date,
-            count: 0
+            [newTime]: 0
           },
           ...state.options
         ].sort(voteSort)

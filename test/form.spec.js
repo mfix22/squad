@@ -65,10 +65,12 @@ describe('Form Reducer', () => {
     expect(store.getState().form.duration).to.equal(30 * 60 * 1000)
   })
   it('should add a vote with ADD_OPTION and clear the form', () => {
+    const newTime = moment()
+    const newDate = moment()
     const store = createStore(reducer, {
       form: {
-        time: moment().format(),
-        date: moment().format(),
+        time: newTime.format(),
+        date: newDate.format(),
         duration: 3600000,
         options: []
       }
@@ -78,7 +80,13 @@ describe('Form Reducer', () => {
     const newVote = store.getState().form.options[0]
     const form = store.getState().form
 
-    expect(newVote.time).to.equal(moment().format())
+    expect(Object.keys(newVote)[0]).to.equal(moment({
+      year: newDate.year(),
+      month: newDate.month(),
+      day: newDate.date(),
+      hour: newTime.hour(),
+      minute: newTime.minute()
+    }).format())
 
     expect(form.time).to.be.null
   })
