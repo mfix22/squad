@@ -3,17 +3,17 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import App from './components/App'
 import configureStore from './helpers/configureStore'
-import { fetchEvents } from './api'
+// import { fetchEvents } from './api'
 import { color } from './vars'
 
-// import injectTapEventPlugin from 'react-tap-event-plugin'
-// injectTapEventPlugin()
+injectTapEventPlugin()
 
 const store = configureStore()
-store.dispatch(fetchEvents)
+// store.dispatch(fetchEvents)
 
 const muiTheme = getMuiTheme({
   palette: {
