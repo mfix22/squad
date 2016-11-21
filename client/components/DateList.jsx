@@ -64,9 +64,11 @@ const humanize = (time) => {
   return `${time / (60 * 60 * 1000)} hours`
 }
 
-// TODO add more times
-const baseValues = [30, 60, 15, 90, 120, 45].map(minutes => minutes * 60 * 1000)
-const timeValues = baseValues.map(value => ({
+const baseValues = [30, 60, 15, 90, 120, 45]
+                    .concat([...Array(29).keys()].map(key => key + 1))
+                    .concat([...Array(8).keys()].map(key => (key + 5) * 30))
+// convert minutes to milliseconds
+const timeValues = baseValues.map(minutes => minutes * 60 * 1000).map(value => ({
   text: humanize(value),
   value
 }))
