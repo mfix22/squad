@@ -4,7 +4,7 @@ defmodule Squad.Owner do
   # events is the DB table
   schema "owners" do
     field :key, :string
-    field :event, :string
+    field :event, :integer
   end
 
   def gen_key (event_id) do
