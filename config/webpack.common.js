@@ -1,8 +1,8 @@
-var webpack = require('webpack');
-var helpers = require('./helpers');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var webpack = require('webpack')
+var helpers = require('./helpers')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-var extractCSS = new ExtractTextPlugin('styles/[name].css');
+var extractCSS = new ExtractTextPlugin('styles/[name].css')
 
 const sassLoaders = [
   'css-loader',
@@ -45,14 +45,10 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
-      name: ['app']
-    }),
+    new webpack.optimize.CommonsChunkPlugin('scripts/common.js'),
     new webpack.ProvidePlugin({
-       $: "jquery",
-       jQuery: "jquery",
-       React : 'react'
-   }),
-   extractCSS
+      React: 'react'
+    }),
+    extractCSS
   ]
-};
+}
