@@ -6,12 +6,12 @@
   <link rel="stylesheet" href="styles/index.css">
 </head>
 <body>
-  <div class="container">
+  <div class="wrap">
     <div class="grid">
-      <header class="site__header col col--centered col--10-of-12">
-        <a class="site__logo" href="#">
-          <svg xmlns="http://www.w3.org/2000/svg" width="130" height="52" viewBox="0 0 646 256">
-            <g id="logo" style="fill:none;stroke-width:1;stroke:none">
+      <header class="site-header col col--12-of-12">
+        <a class="site-logo" href="#">
+          <svg id="logo" xmlns="http://www.w3.org/2000/svg" width="162" height="64" viewBox="0 0 646 256">
+            <g style="fill:none;stroke-width:1;stroke:none">
               <rect x="54" y="54" width="148" height="148" rx="17" fill="#54C458"/>
               <g fill="#337836">
                 <path class="rec" d="M41.9 87C41.9 94.9 48 101.4 55.8 102L132.9 102.1C140.8 101.5 147.1 95 147.1 87 147.1 79 140.8 72.5 132.9 72L55.8 72C48 72.6 41.9 79.1 41.9 87Z"/>
@@ -26,13 +26,49 @@
           </svg>
         </a>
         <nav>
-          <ul class="nav__links">
+          <ul class="nav-links">
             <li><a href="#">About</a></li>
             <li><a href="#">Features</a></li>
             <li><a href="#">Contact</a></li>
           </ul>
         </nav>
       </header>
+      <main class="site-main">
+        <section class="hero col col--centered col--11-of-12">
+          <div class="hero-detail col col--5-of-8">
+            <h1>Simplified Scheduling</h1>
+            <h4 class="sub-text">Propose times, vote, and decide on a time and location that works for everyone.</h4>
+            <a class="material-btn" href="/app">
+              <div class="btn-inner">
+                <span>Schedule an event</span>
+              </div>
+            </a>
+          </div>
+          <img src="images/cal.png" class="hero-image col col--3-of-8" alt="Squad Calendar">
+        </section>
+        <section class="info">
+          <img src="images/form.png" alt="Squad application form" class="info-form col col--2-of-5">
+          <div class="info-detail col col--3-of-5">
+            <h2>Collectively decide on an event time, quickly</h2>
+            <p>Squad allows times and locations to be proposed, voted on, and decided on definitively. Create an account and you’ll leverage the full power of Squad, integrating your Google and Facebook calendars to streamline event proposals and save others’ events to the services you already use.</p>
+          </div>
+        </section>
+        <section class="info">
+          <div class="info-detail col col--1-of-2">
+            <h2>The simplest way to schedule a shared event</h2>
+            <p>Squad allows times and locations to be proposed, voted on, and decided on definitively. Create an account and you’ll leverage the full power of Squad.</p>
+          </div>
+          <img src="images/application.png" alt="Squad application form" class="info-application col col--1-of-2">
+        </section>
+      </main>
+      <footer class="site-footer col col--12-of-12">
+        <p>© 2016 Squad, unless otherwise noted.</p>
+        <div class="footer-links">
+          <a href="#">Contact</a>
+          <a href="#">Source</a>
+          <a href="#">License</a>
+        </div>
+      </footer>
     </div>
   </div>
   <script src="scripts/common.js" charset="utf-8"></script>
