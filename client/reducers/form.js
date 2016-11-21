@@ -90,8 +90,8 @@ const form = (state, action) => {
     }
     case DELETE_OPTION:
       return Object.assign({}, state, {
-        options: state.options.filter(vote =>
-          vote.time !== action.id
+        options: state.options.filter(option =>
+          Object.keys(option)[0] !== action.time
         ).sort(voteSort)
       })
     default:

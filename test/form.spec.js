@@ -96,17 +96,17 @@ describe('Form Reducer', () => {
         time: moment().format(),
         options: [
           {
-            time: 1,
+            1: 0,
           },
           {
-            time: 2,
+            2: 2,
           }
         ]
       }
     })
-    store.dispatch({ type: 'DELETE_OPTION', id: 1 })
+    store.dispatch({ type: 'DELETE_OPTION', time: '1' })
     expect(store.getState().form.options).to.have.lengthOf(1)
-    expect(store.getState().form.options[0].time).to.equal(2)
+    expect(store.getState().form.options[0]).to.have.keys('2')
   })
 
   it('simulates receiving options from the server', () => {
