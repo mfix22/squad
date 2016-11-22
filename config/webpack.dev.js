@@ -7,7 +7,7 @@ module.exports = webpackMerge(commonConfig, {
 
   entry: {
     app: './client/index.jsx',
-    index: './public/js/index.js'
+    index: './client/js/index.js'
   },
 
   output: {
