@@ -34,7 +34,7 @@
     "redux-logger": "^2.7.0",
     "redux-thunk": "^2.1.0",
     "sendgrid-web": "0.0.5",
-    "webpack-merge": "^0.14.0"
+    "webpack-merge": "^0.20.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -53,8 +53,8 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.0",
     "extract-text-webpack-plugin": "^1.0.1",
-    "jest": "^16.0.2",
-    "jest-cli": "^16.0.2",
+    "jest": "^17.0.3",
+    "jest-cli": "^17.0.3",
     "node-sass": "^3.8.0",
     "nodemon": "^1.9.2",
     "path": "^0.12.7",
