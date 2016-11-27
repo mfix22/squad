@@ -1,8 +1,11 @@
 import React from 'react'
+import RaisedButton from 'material-ui/RaisedButton'
 
 import Calendar from './Calendar'
 import ControlBar from './ControlBar'
 import Paper from '../Paper'
+
+import { loadGoogleEvents } from '../../api'
 
 const style = {
   minWidth: '600px',
@@ -13,6 +16,13 @@ const style = {
 
 const CalendarPaper = () => (
   <Paper style={style}>
+    <RaisedButton
+      secondary
+      label="Authorize"
+      onMouseUp={() => {
+        loadGoogleEvents()
+      }}
+    />
     <ControlBar />
     <Calendar />
   </Paper>

@@ -7,6 +7,11 @@ const client = axios.create({
   responseType: 'json'
 })
 
+const googleCalendarClient = axios.create({
+  baseURL: 'https://www.googleapis.com/calendar/v3/calendars/',
+  responseType: 'json'
+})
+
 const fetchEvents = (dispatch, getState) => {
   return client.get('/events').then((response) => {
     const { events, options } = response.data
@@ -61,4 +66,29 @@ const sendEvent = () => {
   }
 }
 
-export { fetchEvents, sendVote, sendEvent }
+const authorizeAndLoad = () => {
+  return gapi.auth.authorize({
+    client_id: '583561432942-5fcf74j7tmfelnqj5jttnubd55dghdff.apps.googleusercontent.com',
+    scope: ['https://www.googleapis.com/auth/calendar.readonly'],
+    immediate: false
+  })
+}
+
+const loadGoogleEvents = (id) => {
+  return authorizeAndLoad().then((response) => {
+    return googleCalendarClient.get(`${id || 'primary'}/events`, {
+      params: {
+        access_token: response.access_token,
+        timeMin: (new Date()).toISOString(),
+        showDeleted: false,
+        singleEvents: true,
+        maxResults: 10,
+        orderBy: 'startTime'
+      }
+    })
+  }).then((eventResponse) => {
+    console.log(eventResponse.data.items)
+  })
+}
+
+export { fetchEvents, sendVote, sendEvent, loadGoogleEvents }
