@@ -21,7 +21,7 @@ const iconStyle = {
   fill: color.green
 }
 
-const ControlBar = ({ referenceDate, onChange, viewChoice, header }) => (
+const ControlBar = ({ referenceDate, onChange, viewChoice, header, onAuthorize }) => (
   <Toolbar className="controlBar">
     <ToolbarGroup firstChild className="refDateHeaderWrapper">
       <DropDownMenu value={0} iconStyle={iconStyle} onChange={() => {}}>

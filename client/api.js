@@ -1,6 +1,6 @@
 import axios from 'axios'
 import moment from 'moment'
-import { RECEIVE_EVENT } from './actions'
+import { RECEIVE_EVENT, ADD_USER } from './actions'
 
 const client = axios.create({
   baseURL: 'http://api.squadup.io',
@@ -8,7 +8,12 @@ const client = axios.create({
 })
 
 const googleCalendarClient = axios.create({
-  baseURL: 'https://www.googleapis.com/calendar/v3/calendars/',
+  baseURL: 'https://www.googleapis.com/calendar/v3/calendars',
+  responseType: 'json'
+})
+
+const googleAuthClient = axios.create({
+  baseURL: 'https://accounts.google.com/o/oauth2/v2',
   responseType: 'json'
 })
 
@@ -72,23 +77,45 @@ const authorizeAndLoad = () => {
     scope: ['https://www.googleapis.com/auth/calendar.readonly'],
     immediate: false
   })
+  // return googleAuthClient.get('/auth', {
+  //   params: {
+  //     response_type: 'token',
+  //     client_id: '583561432942-5fcf74j7tmfelnqj5jttnubd55dghdff.apps.googleusercontent.com',
+  //     scope: 'https://www.googleapis.com/auth/calendar.readonly',
+  //     redirect_uri: 'http://localhost:8080',
+  //   }
+  // })
 }
 
 const loadGoogleEvents = (id) => {
-  return authorizeAndLoad().then((response) => {
-    return googleCalendarClient.get(`${id || 'primary'}/events`, {
-      params: {
-        access_token: response.access_token,
-        timeMin: (new Date()).toISOString(),
-        showDeleted: false,
-        singleEvents: true,
-        maxResults: 10,
-        orderBy: 'startTime'
-      }
+  return (dispatch) => {
+    return authorizeAndLoad().then((response) => {
+      return googleCalendarClient.get(`${id || 'primary'}/events`, {
+        params: {
+          access_token: response.access_token,
+          timeMin: (new Date()).toISOString(),
+          showDeleted: false,
+          singleEvents: true,
+          maxResults: 10,
+          orderBy: 'startTime'
+        }
+      })
+    }).then((eventResponse) => {
+      dispatch({
+        type: ADD_USER,
+        user: eventResponse.data.nextPageToken
+      })
+      dispatch({
+        type: RECEIVE_EVENT,
+        events: eventResponse.data.items.map(event => ({
+          id: event.id,
+          title: event.summary,
+          time: moment(event.start.dateTime).format(),
+          location: event.location
+        }))
+      })
     })
-  }).then((eventResponse) => {
-    console.log(eventResponse.data.items)
-  })
+  }
 }
 
 export { fetchEvents, sendVote, sendEvent, loadGoogleEvents }

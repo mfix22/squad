@@ -1,5 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import RaisedButton from 'material-ui/RaisedButton'
+import ActionAndroid from 'material-ui/svg-icons/action/android'
 
 import Calendar from './Calendar'
 import ControlBar from './ControlBar'
@@ -14,18 +16,36 @@ const style = {
   flexDirection: 'column',
 }
 
-const CalendarPaper = () => (
+const CalendarPaper = ({ authorized, onAuthorize }) => (
   <Paper style={style}>
-    <RaisedButton
-      secondary
-      label="Authorize"
-      onMouseUp={() => {
-        loadGoogleEvents()
-      }}
-    />
-    <ControlBar />
-    <Calendar />
+    {
+      (authorized) ?
+        (
+          <div>
+            <ControlBar />
+            <Calendar />
+          </div>
+        ) :
+        (
+          <RaisedButton
+            icon={<ActionAndroid />}
+            secondary
+            label="Authorize"
+            onMouseUp={onAuthorize}
+          />
+        )
+    }
   </Paper>
 )
 
-export default CalendarPaper
+const mapStateToProps = state => ({
+  authorized: state.users.length
+})
+
+const mapDispatchToProps = dispatch => ({
+  onAuthorize: () => {
+    dispatch(loadGoogleEvents())
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(CalendarPaper)
