@@ -12,7 +12,8 @@ const DateColumn = ({ refDate, window, day, events, width }) => {
       className="dateColumn"
       style={{
         width,
-        opacity: (isThisMonth(refDate, day) || window !== 'MONTH') ? 1 : 0.4
+        opacity: (isThisMonth(refDate, day) || window !== 'MONTH') ? 1 : 0.4,
+        overflow: 'hidden'
       }}
     >
       <div>

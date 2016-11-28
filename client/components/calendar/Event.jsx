@@ -11,11 +11,11 @@ const timePercentage = (time) => {
 }
 
 const durationPercentage = (duration) => {
-  const percent = ((duration || 1 * 60) * 100) / (24 * 60)
+  const percent = ((duration || 1 * 60 * 60 * 1000) * 100) / (24 * 60 * 60 * 1000)
   return percent
 }
 
-const Event = ({ details, view, duration }) => {
+const Event = ({ details, view }) => {
   const getStyle = () => {
     if (view === 'MONTH') {
       return {
@@ -30,7 +30,7 @@ const Event = ({ details, view, duration }) => {
       position: (view !== 'MONTH') ? 'absolute' : 'static',
       width: '90%',
       top: `${timePercentage(details.time)}%`,
-      minHeight: `${durationPercentage(duration)}%`
+      minHeight: `${durationPercentage(details.duration)}%`
     }
   }
 

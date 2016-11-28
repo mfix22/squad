@@ -96,11 +96,12 @@ const loadGoogleEvents = (id) => {
           timeMin: (new Date()).toISOString(),
           showDeleted: false,
           singleEvents: true,
-          maxResults: 10,
+          maxResults: 20,
           orderBy: 'startTime'
         }
       })
     }).then((eventResponse) => {
+      console.log(eventResponse)
       dispatch({
         type: ADD_USER,
         user: eventResponse.data.nextPageToken
@@ -111,6 +112,7 @@ const loadGoogleEvents = (id) => {
           id: event.id,
           title: event.summary,
           time: moment(event.start.dateTime).format(),
+          duration: moment(event.end.dateTime).diff(moment(event.start.dateTime)),
           location: event.location
         }))
       })
