@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Chip from 'material-ui/Chip'
 import TextField from 'material-ui/TextField'
 
@@ -17,11 +18,10 @@ class TextFieldWithList extends React.Component {
     super(props)
     this.state = {
       value: '',
-      items: [],
     }
 
     this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleSubmit = this.props.handleSubmit.bind(this)
   }
 
   handleChange(event) {
@@ -30,31 +30,16 @@ class TextFieldWithList extends React.Component {
     })
   }
 
-  handleSubmit(event) {
-    const arr = this.state.items;
-    arr.push(this.state.value);
-
-    this.setState({
-      items: arr,
-      value: ''
-    })
-
-    event.preventDefault()
-  }
-
-  handleChipDelete(index) {
-    console.log(index)
-    const arr = this.state.items
-    arr.splice(index, 1)
-    this.setState({
-      items: arr
-    })
-  }
-
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            this.handleSubmit(this.state.value)
+            this.state.value = ''
+          }}
+        >
           <TextField
             hintText={this.props.hint}
             floatingLabelText={this.props.label}
@@ -66,9 +51,8 @@ class TextFieldWithList extends React.Component {
           <input style={{ display: 'none' }} type="submit" value="Submit" />
         </form>
         <div style={style.list}>
-          {this.state.items.map((item, index) => {
-            console.log(this.state.items)
-            return <Chip key={index} style={style.item} onRequestDelete={() => this.handleChipDelete(index)}>{item}</Chip>
+          {this.props.items.map((item, index) => {
+            return <Chip key={index} style={style.item} onRequestDelete={() => this.props.handleChipDelete(item)}>{item}</Chip>
           })}
         </div>
       </div>
@@ -76,4 +60,24 @@ class TextFieldWithList extends React.Component {
   }
 }
 
-export default TextFieldWithList
+
+const mapStateToProps = state => ({
+  items: state.emails
+})
+
+const mapDispatchToProps = dispatch => ({
+  handleSubmit: (email) => {
+    dispatch({
+      type: 'ADD_EMAIL',
+      email
+    })
+  },
+  handleChipDelete: (email) => {
+    dispatch({
+      type: 'DELETE_EMAIL',
+      email
+    })
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(TextFieldWithList)
