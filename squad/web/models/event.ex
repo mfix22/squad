@@ -9,8 +9,13 @@ defmodule Squad.Event do
     has_many :tokens, Squad.Token
   end
 
+  @required_fields [:title, :location] #~w(title location)
+  @optional_fields [:color] #~w(color)
+
   def changeset(event, changes \\ %{}) do
-    cast(event, changes, [:title, :color, :location])
-    |> validate_required([:title, :location])
+    event
+    |> cast(changes, [:title, :color, :location])
+    |> validate_required(@required_fields)
+    |> cast_assoc(:tokens, required: true)
   end
 end

@@ -7,15 +7,18 @@ defmodule Squad.Token do
     belongs_to :event, Squad.Event
   end
 
+  # TODO: this is not secure and must be changed
   def gen_key (event_id) do
     :crypto.hash(:md5, Integer.to_string(event_id))
     |> Base.encode16()
-    |> String.slice 1..15
+    |> String.slice(1..15)
   end
 
-  def changeset(struct, params \\ %{}) do
+  @required_fields ~w(key)
+
+  def changeset(struct, params \\ :empty) do
     struct
-    |> cast(params, [:key, :event])
-    |> validate_required([:key, :event])
+    |> cast(params, @required_fields)
+    |> validate_required(@required_fields)
   end
 end
