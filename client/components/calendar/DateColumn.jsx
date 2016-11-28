@@ -5,8 +5,18 @@ import Event from './Event'
 
 import { isThisMonth } from '../../helpers/util'
 
+const getHeaderFormat = (window) => {
+  switch (window) {
+    case 'MONTH':
+      return 'M/D'
+    case 'WEEK':
+      return 'ddd M/D'
+    default:
+      return 'dddd M/D'
+  }
+}
+
 const DateColumn = ({ refDate, window, day, events, width }) => {
-  const weekView = false
   return (
     <div
       className="dateColumn"
@@ -17,7 +27,7 @@ const DateColumn = ({ refDate, window, day, events, width }) => {
       }}
     >
       <div>
-        <p className="header">{moment(day).format((weekView) ? 'dddd M/D' : 'M/D')}</p>
+        <p className="header">{moment(day).format(getHeaderFormat(window))}</p>
       </div>
       {
         events.filter((e) => {

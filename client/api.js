@@ -87,6 +87,21 @@ const authorizeAndLoad = () => {
   // })
 }
 
+const getColor = (id) => {
+  const colors = [
+    '#03A9F4 ',
+    '#F44336',
+    '#9C27B0 ',
+    '#4CAF50 ',
+    '#FFEB3B ',
+    '#FF9800 ',
+    '#795548 ',
+    '#9E9E9E ',
+    '#607D8B',
+  ]
+  return (id) ? colors[id % colors.length] : colors[0]
+}
+
 const loadGoogleEvents = (id) => {
   return (dispatch) => {
     return authorizeAndLoad().then((response) => {
@@ -101,7 +116,6 @@ const loadGoogleEvents = (id) => {
         }
       })
     }).then((eventResponse) => {
-      console.log(eventResponse)
       dispatch({
         type: ADD_USER,
         user: eventResponse.data.nextPageToken
@@ -113,7 +127,8 @@ const loadGoogleEvents = (id) => {
           title: event.summary,
           time: moment(event.start.dateTime).format(),
           duration: moment(event.end.dateTime).diff(moment(event.start.dateTime)),
-          location: event.location
+          location: event.location,
+          color: getColor(parseInt(event.colorId, 10))
         }))
       })
     })
