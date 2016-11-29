@@ -1,0 +1,7 @@
+{
+  "title": "string",
+  "description": "string",
+  "location": "string",
+  "duration": "number",
+  "options": "array-nonempty"
+}
