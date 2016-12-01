@@ -25,9 +25,13 @@
   }
 
   a {
-    line-height: $leading;
+    color: $light-grey;
     font-family: $sans-serif;
-    color: $grey;
+    line-height: $leading;
     text-decoration: none;
+
+    &:hover {
+      color: $dark-grey;
+    }
   }
 }
