@@ -11,8 +11,6 @@
     "database": "mongod",
     "poststart": "start chrome http://localhost:8080/",
     "dev-server": "nodemon server.js",
-    "build-css": "node-sass public/scss/index.scss public/styles/index.css",
-    "watch-css": "nodemon -e scss -w public/scss -x \"npm run build-css\"",
     "webpack-watch": "webpack -w"
   },
   "dependencies": {

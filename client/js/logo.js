@@ -53,8 +53,6 @@ const init = () => {
     console.log('leave')
     timeline.playBackward()
   })
-
-  console.log('init')
 }
 
 export default { init }
