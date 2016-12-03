@@ -12,18 +12,33 @@ const buttonTypes = {
 
 const PlainActionButton = ({ buttonType, disabled, style, action, onClick, label, children }) => {
   const Button = buttonTypes[buttonType] || FlatButton
-  return (
-    <Button
-      primary={this === FlatButton ? true : null}
-      label={label}
-      onMouseUp={onClick}
-      action={action}
-      style={style}
-      disabled={disabled}
-    >
-      {children}
-    </Button>
-  )
+  switch (buttonType) {
+    case 'FlatButton':
+      return (
+        <FlatButton
+          primary
+          label={label}
+          onMouseUp={onClick}
+          action={action}
+          style={style}
+          disabled={disabled}
+        >
+          {children}
+        </FlatButton>
+      )
+    default:
+      return (
+        <Button
+          label={label}
+          onMouseUp={onClick}
+          action={action}
+          style={style}
+          disabled={disabled}
+        >
+          {children}
+        </Button>
+      )
+  }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
