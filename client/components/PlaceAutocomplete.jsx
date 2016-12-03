@@ -1,5 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import GooglePlaceAutocomplete from 'googlePlaceAutocomplete'
+
+import { CHANGE_LOCATION } from '../actions'
 
 class PlaceAutocomplete extends React.Component {
   constructor(props) {
@@ -23,11 +26,21 @@ class PlaceAutocomplete extends React.Component {
         {...this.props}
         searchText={this.state.value}
         onChange={this.handleChange}
-        onNewRequest={() => {}}
+        onNewRequest={this.props.onNewRequest}
         name={'location'}
       />
     )
   }
 }
 
-export default PlaceAutocomplete
+
+const mapDispatchToProps = dispatch => ({
+  onNewRequest: (location) => {
+    dispatch({
+      type: CHANGE_LOCATION,
+      location
+    })
+  }
+})
+
+export default connect(null, mapDispatchToProps)(PlaceAutocomplete)

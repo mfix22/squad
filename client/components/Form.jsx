@@ -1,13 +1,17 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
+import RaisedButton from 'material-ui/RaisedButton'
 import PlaceAutocomplete from './PlaceAutocomplete'
 import Paper from './Paper'
 import TextField from './TextField'
 import TextFieldWithList from './TextFieldWithList'
 import DateList from './DateList'
 // import RadioField from '../RadioField'
+// import PlainActionButton from './buttons/PlainActionButton'
 import { color } from '../vars'
-import PlainActionButton from './buttons/PlainActionButton'
+import { sendEvent } from '../api'
+
 // import EmojiBar from './EmojiBar'
 
 const style = {
@@ -30,7 +34,8 @@ const style = {
   }
 }
 
-const Form = (props) => {
+const Form = ({ onClick }) => {
+  let input
   return (
     <Paper style={style.form}>
       <h2 style={style.h2}>Propose an Event?</h2>
@@ -38,6 +43,9 @@ const Form = (props) => {
         hintText="What are you planning?"
         floatingLabelText="What"
         fullWidth
+        ref={(node) => {
+          input = node
+        }}
       />
       {/* <EmojiBar /> */}
       <DateList
@@ -57,15 +65,21 @@ const Form = (props) => {
         label="Who"
       />
       {/* <RadioField /> */}
-      <PlainActionButton
-        buttonType="RaisedButton"
+      <RaisedButton
         label="Schedule"
         style={style.scheduleButton}
-        onClick={props.onSubmit}
-        action="SUBMIT_PROPOSAL"
+        onClick={() => { onClick(input.state.value) }}
       />
     </Paper>
   )
 }
 
-export default Form
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onClick: (input) => {
+      dispatch(sendEvent(input))
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Form)

@@ -52,7 +52,8 @@ const sendVote = (vote) => {
   }
 }
 
-const sendEvent = () => {
+// meta is extra data to include outside of state
+const sendEvent = (meta) => {
   return (dispatch, getState) => {
     return client.get('/events'/* , { // TODO change to post
       time: moment(event).unix()

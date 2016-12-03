@@ -4,8 +4,9 @@ import {
   DELETE_OPTION,
   CHANGE_TIME,
   CHANGE_DATE,
+  CHANGE_DURATION,
+  CHANGE_LOCATION,
   RECEIVE_EVENT,
-  CHANGE_DURATION
 } from '../actions'
 
 const DEFAULT_DURATION = 30 * 60 * 1000
@@ -23,6 +24,7 @@ const form = (state, action) => {
       time: null,
       date: null,
       duration: DEFAULT_DURATION,
+      location: null,
       options: []
     }
   }
@@ -58,6 +60,13 @@ const form = (state, action) => {
       return Object.assign({}, state, {
         duration: action.duration
       })
+    case CHANGE_LOCATION:
+      if (action.location) {
+        return Object.assign({}, state, {
+          location: action.location
+        })
+      }
+      return state
     case RECEIVE_EVENT: {
       if (!action.options) return state
       return Object.assign({}, state, {
