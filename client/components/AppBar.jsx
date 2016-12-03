@@ -14,12 +14,14 @@ const style = {
     position: 'relative',
     zIndex: 1100,
     width: '100%',
+    maxWidth: '1600px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingLeft: '24px',
     paddingRight: '24px',
-    height: '64px'
+    height: '64px',
+    margin: '8px 0',
   },
   container: {
     display: 'flex',
@@ -36,9 +38,9 @@ const AppBar = () => (
       <Logo />
     </div>
     <SchedulingStepper activeStep={1} />
-    <div style={style.container}>
+    <div style={Object.assign(style.container, { paddingRight: '12px' })}>
       <NotificationsButton />
-      <AvatarButton src="./images/user-jake.png" />
+      <AvatarButton src="./images/user-jake.png" size={32} />
     </div>
   </div>
 )
