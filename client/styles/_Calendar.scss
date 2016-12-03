@@ -34,6 +34,11 @@
     color: $grey;
     z-index: 100;
     position: relative;
+
+    &.today {
+      font-weight: 600;
+      color: $green;
+    }
   }
 }
 
@@ -132,6 +137,9 @@
   .event_title {
     width: 100%;
   }
+  .event_time {
+    display: none;
+  }
 }
 
 .monthView {
@@ -144,7 +152,19 @@
   }
 }
 
-.today {
-  font-weight: 600;
-  color: $green !important;
+.calendarEvent:hover {
+  max-height: 192px;
+  height: none;
+  padding: 10px 5px;
+  .event_time, .event_location, .event_title {
+    margin-bottom: 4px;
+    text-overflow: unset;
+    width: 100%;
+    display: block;
+    white-space: pre-wrap;      /* CSS3 */
+    white-space: -moz-pre-wrap; /* Firefox */
+    white-space: -pre-wrap;     /* Opera <7 */
+    white-space: -o-pre-wrap;   /* Opera 7 */
+    word-wrap: break-word;      /* IE */
+  }
 }

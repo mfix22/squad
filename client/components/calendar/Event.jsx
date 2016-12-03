@@ -15,7 +15,7 @@ const durationPercentage = (duration) => {
   return percent
 }
 
-const Event = ({ details, view }) => {
+const Event = ({ details, view, style }) => {
   const getStyle = () => {
     if (view === 'MONTH') {
       return {
@@ -37,7 +37,7 @@ const Event = ({ details, view }) => {
   return (
     <div
       className={`calendarEvent ${durationPercentage(details.duration) < 8 ? 'shortEvent' : 'longEvent'}`}
-      style={getStyle()}
+      style={Object.assign(getStyle(), style)}
     >
       <p className="event_time">{moment(details.time).format('LT')}</p>
       <p className="event_title">{ details.title }</p>

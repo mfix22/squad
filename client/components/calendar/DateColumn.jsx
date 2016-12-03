@@ -43,12 +43,13 @@ const DateColumn = ({ refDate, window, day, events, width }) => {
       {
         events.filter((e) => {
           return moment(e.time).isSame(day, 'day')
-        }).map((calEvent) => {
+        }).map((calEvent, index) => {
           return (
             <Event
               key={calEvent.id}
               details={calEvent}
               view={window}
+              style={{ zIndex: 999 - index }}
             />
           )
         })
