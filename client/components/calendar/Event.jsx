@@ -39,9 +39,9 @@ const Event = ({ details, view }) => {
       className={`calendarEvent ${durationPercentage(details.duration) < 8 ? 'shortEvent' : 'longEvent'}`}
       style={getStyle()}
     >
-      <p className="event_time">10:00 AM</p>
+      <p className="event_time">{moment(details.time).format('LT')}</p>
       <p className="event_title">{ details.title }</p>
-      <p className="event_location">Collectivo Coffee</p>
+      <p className="event_location">{ details.location }</p>
       {
         /* <p className="event_time">{ moment(details.time).format('LT YYYY ddd, MMM Do') }</p>
         <p className="event_location">{ details.location }</p>*/

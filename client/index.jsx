@@ -12,7 +12,9 @@ import { color } from './vars'
 
 injectTapEventPlugin()
 
-const store = configureStore()
+const store = configureStore({
+  // users: ['EjYKKzE1ZDYzbnRhdjNxMDAzdWd0Nzd1NGNyaGQ4XzIwMTcwMTAyVDAyMDAwMFoYgOCdit6h0QI=']
+})
 // store.dispatch(fetchEvents)
 
 const muiTheme = getMuiTheme({

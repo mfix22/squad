@@ -16,21 +16,30 @@ const getHeaderFormat = (window) => {
   }
 }
 
+const setViewClasses = (window) => {
+  switch (window) {
+    case 'MONTH':
+      return 'monthView'
+    case 'WEEK':
+      return 'weekView'
+    default:
+      return 'dayView'
+  }
+}
+
 const DateColumn = ({ refDate, window, day, events, width }) => {
   return (
     <div
-      className={`dateColumn ${window === 'MONTH' ? 'monthView' : 'dayView'}`}
+      className={`dateColumn ${setViewClasses(window)}`}
       style={{
         width,
         opacity: (isThisMonth(refDate, day) || window !== 'MONTH') ? 1 : 0.4,
         overflow: 'hidden'
       }}
     >
-      <div>
-        <p className={`header ${moment(day).isSame(moment(), 'day') ? 'today' : ''}`}>
-          {moment(day).format(getHeaderFormat(window)).toUpperCase()}
-        </p>
-      </div>
+      <p className={`header ${moment(day).isSame(moment(), 'day') ? 'today' : ''}`}>
+        {moment(day).format(getHeaderFormat(window)).toUpperCase()}
+      </p>
       {
         events.filter((e) => {
           return moment(e.time).isSame(day, 'day')

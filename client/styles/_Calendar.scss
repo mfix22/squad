@@ -43,6 +43,8 @@
 
   overflow-y: hidden;
   max-height: 30px;
+
+  text-align: left;
 }
 
 .longEvent {
@@ -79,7 +81,7 @@
 }
 
 // 4 day or weekly view
-.dayView {
+.dayView, .weekView {
   p.header {
     text-align: center;
     margin-top: 12px;
@@ -115,9 +117,20 @@
   .shortEvent {
     padding-top: 8px;
   }
-
   .event_title {
     font-weight: 600;
+  }
+}
+
+.dayView {
+  .event_title {
+    width: 69%;
+  }
+}
+
+.weekView {
+  .event_title {
+    width: 100%;
   }
 }
 
