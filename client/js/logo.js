@@ -50,7 +50,6 @@ const init = () => {
   })
 
   logo.addEventListener('mouseleave', () => {
-    console.log('leave')
     timeline.playBackward()
   })
 }
