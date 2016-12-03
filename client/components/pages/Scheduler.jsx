@@ -14,7 +14,6 @@ const style = {
     display: 'flex',
     minHeight: '700px',
     minWidth: '1200px',
-    justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
   },

@@ -16,7 +16,8 @@ const style = {
     minWidth: '360px',
     width: '30%',
     height: '85%',
-    padding: '24px 36px'
+    padding: '24px 36px',
+    margin: '0 8px 0 0'
   },
   h2: {
     display: 'inlineBlock',
