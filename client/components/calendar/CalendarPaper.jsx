@@ -10,8 +10,10 @@ import Paper from '../Paper'
 import { loadGoogleEvents } from '../../api'
 
 const style = {
+  padding: '0',
+  margin: '0 0 0 8px',
   minWidth: '600px',
-  width: '60%',
+  width: '65%',
   height: '85%',
   flexDirection: 'column',
 }

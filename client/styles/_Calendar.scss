@@ -3,48 +3,135 @@
   width: 100%;
 }
 
+.controlBar {
+  .rangeHeader {
+    font-size: 16px;
+  }
+
+  .buttonContainer {
+    float: right;
+  }
+}
+
 .weekRow {
   width: 100%;
 }
 
 .dateColumn {
   position: relative;
-  display : inline-block;
-  border-left: 1px solid grey;
-  border-right: 1px solid grey;
+  display: inline-block;
+  border-right: 1px solid $border;
   height: 100%;
   vertical-align: top;
+  padding: 0 8px;
 
-  &:first-of-type {
-    border-left-width: 2px;
-  }
   &:last-of-type {
-    border-right-width: 2px;
+    border-right-width: 0;
   }
-
 
   .header {
-    text-align: left;
-    padding-left: 7px;
+    font-size: 12px;
+    color: $grey;
+    z-index: 100;
+    position: relative;
   }
 }
 
 .calendarEvent {
-  // position: absolute;
-  border-radius: 3px;
   padding: 4px;
-  margin: 4px;
   font-size: 12px;
 
   overflow-y: hidden;
   max-height: 30px;
 }
 
-.controlBar {
-  .rangeHeader {
-    font-size: 16px;
+.longEvent {
+  padding-top: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  p {
+    margin: 1px 0;
   }
-  .buttonContainer {
+}
+
+.shortEvent {
+  p {
+    display: inline-block;
+  }
+
+  .event_time {
     float: right;
   }
+
+  .event_title {
+    float: left;
+    // width: 54%; TODO
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .event_location {
+    display: none;
+  }
+}
+
+// 4 day or weekly view
+.dayView {
+  p.header {
+    text-align: center;
+    margin-top: 12px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    background: #F3F3F3;
+    height: 36px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .calendarEvent {
+    padding-left: 8px;
+    padding-right: 8px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      background: rgba(0,0,0,0.34);
+      height: 4px;
+      width: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  .shortEvent {
+    padding-top: 8px;
+  }
+
+  .event_title {
+    font-weight: 600;
+  }
+}
+
+.monthView {
+  border-bottom: 1px solid $border;
+
+  .header {
+    text-align: left;
+    padding-left: 7px;
+    margin-top: 8px;
+  }
+}
+
+.today {
+  font-weight: 600;
+  color: $green !important;
 }

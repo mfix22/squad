@@ -19,16 +19,16 @@ const Event = ({ details, view }) => {
   const getStyle = () => {
     if (view === 'MONTH') {
       return {
-        color: 'white',
-        backgroundColor: details.color || '#1c4b9c',
-        width: '90%',
+        color: 'rgba(0,0,0,0.54)',
+        backgroundColor: details.color || '#CBD5EA',
+        width: '92%',
       }
     }
     return {
-      color: 'white',
-      backgroundColor: details.color || '#1c4b9c',
+      color: 'rgba(0,0,0,0.54)',
+      backgroundColor: details.color || '#CBD5EA',
       position: (view !== 'MONTH') ? 'absolute' : 'static',
-      width: '90%',
+      width: '93%',
       top: `${timePercentage(details.time)}%`,
       minHeight: `${durationPercentage(details.duration)}%`
     }
@@ -36,10 +36,12 @@ const Event = ({ details, view }) => {
 
   return (
     <div
-      className="calendarEvent"
+      className={`calendarEvent ${durationPercentage(details.duration) < 8 ? 'shortEvent' : 'longEvent'}`}
       style={getStyle()}
     >
+      <p className="event_time">10:00 AM</p>
       <p className="event_title">{ details.title }</p>
+      <p className="event_location">Collectivo Coffee</p>
       {
         /* <p className="event_time">{ moment(details.time).format('LT YYYY ddd, MMM Do') }</p>
         <p className="event_location">{ details.location }</p>*/

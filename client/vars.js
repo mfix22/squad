@@ -1,6 +1,7 @@
 export const color = {
   green: '#4CAF50',
   grey: '#757575',
+  border: '#DBDBDB'
 }
 
 const vars = {

@@ -19,7 +19,7 @@ const getHeaderFormat = (window) => {
 const DateColumn = ({ refDate, window, day, events, width }) => {
   return (
     <div
-      className="dateColumn"
+      className={`dateColumn ${window === 'MONTH' ? 'monthView' : 'dayView'}`}
       style={{
         width,
         opacity: (isThisMonth(refDate, day) || window !== 'MONTH') ? 1 : 0.4,
@@ -27,7 +27,9 @@ const DateColumn = ({ refDate, window, day, events, width }) => {
       }}
     >
       <div>
-        <p className="header">{moment(day).format(getHeaderFormat(window))}</p>
+        <p className={`header ${moment(day).isSame(moment(), 'day') ? 'today' : ''}`}>
+          {moment(day).format(getHeaderFormat(window)).toUpperCase()}
+        </p>
       </div>
       {
         events.filter((e) => {

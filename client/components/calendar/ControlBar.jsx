@@ -17,14 +17,42 @@ const formatCenterHeader = (date) => {
   return `${moment(days[0]).format('M/D')} - ${moment(days[days.length - 1]).format('M/D')}`
 }
 
-const iconStyle = {
-  fill: color.green
+const style = {
+  iconStyle: {
+    fill: color.green
+  },
+  controlBar: {
+    position: 'relative',
+    backgroundColor: '#fff',
+    height: '64px',
+    alignItems: 'center',
+    borderRadius: '2px 2px 0 0',
+    borderBottom: `1px solid ${color.border}`
+  },
+  labelStyle: {
+    fontSize: '24px'
+  },
+  toolbarGroup: {
+    height: '56px'
+  }
 }
 
 const ControlBar = ({ referenceDate, onChange, viewChoice, header, onAuthorize }) => (
-  <Toolbar className="controlBar">
-    <ToolbarGroup firstChild className="refDateHeaderWrapper">
-      <DropDownMenu value={0} iconStyle={iconStyle} onChange={() => {}}>
+  <Toolbar style={style.controlBar} className="controlBar">
+    {/* <ToolbarTitle
+      style={{ fontSize: '14px', fontWeight: 'bold' }}
+      className="rangeHeader"
+      text={header}
+    /> */}
+    <ToolbarGroup style={style.toolbarGroup}>
+      <DropDownMenu labelStyle={{ height: '64px' }} iconStyle={style.iconStyle} value={viewChoice} onChange={onChange}>
+        <MenuItem value="4_DAY" primaryText="4 Day" />
+        <MenuItem value="WEEK" primaryText="Week" />
+        <MenuItem value="MONTH" primaryText="Month" />
+      </DropDownMenu>
+    </ToolbarGroup>
+    <ToolbarGroup className="refDateHeaderWrapper" style={style.toolbarGroup}>
+      <DropDownMenu labelStyle={style.labelStyle} value={0} iconStyle={style.iconStyle} onChange={() => {}}>
         {
           getOrderedMonthArray(referenceDate).map((month, index) => (
             <MenuItem key={index} value={index} primaryText={month.format('MMMM YYYY')} />
@@ -32,21 +60,11 @@ const ControlBar = ({ referenceDate, onChange, viewChoice, header, onAuthorize }
         }
       </DropDownMenu>
     </ToolbarGroup>
-    <ToolbarTitle
-      style={{ fontSize: '14px', fontWeight: 'bold' }}
-      className="rangeHeader"
-      text={header}
-    />
-    <div className="buttonContainer">
-      <DropDownMenu iconStyle={iconStyle} value={viewChoice} onChange={onChange}>
-        <MenuItem value="4_DAY" primaryText="4 Day" />
-        <MenuItem value="WEEK" primaryText="Week" />
-        <MenuItem value="MONTH" primaryText="Month" />
-      </DropDownMenu>
+    <ToolbarGroup className="buttonContainer">
       <PrevButton />
       <TodayButton disabled={moment(referenceDate).isSame(moment(), 'day')} />
       <NextButton />
-    </div>
+    </ToolbarGroup>
   </Toolbar>
 )
 
