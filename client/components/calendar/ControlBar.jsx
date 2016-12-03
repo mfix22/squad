@@ -37,7 +37,7 @@ const style = {
   }
 }
 
-const ControlBar = ({ referenceDate, onChange, viewChoice, header, onAuthorize }) => (
+const ControlBar = ({ referenceDate, onChange, viewChoice, header }) => (
   <Toolbar style={style.controlBar} className="controlBar">
     {/* <ToolbarTitle
       style={{ fontSize: '14px', fontWeight: 'bold' }}

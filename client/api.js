@@ -71,7 +71,7 @@ const sendEvent = () => {
   }
 }
 
-const authorizeAndLoad = () => {
+const authorize = () => {
   return gapi.auth.authorize({
     client_id: '583561432942-5fcf74j7tmfelnqj5jttnubd55dghdff.apps.googleusercontent.com',
     scope: ['https://www.googleapis.com/auth/calendar.readonly'],
@@ -102,24 +102,48 @@ const getColor = (id) => {
   return (id) ? colors[id % colors.length] : colors[0]
 }
 
-const loadGoogleEvents = (id) => {
+const getGoogleEvents = (token, id) => {
+  return googleCalendarClient.get(`${id || 'primary'}/events`, {
+    params: {
+      access_token: token,
+      timeMin: (new Date()).toISOString(),
+      showDeleted: false,
+      singleEvents: true,
+      maxResults: 20,
+      orderBy: 'startTime'
+    }
+  })
+}
+
+const loadGoogleEvents = (token) => {
   return (dispatch) => {
-    return authorizeAndLoad().then((response) => {
-      return googleCalendarClient.get(`${id || 'primary'}/events`, {
-        params: {
-          access_token: response.access_token,
-          timeMin: (new Date()).toISOString(),
-          showDeleted: false,
-          singleEvents: true,
-          maxResults: 20,
-          orderBy: 'startTime'
-        }
+    return getGoogleEvents(token).then((response) => {
+      dispatch({
+        type: RECEIVE_EVENT,
+        events: response.data.items.map(event => ({
+          id: event.id,
+          title: event.summary,
+          time: moment(event.start.dateTime).format(),
+          duration: moment(event.end.dateTime).diff(moment(event.start.dateTime)),
+          location: event.location,
+          color: getColor(parseInt(event.colorId, 10))
+        }))
       })
-    }).then((eventResponse) => {
+    }).catch((err) => {
+      throw err
+    })
+  }
+}
+
+const authorizeThenLoadGoogleEvents = (id) => {
+  return (dispatch) => {
+    return authorize().then((response) => {
       dispatch({
         type: ADD_USER,
-        user: eventResponse.data.nextPageToken
+        user: response.access_token
       })
+      return getGoogleEvents(response.access_token, id)
+    }).then((eventResponse) => {
       dispatch({
         type: RECEIVE_EVENT,
         events: eventResponse.data.items.map(event => ({
@@ -135,4 +159,4 @@ const loadGoogleEvents = (id) => {
   }
 }
 
-export { fetchEvents, sendVote, sendEvent, loadGoogleEvents }
+export { fetchEvents, sendVote, sendEvent, loadGoogleEvents, authorizeThenLoadGoogleEvents }

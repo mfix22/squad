@@ -7,15 +7,18 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import App from './components/App'
 import configureStore from './helpers/configureStore'
-// import { fetchEvents } from './api'
+import { loadGoogleEvents } from './api'
 import { color } from './vars'
 
 injectTapEventPlugin()
 
 const store = configureStore({
-  // users: ['EjYKKzE1ZDYzbnRhdjNxMDAzdWd0Nzd1NGNyaGQ4XzIwMTcwMTAyVDAyMDAwMFoYgOCdit6h0QI=']
+  users: ['ya29.GlypAyaVbRZRUtbA34H4Uz5SrW-sN-hZ9Q-bwB0bK-vJo3uRZY1jGrqI4wkXK4LU918Dj4e-ycRyLWW1A1V_WL4gtUVkR5vhq95Cal6W6kkXuwBp9bHCHjwZWP3SyA']
 })
-// store.dispatch(fetchEvents)
+
+store.getState().users.forEach((user) => {
+  store.dispatch(loadGoogleEvents(user))
+})
 
 const muiTheme = getMuiTheme({
   palette: {

@@ -7,7 +7,7 @@ import Calendar from './Calendar'
 import ControlBar from './ControlBar'
 import Paper from '../Paper'
 
-import { loadGoogleEvents } from '../../api'
+import { authorizeThenLoadGoogleEvents } from '../../api'
 
 const style = {
   padding: '0',
@@ -46,7 +46,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onAuthorize: () => {
-    dispatch(loadGoogleEvents())
+    dispatch(authorizeThenLoadGoogleEvents())
   }
 })
 
