@@ -7,7 +7,7 @@ import TextFieldWithList from './TextFieldWithList'
 import DateList from './DateList'
 // import RadioField from '../RadioField'
 import { color } from '../vars'
-import PlainActionButtonRaised from './buttons/PlainActionButtonRaised'
+import PlainActionButton from './buttons/PlainActionButton'
 // import EmojiBar from './EmojiBar'
 
 const style = {
@@ -56,17 +56,15 @@ const Form = (props) => {
         label="Who"
       />
       {/* <RadioField /> */}
-      <PlainActionButtonRaised
+      <PlainActionButton
+        buttonType="RaisedButton"
         label="Schedule"
         style={style.scheduleButton}
         onClick={props.onSubmit}
+        action="SUBMIT_PROPOSAL"
       />
     </Paper>
   )
 }
-
-// const mapDispatchToProps = dispatch ({
-//   onSubmit:
-// })
 
 export default Form
