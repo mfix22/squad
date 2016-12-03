@@ -11,7 +11,12 @@ module.exports = (model) => {
 }
 
 function validate (entries, item, opts) {
-  const { includeOptional } = opts
+  let includeOptional = false;
+
+  // check options
+  if (opts) {
+    includeOptional = opts.includeOptional
+  }
 
   if (!includeOptional) {
     entries = entries.filter(isRequired)
@@ -24,7 +29,12 @@ function validate (entries, item, opts) {
 }
 
 function extract (entries, item, opts) {
-  const { includeOptional } = opts
+  let includeOptional = false;
+
+  // check options
+  if (opts) {
+    includeOptional = opts.includeOptional;
+  }
 
   if (!includeOptional) {
     entries = entries.filter(isRequired)
@@ -37,7 +47,11 @@ function extract (entries, item, opts) {
 
   const clean = {}
 
-  item.entries().forEach( ([key, value]) => {
+  Object.keys(item)
+  .map( (key) => {
+    return [key, item[key]]
+  })
+  .forEach( ([key, value]) => {
     if (validProps.has(key))
       clean[key] = value
   })

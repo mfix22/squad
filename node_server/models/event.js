@@ -34,7 +34,7 @@ function insert (events, event) {
 
     events
       .insertOne(validator.extract(event))
-      .then(resolve)
+      .then( (result) => resolve(result.ops[0]))
       .catch(reject)
   })
 }
