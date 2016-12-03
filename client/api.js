@@ -35,7 +35,7 @@ const fetchEvents = (dispatch, getState) => {
 
 const sendVote = (vote) => {
   return (dispatch) => {
-    return client.get('/vote'/*, { // TODO change to post
+    return client.get('/vote'/* , { // TODO change to post
       time: moment(vote).unix()
     }*/).then((response) => {
       const { options } = response.data
@@ -89,15 +89,15 @@ const authorizeAndLoad = () => {
 
 const getColor = (id) => {
   const colors = [
-    '#03A9F4 ',
-    '#F44336',
-    '#9C27B0 ',
-    '#4CAF50 ',
-    '#FFEB3B ',
-    '#FF9800 ',
-    '#795548 ',
-    '#9E9E9E ',
-    '#607D8B',
+    '#B0E4FD ',
+    '#FDC5C0',
+    '#E1BBE8 ',
+    '#C7E7C8 ',
+    '#FFFAC0 ',
+    '#FFDFAE ',
+    '#D6CBC6 ',
+    '#E1E1E1 ',
+    '#CED7DC',
   ]
   return (id) ? colors[id % colors.length] : colors[0]
 }
