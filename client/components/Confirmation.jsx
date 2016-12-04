@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 
 import RaisedButton from 'material-ui/RaisedButton'
 import Snackbar from 'material-ui/Snackbar'
@@ -97,6 +98,9 @@ class Confirmation extends React.Component {
   render() {
     return (
       <div>
+        <Link to={location.pathname}>
+          <div className="full-black-cover" />
+        </Link>
         <Paper style={style.form}>
           <img
             style={style.image}

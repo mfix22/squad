@@ -1,3 +1,13 @@
+.full-black-cover {
+  background-color: black;
+  opacity: 0.5;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: 999;
+}
 .calendar {
   // min-height: 700px;
   width: 100%;
