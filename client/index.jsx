@@ -7,6 +7,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 import { Router, Route, browserHistory } from 'react-router'
 
 import App from './components/App'
+import Confirmation from './components/Confirmation'
 import configureStore from './helpers/configureStore'
 import { loadGoogleEvents } from './api'
 import { color } from './vars'
@@ -36,6 +37,7 @@ render(
     <MuiThemeProvider muiTheme={muiTheme}>
       <Router history={browserHistory}>
         <Route path="/new" component={App} />
+        <Route path="/confirm" component={Confirmation} />
       </Router>
     </MuiThemeProvider>
   </Provider>,

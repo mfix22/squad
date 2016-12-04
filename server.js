@@ -27,6 +27,10 @@ app.get('/new', (req, res) => {
   res.sendFile(`${__dirname}/public/app.html`)
 })
 
+app.get('/confirm', (req, res) => {
+  res.sendFile(`${__dirname}/public/app.html`)
+})
+
 app.listen(port)
 console.log('App Started on port:', port)
 
