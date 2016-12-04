@@ -21,7 +21,7 @@ class Logo extends React.Component {
 
   render() {
     return (
-      <a className="site-logo" href="#">
+      <a className="site-logo" href="/">
         <svg id="logo" xmlns="http://www.w3.org/2000/svg" width="162" height="64" viewBox="0 0 646 256">
           <g style={style.g}>
             <rect x="54" y="54" width="148" height="148" rx="17" fill="#54C458" />
