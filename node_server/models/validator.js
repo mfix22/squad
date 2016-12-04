@@ -1,5 +1,5 @@
 module.exports = (model) => {
-  const modelObj = require(`./${model}.json`)
+  const modelObj = require(`./schemas/${model}.json`)
   const entries = Object.keys(modelObj).map( (key) => {
     return [key, modelObj[key]]
   })
