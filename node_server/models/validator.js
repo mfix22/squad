@@ -21,11 +21,10 @@ function validate (entries, item, opts) {
   if (!includeOptional) {
     entries = entries.filter(isRequired)
   } else {
-    entries = entries.forEach(trimOptional)
+    entries = entries.map(trimOptional)
   }
 
-  console.log('Is valid: ' + entries.every(isValid))
-  return entries.every(isValid)
+  return entries.every(isValid.bind(null, item))
 }
 
 function extract (entries, item, opts) {
@@ -39,34 +38,31 @@ function extract (entries, item, opts) {
   if (!includeOptional) {
     entries = entries.filter(isRequired)
   } else {
-    entries = entries.forEach(trimOptional)
+    entries = entries.map(trimOptional)
   }
-
-  const validProps = new Set()
-  entries.filter(isValid).forEach( ([prop]) => validProps.add(prop) )
 
   const clean = {}
 
-  Object.keys(item)
-  .map( (key) => {
-    return [key, item[key]]
-  })
-  .forEach( ([key, value]) => {
-    if (validProps.has(key))
-      clean[key] = value
+  entries.forEach( (entry) => {
+    const [key, value] = entry
+    if (isValid(item, entry)) {
+      clean[key] = item[key]
+    } else {
+      clean[key] = getDefault(entry)
+    }
   })
 
   return clean
 }
 
-function isValid (entry, item) {
-  const [prop, type] = entry
+function isValid (item, entry) {
+  const [modelProp, modelType] = entry
 
-  if (item.hasOwnProperty(prop)) {
-    switch (type) {
+  if (item.hasOwnProperty(modelProp)) {
+    switch (modelType) {
       case 'string':
         return typeof item[modelProp] === 'string'
-               && item[modelProp] !== '';
+               && item[modelProp] !== ''
       case 'array':
         return Array.isArray(item[modelProp])
       case 'array-nonempty':
@@ -81,10 +77,25 @@ function isValid (entry, item) {
   return false
 }
 
+function getDefault (entry) {
+  const [prop, type] = entry
+  switch (type) {
+    case 'string':
+      return ''
+    case 'array':
+    case 'array-nonempty':
+      return []
+    case 'number':
+      return 0
+    case 'object':
+      return {}
+  }
+}
+
 function isRequired ([prop]) {
-  return prop.charAt(prop.length - 1) === '?'
+  return prop.charAt(prop.length - 1) !== '?'
 }
 
 function trimOptional ([prop, type]) {
-  return isOptional(prop) ? [prop.slice(0, -1), type] : [prop, type]
+  return !isRequired(prop) ? [prop.slice(0, -1), type] : [prop, type]
 }

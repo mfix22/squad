@@ -1,3 +1,4 @@
+const crypto = require('crypto')
 const validator = require('./validator')('event')
 
 module.exports = (db) => {
@@ -17,7 +18,7 @@ function get (events, id) {
       .next()
       .then((event) => {
         if (!event) {
-          throw new Error('Not found')
+          throw new Error('not found')
         } else {
           resolve(event)
         }
@@ -32,8 +33,11 @@ function insert (events, event) {
     if (!validator.validate(event))
       reject(new Error('invalid'))
 
+    const cleanedEvent = validator.extract(event, { includeOptional: true })
+    cleanedEvent.id = genEventId();
+
     events
-      .insertOne(validator.extract(event))
+      .insertOne(cleanedEvent)
       .then( (result) => resolve(result.ops[0]))
       .catch(reject)
   })

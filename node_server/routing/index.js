@@ -12,7 +12,7 @@ module.exports = function ({ db }) {
 
   // 404 if none found
   router.use((req, res, next) => {
-    res.status(404).send('Not found!')
+    res.status(404).send('not found!')
   })
 
   return router
