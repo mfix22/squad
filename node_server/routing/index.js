@@ -7,8 +7,8 @@ module.exports = function ({ db }) {
 
   const router = Router()
 
-  router.all('/event/:eventId?', eventController(db))
-  router.all('/vote', voteController(db))
+  router.all('/event/:eventId', eventController(db))
+  router.all('/vote/:eventId', voteController(db))
 
   // 404 if none found
   router.use((req, res, next) => {

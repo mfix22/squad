@@ -72,6 +72,7 @@ function isValid (item, entry) {
         return typeof item[modelProp] === 'number'
       case 'object':
         return typeof item[modelProp] === 'object'
+              && !Array.isArray(item[modelProp])
     }
   }
   return false

@@ -1,3 +1,6 @@
+const eventModel      = require('../models/event')
+const genErrorHandler = require('../lib/errorHandler.js')
+
 module.exports = (db) => {
   return (req, res) => {
 
@@ -16,11 +19,13 @@ module.exports = (db) => {
 function post (req, res, opts) {
   const { events, error } = opts
 
-  if (!req.params.eventId)
+  if (!req.params.eventId || !req.body.time)
     return res.status(400).send('Invalid')
 
   events
-    .incrementVote(req.params.eventId)
-    .then()
+    .incrementVote(req.params.eventId, req.body.time)
+    .then( (event) => {
+      res.status(200).json(event)
+    })
     .catch(error)
 }

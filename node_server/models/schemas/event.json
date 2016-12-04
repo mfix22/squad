@@ -3,6 +3,6 @@
   "description": "string",
   "location": "string",
   "duration": "number",
-  "options": "array-nonempty",
+  "options": "object",
   "emails?": "array"
 }

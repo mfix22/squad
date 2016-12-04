@@ -11,12 +11,21 @@ module.exports = (db) => {
   }
 }
 
-function incrementVote (events, id) {
+function incrementVote (events, id, time) {
   return new Promise ( (resolve, reject) => {
+    const voteId = `options.${time}`
+    const incVal = {}
+    incVal[voteId] = 1
+
     events
-    .updateOne(
-      { id }
+    .findAndModify(
+      { id },
+      { "$inc": incVal }
     )
+    .then( (result) => {
+      resolve(result.ops)
+    })
+    .catch(reject)
   })
 }
 
