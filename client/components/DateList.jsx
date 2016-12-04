@@ -129,14 +129,16 @@ const DatePickerWithList = ({
               style={style.chip}
               onRequestDelete={() => handleChipDelete(timeKey)}
             >
-              <Avatar
-                onClick={() => handleVote(option)}
-                size={24}
-                style={{ cursor: 'pointer' }}
-                backgroundColor={(index === 0) ? color.green : null}
-              >
-                {count}
-              </Avatar>
+              {/*
+                <Avatar
+                  onClick={() => handleVote(option)}
+                  size={24}
+                  style={{ cursor: 'pointer' }}
+                  backgroundColor={(index === 0) ? color.green : null}
+                >
+                  {count}
+                </Avatar>
+              */}
               {optionToDisplayString(timeKey)}
             </Chip>
           )
