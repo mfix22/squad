@@ -26,34 +26,15 @@ const style = {
   }
 }
 
-class Scheduler extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-    }
-  }
-
-  render() {
-    return (
-      <div style={style.container}>
-        <AppBar />
-        <div style={style.paperContainer}>
-          <Form />
-          <CalendarPaper />
-        </div>
-        <Confirmation />
-      </div>
-    )
-  }
-}
-
-// const mapStateToProps = (state) => {
-//   return {
-//     dates: state.dates,
-//     times: state.times,
-//   }
-// }
-//
-// export default connect(mapStateToProps)(Scheduler)
+const Scheduler = ({ params }) => (
+  <div style={style.container}>
+    <AppBar />
+    <div style={style.paperContainer}>
+      <Form />
+      <CalendarPaper />
+    </div>
+    {(location.hash === '#share' && params.event_id) ? <Confirmation /> : null}
+  </div>
+)
 
 export default Scheduler

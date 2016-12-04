@@ -100,7 +100,7 @@ class Confirmation extends React.Component {
         <Paper style={style.form}>
           <img
             style={style.image}
-            alt="Success" src="./images/party.png"
+            alt="Success" src="/images/party.png"
           />
           <h2 style={style.h2}>{'Event created.'}</h2>
           <h4 style={style.h4}>{'Would you like to share it?'}</h4>

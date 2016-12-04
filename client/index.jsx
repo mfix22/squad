@@ -6,8 +6,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import { Router, Route, browserHistory } from 'react-router'
 
-import App from './components/App'
-import Confirmation from './components/Confirmation'
+import Scheduler from './components/pages/Scheduler'
 import configureStore from './helpers/configureStore'
 import { loadGoogleEvents } from './api'
 import { color } from './vars'
@@ -36,8 +35,8 @@ render(
   <Provider store={store}>
     <MuiThemeProvider muiTheme={muiTheme}>
       <Router history={browserHistory}>
-        <Route path="/new" component={App} />
-        <Route path="/confirm" component={Confirmation} />
+        <Route path="/new" component={Scheduler} />
+        <Route path="/:event_id(#share)" component={Scheduler} />
       </Router>
     </MuiThemeProvider>
   </Provider>,

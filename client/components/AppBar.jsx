@@ -40,7 +40,7 @@ const AppBar = () => (
     <SchedulingStepper activeStep={1} />
     <div style={Object.assign(style.container, { paddingRight: '12px' })}>
       <NotificationsButton />
-      <AvatarButton src="./images/user-jake.png" size={32} />
+      <AvatarButton src="/images/user-jake.png" size={32} />
     </div>
   </div>
 )
