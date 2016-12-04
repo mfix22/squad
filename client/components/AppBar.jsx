@@ -29,7 +29,13 @@ const style = {
   }
 }
 
-const AppBar = () => (
+const getActiveStep = (params) => {
+  if (location.pathname === '/new') return 1
+  if (params.event_id && location.hash === '#share') return 2
+  return 3
+}
+
+const AppBar = ({ params }) => (
   <div style={style.appBar}>
     <div style={style.container}>
       <IconButton>
@@ -37,10 +43,10 @@ const AppBar = () => (
       </IconButton>
       <Logo />
     </div>
-    <SchedulingStepper activeStep={1} />
+    <SchedulingStepper activeStep={getActiveStep(params)} />
     <div style={Object.assign(style.container, { paddingRight: '12px' })}>
       <NotificationsButton />
-      <AvatarButton src="/images/user-jake.png" size={32} />
+      {/* <AvatarButton src="/images/user-jake.png" size={32} /> */}
     </div>
   </div>
 )

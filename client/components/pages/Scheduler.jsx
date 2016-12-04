@@ -28,7 +28,7 @@ const style = {
 
 const Scheduler = ({ params }) => (
   <div style={style.container}>
-    <AppBar />
+    <AppBar params={params} />
     <div style={style.paperContainer}>
       <Form />
       <CalendarPaper />
