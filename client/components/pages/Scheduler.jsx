@@ -3,6 +3,7 @@ import React from 'react'
 import AppBar from '../AppBar'
 import Form from '../Form'
 import CalendarPaper from '../calendar/CalendarPaper'
+import Confirmation from '../Confirmation'
 
 const style = {
   buttons: {
@@ -40,6 +41,7 @@ class Scheduler extends React.Component {
           <Form />
           <CalendarPaper />
         </div>
+        <Confirmation />
       </div>
     )
   }

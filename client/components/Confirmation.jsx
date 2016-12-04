@@ -11,12 +11,16 @@ import { color } from '../vars'
 
 const style = {
   form: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     flexDirection: 'column',
     minWidth: '460px',
     width: '460px',
     height: '444px',
     padding: '24px 36px',
-    margin: '0 8px 0 0'
+    zIndex: 1000,
   },
   h2: {
     display: 'inline-block',
@@ -49,9 +53,13 @@ const style = {
   item: {
     margin: '4px 4px 16px',
     display: 'inline-block'
-  }
+  },
+  snackbar: {
+    backgroundColor: color.green,
+    textAlign: 'center',
+    maxWidth: '240px'
+  },
 }
-let link
 
 const copy = (node) => {
   const selection = window.getSelection()
@@ -63,12 +71,15 @@ const copy = (node) => {
   selection.removeAllRanges()
 }
 
+let link
+
 class Confirmation extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       open: false,
     }
+    this.handleRequestClose = this.handleRequestClose.bind(this)
   }
 
   handleTouchTap() {
@@ -85,53 +96,52 @@ class Confirmation extends React.Component {
 
   render() {
     return (
-      <Paper style={style.form}>
-        <img
-          style={style.image}
-          alt="Success" src="./images/party.png"
+      <div>
+        <Paper style={style.form}>
+          <img
+            style={style.image}
+            alt="Success" src="./images/party.png"
+          />
+          <h2 style={style.h2}>{'Event created.'}</h2>
+          <h4 style={style.h4}>{'Would you like to share it?'}</h4>
+          <code
+            ref={(node) => {
+              link = node
+            }}
+            style={style.code}
+          >
+            squadup.io/my_fake_id
+          </code>
+          <div style={style.list}>
+            {this.props.emails.map((item, index) => {
+              return <Chip key={index} style={style.item}>{item}</Chip>
+            })}
+          </div>
+          <div>
+            <RaisedButton
+              primary
+              label="Send"
+              style={style.sendButton}
+            />
+            <RaisedButton
+              label="Copy"
+              style={style.sendButton}
+              onClick={() => {
+                copy(link)
+                // link.blur()
+                this.setState({ open: true })
+              }}
+            />
+          </div>
+        </Paper>
+        <Snackbar
+          open={this.state.open}
+          message="Copied!"
+          autoHideDuration={3000}
+          bodyStyle={style.snackbar}
+          onRequestClose={this.handleRequestClose}
         />
-        <h2 style={style.h2}>{'Event created.'}</h2>
-        <h4 style={style.h4}>{'Would you like to share it?'}</h4>
-        <code
-          ref={(node) => {
-            link = node
-          }}
-          style={style.code}
-        >
-          squadup.io/my_fake_id
-        </code>
-        <div style={style.list}>
-          {this.props.emails.map((item, index) => {
-            return <Chip key={index} style={style.item}>{item}</Chip>
-          })}
-        </div>
-        <div>
-          <RaisedButton
-            primary
-            label="Send"
-            style={style.sendButton}
-          />
-          <RaisedButton
-            label="Copy"
-            style={style.sendButton}
-            backgroundColor={color.blue}
-            labelColor="white"
-            onClick={() => {
-              copy(link)
-              // link.blur()
-              this.setState({ open: true })
-            }}
-          />
-          <Snackbar
-            open={this.state.open}
-            message="Copied!"
-            autoHideDuration={3000}
-            bodyStyle={{
-              backgroundColor: color.green
-            }}
-          />
-        </div>
-      </Paper>
+      </div>
     )
   }
 }
