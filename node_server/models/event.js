@@ -7,7 +7,17 @@ module.exports = (db) => {
   return {
     get: get.bind(null, events),
     insert: insert.bind(null, events),
+    incrementVote: incrementVote.bind(null, events)
   }
+}
+
+function incrementVote (events, id) {
+  return new Promise ( (resolve, reject) => {
+    events
+    .updateOne(
+      { id }
+    )
+  })
 }
 
 function get (events, id) {

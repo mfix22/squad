@@ -96,6 +96,7 @@ function isRequired ([prop]) {
   return prop.charAt(prop.length - 1) !== '?'
 }
 
-function trimOptional ([prop, type]) {
-  return !isRequired(prop) ? [prop.slice(0, -1), type] : [prop, type]
+function trimOptional (entry) {
+  let [prop, type] = entry
+  return !isRequired(entry) ? [prop.slice(0, -1), type] : [prop, type]
 }

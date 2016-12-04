@@ -1,5 +1,6 @@
-const eventModel = require('../models/event')
-const crypto     = require('crypto')
+const crypto          = require('crypto')
+const eventModel      = require('../models/event')
+const genErrorHandler = require('../lib/errorHandler.js')
 
 module.exports = (db) => {
   return (req, res) => {
@@ -43,19 +44,4 @@ function post (req, res, opts) {
       res.status(200).json(event)
     })
     .catch(error)
-}
-
-function genErrorHandler (res) {
-  return (err) => {
-    switch (err.message) {
-      case 'not found':
-        res.status(400).json({ message: 'Event not found.'})
-        break
-      case 'invalid':
-        res.status(400).json({ message: 'Invalid request'})
-        break
-      default:
-        res.status(500).json({ message: err.message})
-    }
-  }
 }
