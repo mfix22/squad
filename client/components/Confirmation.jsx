@@ -6,7 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import Snackbar from 'material-ui/Snackbar'
 import Chip from 'material-ui/Chip'
 import Paper from './Paper'
-import { color } from '../vars'
+import { color, type } from '../vars'
 // import RadioField from '../RadioField'
 // import EmojiBar from './EmojiBar'
 
@@ -25,13 +25,13 @@ const style = {
   },
   h2: {
     display: 'inline-block',
-    fontFamily: 'San Francisco, BlinkMacSystemFont, -apple-system, Helvetica Neue, Helvetica, sans-serif',
+    fontFamily: type.main,
     margin: '0px 0px 4px 0px',
     fontSize: '36px'
   },
   h4: {
     display: 'inline-block',
-    fontFamily: 'San Francisco, BlinkMacSystemFont, -apple-system, Helvetica Neue, Helvetica, sans-serif',
+    fontFamily: type.main,
     margin: '0px 0px 24px 0px',
     fontSize: '16px'
   },
