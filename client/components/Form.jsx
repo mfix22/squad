@@ -68,7 +68,10 @@ const Form = ({ onClick }) => {
       <RaisedButton
         label="Schedule"
         style={style.scheduleButton}
-        onClick={() => { onClick(input.state.value) }}
+        onClick={() => {
+          onClick(input.state.value)
+          input.state.value = ''
+        }}
       />
     </Paper>
   )

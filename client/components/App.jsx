@@ -6,12 +6,14 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 import { Router, Route, browserHistory } from 'react-router'
 
 import Scheduler from './pages/Scheduler'
+import Viewer from './pages/Viewer'
 import { color } from '../vars'
 
 import configureStore from '../helpers/configureStore'
 import { loadGoogleEvents } from '../api'
 import { loadState, saveState } from '../helpers/localStorage'
 
+// TODO remove localStorage save in production
 const store = configureStore(loadState())
 
 store.subscribe(() => {
@@ -36,7 +38,7 @@ const App = () => (
     <MuiThemeProvider muiTheme={muiTheme}>
       <Router history={browserHistory}>
         <Route path="/new" component={Scheduler} />
-        <Route path="/:event_id(#share)" component={Scheduler} />
+        <Route path="/:event_id(#share)" component={Viewer} />
       </Router>
     </MuiThemeProvider>
   </Provider>
