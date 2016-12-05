@@ -3,13 +3,9 @@ import React from 'react'
 import AppBar from '../AppBar'
 import Form from '../Form'
 import CalendarPaper from '../calendar/CalendarPaper'
+import Confirmation from '../Confirmation'
 
 const style = {
-  buttons: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginBottom: '24px',
-  },
   container: {
     display: 'flex',
     minHeight: '700px',
@@ -25,14 +21,15 @@ const style = {
   }
 }
 
-const Scheduler = ({ params }) => (
+const Viewer = ({ params }) => (
   <div style={style.container}>
     <AppBar params={params} />
     <div style={style.paperContainer}>
       <Form />
       <CalendarPaper />
     </div>
+    {location.hash === '#share' ? <Confirmation /> : null}
   </div>
 )
 
-export default Scheduler
+export default Viewer
