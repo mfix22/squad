@@ -60,8 +60,8 @@ const DateColumn = ({ refDate, window, day, events, width }) => {
 
 const mapStateToProps = (state) => {
   return {
-    refDate: state.date.value,
-    window: state.date.view
+    refDate: state.view.date,
+    window: state.view.window,
   }
 }
 

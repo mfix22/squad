@@ -69,8 +69,8 @@ const ControlBar = ({ referenceDate, onChange, viewChoice, header }) => (
 )
 
 const mapStateToProps = state => ({
-  referenceDate: state.date.value,
-  viewChoice: state.date.view,
+  referenceDate: state.view.date,
+  viewChoice: state.view.date,
   header: formatCenterHeader(state.date)
 })
 
@@ -78,7 +78,7 @@ const mapDispatchToProps = dispatch => ({
   onChange: (event, index, value) => {
     dispatch({
       type: 'CHANGE_WINDOW',
-      view: value,
+      window: value,
     })
   }
 })

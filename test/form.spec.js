@@ -21,7 +21,6 @@ describe('Form Reducer', () => {
       count: 0,
       timeFrom: moment().add(1, 'd').format()
     }
-    console.log(voteSort(a,b));
     expect(voteSort(a,b)).to.be.below(0)
   })
 
