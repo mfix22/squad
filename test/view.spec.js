@@ -3,7 +3,7 @@ import moment from 'moment'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
-import reducer from '../client/reducers/view'
+import reducer from '../client/reducers/index'
 
 import {
   VIEW_TODAY,
@@ -51,7 +51,7 @@ describe('Date reducer', () => {
     store.dispatch({
       type: VIEW_TODAY
     })
-    expect(store.getState().date).to.equal(moment().format())
+    expect(store.getState().view.date).to.equal(moment().format())
   })
   it('no matter what', () => {
     const store = createStore(reducer)
@@ -59,8 +59,9 @@ describe('Date reducer', () => {
     store.dispatch({ type: VIEW_NEXT })
     store.dispatch({ type: VIEW_NEXT })
     store.dispatch({ type: VIEW_NEXT })
+
     store.dispatch({ type: VIEW_TODAY })
-    expect(store.getState().date).to.equal(moment().format())
+    expect(store.getState().view.date).to.equal(moment().format())
   })
   it(`changes reference date to one unit (depending on view) from now by default on ${VIEW_NEXT}`, () => {
     let store = createStore(reducer)
@@ -68,42 +69,50 @@ describe('Date reducer', () => {
     store.dispatch({
       type: VIEW_NEXT
     })
-    expect(store.getState().date).to.equal(moment(state.date).add(4, 'd').format())
+    expect(store.getState().view.date).to.equal(moment(state.view.date).add(4, 'd').format())
 
     store = createStore(reducer, {
-      window: 'WEEK'
+      view : {
+        window: 'WEEK'
+      }
     })
     state = store.getState()
 
     store.dispatch({
       type: VIEW_NEXT
     })
-    expect(store.getState().date).to.equal(moment(state.date).add(1, 'w').format())
+    expect(store.getState().view.date).to.equal(moment(state.view.date).add(1, 'w').format())
 
     store = createStore(reducer, {
-      window: '2_WEEK'
+      view : {
+        window: '2_WEEK'
+      }
     })
     state = store.getState()
 
     store.dispatch({
       type: VIEW_NEXT
     })
-    expect(store.getState().date).to.equal(moment(state.date).add(2, 'w').format())
+    expect(store.getState().view.date).to.equal(moment(state.view.date).add(2, 'w').format())
 
     store = createStore(reducer, {
-      window: 'MONTH'
+      view : {
+        window: 'MONTH'
+      }
     })
     state = store.getState()
 
     store.dispatch({
       type: VIEW_NEXT
     })
-    expect(store.getState().date).to.equal(moment(state.date).add(1, 'M').format())
+    expect(store.getState().view.date).to.equal(moment(state.view.date).add(1, 'M').format())
 
 
     store = createStore(reducer, {
-      date: moment().format(),
-      window: 'UNKNOWN_VIEW'
+      view : {
+        date: moment().format(),
+        window: 'UNKNOWN_VIEW'
+      }
     })
     const prevState = store.getState()
     store.dispatch({
@@ -118,41 +127,49 @@ describe('Date reducer', () => {
     store.dispatch({
       type: VIEW_PREV
     })
-    expect(store.getState().date).to.equal(moment(state.date).add(-4, 'd').format())
+    expect(store.getState().view.date).to.equal(moment(state.view.date).add(-4, 'd').format())
 
     store = createStore(reducer, {
-      window: 'WEEK'
+      view : {
+        window: 'WEEK'
+      }
     })
     state = store.getState()
 
     store.dispatch({
       type: VIEW_PREV
     })
-    expect(store.getState().date).to.equal(moment(state.date).add(-1, 'w').format())
+    expect(store.getState().view.date).to.equal(moment(state.view.date).add(-1, 'w').format())
 
     store = createStore(reducer, {
-      window: '2_WEEK'
+      view : {
+        window: '2_WEEK'
+      }
     })
     state = store.getState()
 
     store.dispatch({
       type: VIEW_PREV
     })
-    expect(store.getState().date).to.equal(moment(state.date).add(-2, 'w').format())
+    expect(store.getState().view.date).to.equal(moment(state.view.date).add(-2, 'w').format())
 
     store = createStore(reducer, {
-      window: 'MONTH'
+      view : {
+        window: 'MONTH'
+      }
     })
     state = store.getState()
 
     store.dispatch({
       type: VIEW_PREV
     })
-    expect(store.getState().date).to.equal(moment(state.date).add(-1, 'M').format())
+    expect(store.getState().view.date).to.equal(moment(state.view.date).add(-1, 'M').format())
 
     store = createStore(reducer, {
-      date: moment().format(),
-      window: 'UNKNOWN_VIEW'
+      view : {
+        date: moment().format(),
+        window: 'UNKNOWN_VIEW'
+      }
     })
     const prevState = store.getState()
     store.dispatch({
@@ -164,13 +181,13 @@ describe('Date reducer', () => {
 
   it(`changes number of days in view with ${CHANGE_WINDOW}`, () => {
     const store = createStore(reducer)
-    const windows = ['4_DAY', 'WEEK', '2_WEEK', 'MONTH']
-    windows.forEach((window) => {
+    const views = ['4_DAY', 'WEEK', '2_WEEK', 'MONTH']
+    views.forEach((window) => {
       store.dispatch({
         type: CHANGE_WINDOW,
         window
       })
-      expect(store.getState().window).to.equal(window)
+      expect(store.getState().view.window).to.equal(window)
     })
   })
 })

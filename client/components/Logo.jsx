@@ -13,6 +13,7 @@ const style = {
   }
 }
 
+// TODO props.link
 class Logo extends React.Component {
   componentDidMount() {
     logo.init()

@@ -3,8 +3,14 @@ import React from 'react'
 import AppBar from '../AppBar'
 import Form from '../Form'
 import CalendarPaper from '../calendar/CalendarPaper'
+import Confirmation from '../Confirmation'
 
 const style = {
+  buttons: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '24px',
+  },
   container: {
     display: 'flex',
     minHeight: '700px',
@@ -27,6 +33,7 @@ const Scheduler = ({ params }) => (
       <Form />
       <CalendarPaper />
     </div>
+    {(location.hash === '#share' && params.event_id) ? <Confirmation /> : null}
   </div>
 )
 
