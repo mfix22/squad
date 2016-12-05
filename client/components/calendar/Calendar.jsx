@@ -20,7 +20,7 @@ const Calendar = ({ events, referenceDate, daysInView }) => {
 const mapStateToProps = state => ({
   referenceDate: state.view.date,
   events: state.events,
-  daysInView: getNumDaysInView(state.view.date)
+  daysInView: getNumDaysInView(state.view.window)
 })
 
 export default connect(mapStateToProps)(Calendar)

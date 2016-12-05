@@ -12,8 +12,8 @@ import TodayButton from '../buttons/TodayButton'
 import { getOrderedMonthArray, getNumDaysInView, getDays } from '../../helpers/util'
 import { color } from '../../vars'
 
-const formatCenterHeader = (date) => {
-  const days = getDays(date.value, getNumDaysInView(date.view))
+const formatCenterHeader = (view) => {
+  const days = getDays(view.date, getNumDaysInView(view.window))
   return `${moment(days[0]).format('M/D')} - ${moment(days[days.length - 1]).format('M/D')}`
 }
 
@@ -70,8 +70,8 @@ const ControlBar = ({ referenceDate, onChange, viewChoice, header }) => (
 
 const mapStateToProps = state => ({
   referenceDate: state.view.date,
-  viewChoice: state.view.date,
-  header: formatCenterHeader(state.date)
+  viewChoice: state.view.window,
+  header: formatCenterHeader(state.view)
 })
 
 const mapDispatchToProps = dispatch => ({

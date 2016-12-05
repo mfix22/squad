@@ -5,9 +5,13 @@ export const color = {
   blue: '#2196f3',
 }
 
+export const type = {
+  main: 'San Francisco, BlinkMacSystemFont, -apple-system, Helvetica Neue, Helvetica, sans-serif',
+}
+
 const vars = {
   color,
-  // type,
+  type,
   // layout,
   // breakpoint
 }
