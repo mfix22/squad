@@ -31,7 +31,8 @@ const style = {
 
 const getActiveStep = (params) => {
   if (location.pathname === '/new') return 1
-  if (params.event_id && location.hash === '#share') return 2
+  // index 1 is first path
+  if (params.event_id && location.pathname.split('/')[1] === 'share') return 2
   return 3
 }
 

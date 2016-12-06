@@ -38,7 +38,7 @@ const App = () => (
     <MuiThemeProvider muiTheme={muiTheme}>
       <Router history={browserHistory}>
         <Route path="/new" component={Scheduler} />
-        <Route path="/event/:event_id(#share)" component={Viewer} />
+        <Route path="/event/:event_id" component={Viewer} />
         <Route path="/share/:event_id" component={Viewer} />
       </Router>
     </MuiThemeProvider>

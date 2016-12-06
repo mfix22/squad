@@ -21,14 +21,15 @@ const style = {
   }
 }
 
-const Viewer = ({ params }) => (
+const Viewer = ({ params, location, history }) => (
   <div style={style.container}>
     <AppBar params={params} />
     <div style={style.paperContainer}>
       <Form params={params} />
       <CalendarPaper />
     </div>
-    {location.hash === '#share' ? <Confirmation /> : null}
+    { /* TODO reorganize routes */ }
+    <Confirmation location={location} params={params} />
   </div>
 )
 

@@ -96,11 +96,14 @@ class Confirmation extends React.Component {
   }
 
   render() {
+    // only render if sharing
+    if (this.props.location.pathname.split('/')[1] !== 'share') return null
+    // TODO fix links to work with React router
     return (
       <div>
-        <Link to={location.pathname}>
+        <a href={`/event/${this.props.params.event_id}`}>
           <div className="full-black-cover" />
-        </Link>
+        </a>
         <Paper style={style.form}>
           <img
             style={style.image}
@@ -114,7 +117,7 @@ class Confirmation extends React.Component {
             }}
             style={style.code}
           >
-            squadup.io/my_fake_id
+            {`squadup.io/event/${this.props.params.event_id}`}
           </code>
           <div style={style.list}>
             {this.props.emails.map((item, index) => {
