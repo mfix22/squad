@@ -33,7 +33,7 @@
   border-right: 1px solid $border;
   height: 100%;
   vertical-align: top;
-  padding: 0 8px;
+  padding: 0 0;
 
   &:last-of-type {
     border-right-width: 0;
@@ -42,8 +42,11 @@
   .header {
     font-size: 12px;
     color: $grey;
-    z-index: 100;
     position: relative;
+    z-index: 999;
+    height: 36px;
+    vertical-align: middle;
+    background: #F3F3F3;
 
     &.today {
       font-weight: 600;
@@ -100,7 +103,7 @@
 .dayView, .weekView {
   p.header {
     text-align: center;
-    margin-top: 12px;
+    padding: 12px 0px 0px;
   }
 
   &::before {
@@ -117,6 +120,8 @@
   .calendarEvent {
     padding-left: 8px;
     padding-right: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
 
     &::before {
       content: '';

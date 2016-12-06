@@ -49,7 +49,7 @@ const DateColumn = ({ refDate, window, day, events, width }) => {
               key={calEvent.id}
               details={calEvent}
               view={window}
-              style={{ zIndex: 999 - index }}
+              style={{ zIndex: 500 - index }}
             />
           )
         })
