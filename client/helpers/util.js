@@ -1,5 +1,20 @@
 import moment from 'moment'
 
+export const getColor = (id) => {
+  const colors = [
+    '#B0E4FD ',
+    '#FDC5C0',
+    '#E1BBE8 ',
+    '#C7E7C8 ',
+    '#FFFAC0 ',
+    '#FFDFAE ',
+    '#D6CBC6 ',
+    '#E1E1E1 ',
+    '#CED7DC',
+  ]
+  return (id) ? colors[id % colors.length] : colors[0]
+}
+
 export const chunk = (a, c) => {
   return a.reduce((accum, next, i) => {
     const intI = Math.floor(i / c)

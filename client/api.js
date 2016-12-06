@@ -1,6 +1,7 @@
 import axios from 'axios'
 import moment from 'moment'
 import { RECEIVE_EVENT, ADD_USER } from './actions'
+import { getColor } from './helpers/util'
 
 const client = axios.create({
   baseURL: 'http://api.squadup.io',
@@ -86,21 +87,6 @@ const authorize = () => {
   //     redirect_uri: 'http://localhost:8080',
   //   }
   // })
-}
-
-const getColor = (id) => {
-  const colors = [
-    '#B0E4FD ',
-    '#FDC5C0',
-    '#E1BBE8 ',
-    '#C7E7C8 ',
-    '#FFFAC0 ',
-    '#FFDFAE ',
-    '#D6CBC6 ',
-    '#E1E1E1 ',
-    '#CED7DC',
-  ]
-  return (id) ? colors[id % colors.length] : colors[0]
 }
 
 const getGoogleEvents = (token, id) => {
