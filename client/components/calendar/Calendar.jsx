@@ -6,6 +6,18 @@ import { getChunkedDays, getNumDaysInView } from '../../helpers/util'
 
 require('../../styles/app.scss')
 
+const getProposedOptions = (state) => {
+  return state.form.options.map((option, index) => {
+    return {
+      title: `Option ${index + 1}`,
+      time: Object.keys(option)[0],
+      duration: state.form.duration,
+      location: state.form.location,
+      color: '#FFDFAE' // TODO
+    }
+  })
+}
+
 const Calendar = ({ events, referenceDate, daysInView }) => {
   const days = getChunkedDays(referenceDate, daysInView)
   return (
@@ -19,7 +31,7 @@ const Calendar = ({ events, referenceDate, daysInView }) => {
 
 const mapStateToProps = state => ({
   referenceDate: state.view.date,
-  events: state.events,
+  events: [...getProposedOptions(state), ...state.events],
   daysInView: getNumDaysInView(state.view.window)
 })
 
