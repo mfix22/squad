@@ -25,7 +25,7 @@ const Viewer = ({ params }) => (
   <div style={style.container}>
     <AppBar params={params} />
     <div style={style.paperContainer}>
-      <Form />
+      <Form params={params} />
       <CalendarPaper />
     </div>
     {location.hash === '#share' ? <Confirmation /> : null}

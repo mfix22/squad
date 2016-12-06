@@ -34,11 +34,11 @@ const style = {
   }
 }
 
-const Form = ({ onClick }) => {
+const Form = ({ onClick, params }) => {
   let input
   return (
     <Paper style={style.form}>
-      <h2 style={style.h2}>Propose an Event?</h2>
+      <h2 style={style.h2}>{'Propose an Event?'}</h2>
       <TextField
         hintText="What are you planning?"
         floatingLabelText="What"
@@ -52,6 +52,7 @@ const Form = ({ onClick }) => {
         hintTextDate="On what day?"
         hintTextTimeFrom="Starting at?"
         hintTextTimeTo="Until?"
+        params={params}
       />
       <PlaceAutocomplete
         style={style.placeAutocomplete}

@@ -86,6 +86,7 @@ const DatePickerWithList = ({
                               options,
                               duration,
                               disabled,
+                              params,
                               hintTextTimeFrom,
                               hintTextDate,
                               handleVote,
@@ -129,16 +130,18 @@ const DatePickerWithList = ({
               style={style.chip}
               onRequestDelete={() => handleChipDelete(timeKey)}
             >
-              {/*
-                <Avatar
-                  onClick={() => handleVote(option)}
-                  size={24}
-                  style={{ cursor: 'pointer' }}
-                  backgroundColor={(index === 0) ? color.green : null}
-                >
-                  {count}
-                </Avatar>
-              */}
+              {
+                (params && params.event_id) ? (
+                  <Avatar
+                    onClick={() => handleVote(option)}
+                    size={24}
+                    style={{ cursor: 'pointer' }}
+                    backgroundColor={(index === 0) ? color.green : null}
+                  >
+                    {count}
+                  </Avatar>
+                ) : null // don't display vote counts unless voting
+              }
               {optionToDisplayString(timeKey)}
             </Chip>
           )
