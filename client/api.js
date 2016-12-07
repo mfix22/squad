@@ -96,7 +96,7 @@ const getGoogleEvents = (token, id) => {
       timeMin: (new Date()).toISOString(),
       showDeleted: false,
       singleEvents: true,
-      maxResults: 20,
+      maxResults: 50,
       orderBy: 'startTime'
     }
   })
