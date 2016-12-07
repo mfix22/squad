@@ -34,14 +34,11 @@ function incrementVote (events, id, time) {
     incVal[queryProp] = 1
     const update = { $inc: incVal }
 
+    const options = { new: true }
+
     events
-    .findAndModify(
-      query,
-      update
-    )
-    .then( (result) => {
-      resolve(result.ops)
-    })
+    .findAndModify(query, [], update, options)
+    .then( (result) => resolve(result.value))
     .catch(reject)
   })
 }
