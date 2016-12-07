@@ -7,20 +7,37 @@ module.exports = (db) => {
   return {
     get: get.bind(null, events),
     insert: insert.bind(null, events),
-    incrementVote: incrementVote.bind(null, events)
+    incrementVote: incrementVote.bind(null, events),
+    addAuthToken: addAuthToken.bind(null, events)
   }
 }
 
+function addAuthToken (events, id, token) {
+  return new Promise( (resolve, reject) => {
+    const query = { id }
+    const update = { $addToSet: { tokens: token } }
+    const options = { new: true }
+
+    events
+      .findAndModify(query, [], update, options)
+      .then( (result) => resolve(result.value))
+      .catch(reject)
+  })
+}
+
 function incrementVote (events, id, time) {
-  return new Promise ( (resolve, reject) => {
-    const voteId = `options.${time}`
+  return new Promise( (resolve, reject) => {
+    const query = { id }
+
+    const queryProp = `options.${time}`
     const incVal = {}
-    incVal[voteId] = 1
+    incVal[queryProp] = 1
+    const update = { $inc: incVal }
 
     events
     .findAndModify(
-      { id },
-      { "$inc": incVal }
+      query,
+      update
     )
     .then( (result) => {
       resolve(result.ops)
@@ -67,4 +84,5 @@ function genEventId () {
           .createHash('md5')
           .update(crypto.pseudoRandomBytes(15).toString())
           .digest('hex')
+          .slice(0, 10)
 }
