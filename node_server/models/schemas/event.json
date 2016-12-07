@@ -1,0 +1,9 @@
+{
+  "title": "string",
+  "location": "string",
+  "duration": "number",
+  "options": "object",
+  "emails?": "array",
+  "tokens?": "array",
+  "description?": "string"
+}
