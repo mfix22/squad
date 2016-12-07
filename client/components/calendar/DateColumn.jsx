@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import Event from './Event'
+import Moon from '../embeddables/Moon'
 
 import { isThisMonth } from '../../helpers/util'
 
@@ -40,6 +41,7 @@ const DateColumn = ({ refDate, window, day, events, width }) => {
       <p className={`header ${moment(day).isSame(moment(), 'day') ? 'today' : ''}`}>
         {moment(day).format(getHeaderFormat(window)).toUpperCase()}
       </p>
+      <Moon date={day} />
       {
         events.filter((e) => {
           return moment(e.time).isSame(day, 'day')
