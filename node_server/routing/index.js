@@ -2,6 +2,7 @@ const { Router }          = require('express')
 const eventController     = require('../controllers/event')
 const voteController      = require('../controllers/vote')
 const authTokenController = require('../controllers/authToken')
+const adminController     = require('../controllers/admin')
 
 module.exports = function ({ db }) {
 
@@ -9,7 +10,7 @@ module.exports = function ({ db }) {
 
   router.all('/event/:eventId?', eventController(db))
   router.all('/vote/:eventId', voteController(db))
-  //router.all('/admin/:eventId', voteController(db))
+  router.all('/admin/:eventId', adminController(db))
   router.all('/authToken/:eventId', authTokenController(db))
 
   // 404 if none found

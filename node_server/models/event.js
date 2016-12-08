@@ -1,5 +1,5 @@
-const crypto = require('crypto')
-const validator = require('./validator')('event')
+const genEventId = require('../lib/genId')
+const validator  = require('./validator')('event')
 
 module.exports = (db) => {
   const events = db.collection('events')
@@ -67,19 +67,11 @@ function insert (events, event) {
       reject(new Error('invalid'))
 
     const cleanedEvent = validator.extract(event, { includeOptional: true })
-    cleanedEvent.id = genEventId();
+    cleanedEvent.id = genId();
 
     events
       .insertOne(cleanedEvent)
       .then( (result) => resolve(result.ops[0]))
       .catch(reject)
   })
-}
-
-function genEventId () {
-  return crypto
-          .createHash('md5')
-          .update(crypto.pseudoRandomBytes(15).toString())
-          .digest('hex')
-          .slice(0, 10)
 }
