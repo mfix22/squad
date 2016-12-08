@@ -13,10 +13,14 @@ const DEFAULT_DURATION = 30 * 60 * 1000
 
 // TODO vote sort
 export const voteSort = (a, b) => {
-  if (a.count === b.count) {
-    return moment(a.time).toDate() - moment(b.time).toDate()
+  const aTime = Object.keys(a)[0]
+  const bTime = Object.keys(b)[0]
+  const aCount = a[aTime]
+  const bCount = b[bTime]
+  if (aCount === bCount) {
+    return moment(aTime).toDate() - moment(bTime).toDate()
   }
-  return b.count - a.count
+  return bCount - aCount
 }
 
 const form = (state, action) => {
