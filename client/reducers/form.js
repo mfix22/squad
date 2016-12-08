@@ -90,8 +90,7 @@ const form = (state, action) => {
       })
     }
     case ADD_OPTION: {
-      const { duration } = state
-      if (!state.time || !state.date || !duration) return state
+      if (!state.time || !state.date || !state.duration) return state
       const date = moment(state.date)
       const time = moment(state.time)
       const newTime = moment({
@@ -102,16 +101,16 @@ const form = (state, action) => {
         minute: time.minute()
       }).format()
 
-      return {
+      return Object.assign({}, state, {
         time: null,
-        duration: DEFAULT_DURATION,
+        date: null,
         options: [
           {
             [newTime]: 0
           },
           ...state.options
         ].sort(voteSort)
-      }
+      })
     }
     case DELETE_OPTION:
       return Object.assign({}, state, {
