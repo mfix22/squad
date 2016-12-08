@@ -1,15 +1,16 @@
 const express        = require('express')
 const bodyparser     = require('body-parser')
 const morgan         = require('morgan')
-const cors           = require('cors')
 const router         = require('./routing')
 const config          = require('./config')
 
 const app = express()
 
-app.use(cors({
-  origin: `http://${config.HOST}`
-}));
+app.use( (req, res, next) => {
+  req.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
+  req.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT')
+  next()
+});
 
 app.use(bodyparser.json())
 
