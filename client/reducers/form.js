@@ -11,6 +11,7 @@ import {
 
 const DEFAULT_DURATION = 30 * 60 * 1000
 
+// TODO vote sort
 export const voteSort = (a, b) => {
   if (a.count === b.count) {
     return moment(a.time).toDate() - moment(b.time).toDate()

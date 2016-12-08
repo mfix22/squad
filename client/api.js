@@ -4,7 +4,8 @@ import { RECEIVE_EVENT, ADD_USER } from './actions'
 import { getColor } from './helpers/util'
 
 const client = axios.create({
-  baseURL: 'http://api.squadup.io',
+  // baseURL: 'http://api.squadup.io',
+  baseURL: 'http://localhost:4000',
   responseType: 'json'
 })
 
@@ -53,17 +54,29 @@ const sendVote = (vote) => {
   }
 }
 
+// TODO switch WHAT box to use state
 // meta is extra data to include outside of state
 const sendEvent = (meta) => {
   return (dispatch, getState) => {
-    return client.get('/events'/* , { // TODO change to post
-      time: moment(event).unix()
-    }*/).then((response) => {
-      const { options } = response.data
-      return dispatch({
-        type: RECEIVE_EVENT,
-        options
-      })
+    const state = getState()
+    const { location, duration, options: eventOptions } = state.form
+    const body = {
+      title: meta,
+      location,
+      duration,
+      emails: state.emails,
+      options: eventOptions.map(option => ({ startTime: option[Object.keys(option)[0]] })),
+      users: state.users
+    }
+    console.log('BODY', body)
+    return client.post('/events', body).then((response) => {
+      console.log('RESPONSE', response)
+      // const { options } = response.data
+
+      // return dispatch({
+      //   type: RECEIVE_EVENT,
+      //   options
+      // })
     }).catch((err) => {
       return dispatch({
         type: 'ERROR',
