@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import { createStore } from 'redux'
 import reducer from '../client/reducers/events'
 
-import { RECEIVE_EVENT } from '../client/actions'
+import { RECEIVE_EVENTS } from '../client/actions'
 
 const fakeState = {
   events: [
@@ -36,12 +36,12 @@ const fakeState = {
   ]
 }
 
-describe(`Dispatch ${RECEIVE_EVENT}`, () => {
+describe(`Dispatch ${RECEIVE_EVENTS}`, () => {
   it('simulates receiving events from the server', () => {
     const store = createStore(reducer)
     // ensure store is immutable
     store.dispatch({
-      type: RECEIVE_EVENT,
+      type: RECEIVE_EVENTS,
       events: fakeState.events
     })
     expect(store.getState()).to.deep.equal(fakeState.events)

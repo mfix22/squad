@@ -6,20 +6,21 @@ import { voteSort } from '../client/reducers/form'
 
 describe('Form Reducer', () => {
   it('should sort votes by vote count and then start date', () => {
+    const time1 = moment().format()
+    const time2 = moment().format()
     let a = {
-      count: 0,
-      time: moment().format()
+      [time1]: 0
     }
     let b = {
-      count: 1,
-      time: moment().format()
+      [time2]: 1
     }
     expect(voteSort(a,b)).to.be.above(0)
-    b.count = 0;
+    b = {
+      [time2]: 0
+    }
     expect(voteSort(a,b)).to.equal(0)
     b = {
-      count: 0,
-      timeFrom: moment().add(1, 'd').format()
+      [moment().add(1, 'd').format()]: 0
     }
     expect(voteSort(a,b)).to.be.below(0)
   })
@@ -122,35 +123,28 @@ describe('Form Reducer', () => {
   })
 
   it('simulates receiving options from the server', () => {
-    const options = [
-      {
-        "id":"ebc633cb-ed52-479a-8c57-dbd2c59bb700",
-        "time":"2016-11-16T04:00:03.165Z",
-        "count": 4
-      },
-      {
-        "id":"ebc633cb-ed52-479a-8c57-dbd2c59bb701",
-        "time":"2016-11-16T06:00:03.165Z",
-        "count": 1
-      },
-      {
-        "id":"ebc633cb-ed52-479a-8c57-dbd2c59bb702",
-        "time":"2016-11-16T07:00:03.165Z",
-        "count": 0
-      }
-    ]
+    const options = {
+      180000: 4,
+      90000: 1,
+      270000: 0
+    }
     const store = createStore(reducer)
     store.dispatch({
       type: 'RECEIVE_EVENT',
       options
     })
-    expect(store.getState().form.options).to.deep.equal(options)
 
-    const prevState = store.getState()
+    expect(store.getState().form.options).to.deep.equal([
+      { '1970-01-02T20:00:00-06:00': 4 },
+      { '1970-01-01T19:00:00-06:00': 1 },
+      { '1970-01-03T21:00:00-06:00': 0 }
+    ])
+
+    const prevState = store.getState().options
     store.dispatch({
       type: 'RECEIVE_EVENT',
       options: null
     })
-    expect(store.getState()).to.deep.equal(prevState)
+    expect(store.getState().options).to.deep.equal(prevState)
   })
 })

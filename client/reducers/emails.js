@@ -10,7 +10,8 @@ const emails = (state = [], action) => {
       return state.filter(email => email !== action.email)
     }
     case RECEIVE_EVENT: {
-      return action.emails
+      if (action.emails) return action.emails
+      return state
     }
     default:
       return state

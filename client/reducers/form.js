@@ -81,11 +81,12 @@ const form = (state, action) => {
       return state
     case RECEIVE_EVENT: {
       const { title, location, duration, options } = action
+      // if (!title || !location || !duration || !options) return state
       return Object.assign({}, state, {
-        title,
-        location,
-        duration,
-        options: options.sort(voteSort)
+        title: title || state.title || '',
+        location: location || state.location,
+        duration: duration || state.duration,
+        options: options && Object.entries(options).map(([key, value]) => ({ [moment.unix(key).format()]: value })).sort(voteSort)
       })
     }
     case ADD_OPTION: {

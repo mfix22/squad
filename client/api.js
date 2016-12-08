@@ -32,7 +32,7 @@ const fetchEvent = (id) => {
         location,
         duration,
         emails,
-        options: Object.entries(options).map(([key, value]) => ({ [moment.unix(key).format()]: value })),
+        options,
       })
     }).catch((err) => {
       return dispatch({
