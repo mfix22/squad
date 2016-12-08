@@ -96,29 +96,31 @@ const DatePickerWithList = ({
                               handleChangeDuration,
                               handleChipAdd,
                               handleChipDelete }) => {
+  const EDIT_FORM = params && !params.event_id
   return (
     <div>
-      <form style={style.form} onSubmit={handleSubmit}>
-        <Label labelFor="TimePicker" text="When" />
-        <TimePicker
-          hintText={hintTextTimeFrom}
-          value={time}
-          onChange={handleChangeTime}
-          textFieldStyle={style.timePicker}
-        />
-        <DatePicker
-          autoOk
-          value={date}
-          hintText={hintTextDate}
-          textFieldStyle={style.datePicker}
-          mode="landscape"
-          onChange={handleChangeDate}
-        />
-        {/* <PlainActionButton label="Add option" onClick={this.handleSubmit} action="ADD_OPTION">
-          <input type="submit" value="Submit" style={style.submit} />
-        </PlainActionButton> */}
-        <FlatButton label="Add option" disabled={disabled} onClick={handleChipAdd} />
-      </form>
+      {
+        (EDIT_FORM) ? (
+          <form style={style.form} onSubmit={handleSubmit}>
+            <Label labelFor="TimePicker" text="When" />
+            <TimePicker
+              hintText={hintTextTimeFrom}
+              value={time}
+              onChange={handleChangeTime}
+              textFieldStyle={style.timePicker}
+            />
+            <DatePicker
+              autoOk
+              value={date}
+              hintText={hintTextDate}
+              textFieldStyle={style.datePicker}
+              mode="landscape"
+              onChange={handleChangeDate}
+            />
+            <FlatButton label="Add option" disabled={disabled} onClick={handleChipAdd} />
+          </form>
+        ) : null
+      }
       <div style={style.chips}>
         <Label labelFor="Chips" text="Options" />
         {options.map((option, index) => {
@@ -128,10 +130,10 @@ const DatePickerWithList = ({
             <Chip
               key={index}
               style={style.chip}
-              onRequestDelete={() => handleChipDelete(timeKey)}
+              onRequestDelete={EDIT_FORM ? () => handleChipDelete(timeKey) : null}
             >
               {
-                (params && params.event_id) ? (
+                (!EDIT_FORM) ? (
                   <Avatar
                     onClick={() => handleVote(option)}
                     size={24}
