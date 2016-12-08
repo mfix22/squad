@@ -26,7 +26,7 @@ const fetchEvent = (id) => {
   return (dispatch) => {
     return client.get(`/event/${id}`).then((response) => {
       const { title, location, duration, emails, options } = response.data
-      return dispatch({
+      dispatch({
         type: RECEIVE_EVENT,
         title,
         location,

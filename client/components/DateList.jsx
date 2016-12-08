@@ -96,11 +96,11 @@ const DatePickerWithList = ({
                               handleChangeDuration,
                               handleChipAdd,
                               handleChipDelete }) => {
-  const EDIT_FORM = params && !params.event_id
+  const EDIT_FORM = !(params && params.event_id)
   return (
     <div>
       {
-        (EDIT_FORM) ? (
+        EDIT_FORM ? (
           <form style={style.form} onSubmit={handleSubmit}>
             <Label labelFor="TimePicker" text="When" />
             <TimePicker
@@ -133,7 +133,7 @@ const DatePickerWithList = ({
               onRequestDelete={EDIT_FORM ? () => handleChipDelete(timeKey) : null}
             >
               {
-                (!EDIT_FORM) ? (
+                !EDIT_FORM ? (
                   <Avatar
                     onClick={() => handleVote(option)}
                     size={24}
@@ -152,6 +152,8 @@ const DatePickerWithList = ({
       <AutoComplete
         openOnFocus
         hintText={humanize(duration)}
+        searchText={EDIT_FORM ? '' : humanize(duration)}
+        disabled={!EDIT_FORM}
         dataSource={timeValues}
         dataSourceConfig={{ text: 'text', value: 'value' }}
         filter={AutoComplete.fuzzyFilter}

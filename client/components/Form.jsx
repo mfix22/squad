@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import PlaceAutocomplete from './PlaceAutocomplete'
 import Paper from './Paper'
 import TextField from './TextField'
-import TextFieldWithList from './TextFieldWithList'
+import EmailList from './EmailList'
 import DateList from './DateList'
 // import RadioField from '../RadioField'
 // import PlainActionButton from './buttons/PlainActionButton'
@@ -26,6 +26,7 @@ const style = {
   h2: {
     display: 'inlineBlock',
     margin: '0px 0px 16px 0px',
+    textTransform: 'uppercase'
   },
   scheduleButton: {
     backgroundColor: color.green,
@@ -34,15 +35,17 @@ const style = {
   }
 }
 
-const Form = ({ onClick, params }) => {
+const Form = ({ onClick, params, location }) => {
   let input
+  const EDIT_FORM = !(params && params.event_id)
   return (
     <Paper style={style.form}>
-      <h2 style={style.h2}>{'Propose an Event?'}</h2>
+      <h2 style={style.h2}>{(EDIT_FORM) ? 'Propose an Event?' : 'Vote for event times'}</h2>
       <TextField
         hintText="What are you planning?"
         floatingLabelText="What"
         fullWidth
+        disabled={!EDIT_FORM}
         ref={(node) => {
           input = node
         }}
@@ -61,7 +64,7 @@ const Form = ({ onClick, params }) => {
         floatingLabelFixed
         fullWidth
       />
-      <TextFieldWithList
+      <EmailList
         hint="Emails to invite?"
         label="Who"
       />
@@ -75,6 +78,10 @@ const Form = ({ onClick, params }) => {
   )
 }
 
+const mapStateToProps = state => ({
+  location: state.form.location
+})
+
 const mapDispatchToProps = (dispatch) => {
   return {
     onClick: (input) => {
@@ -83,4 +90,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Form)
+export default connect(mapStateToProps, mapDispatchToProps)(Form)
