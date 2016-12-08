@@ -6,8 +6,11 @@ import { getColor } from './helpers/util'
 const client = axios.create({
   // baseURL: 'http://api.squadup.io',
   baseURL: 'http://localhost:4000',
-  responseType: 'json'
+  responseType: 'json',
+  timeout: 5000,
+  headers: { 'Content-Type': 'application/json' }
 })
+client.defaults.headers.post['Content-Type'] = 'application/json'
 
 const googleCalendarClient = axios.create({
   baseURL: 'https://www.googleapis.com/calendar/v3/calendars',
@@ -20,7 +23,7 @@ const googleAuthClient = axios.create({
 })
 
 const fetchEvents = (dispatch, getState) => {
-  return client.get('/events').then((response) => {
+  return client.get('/event').then((response) => {
     const { events, options } = response.data
     return dispatch({
       type: RECEIVE_EVENT,
@@ -57,19 +60,24 @@ const sendVote = (vote) => {
 // TODO switch WHAT box to use state
 // meta is extra data to include outside of state
 const sendEvent = (meta) => {
+  if (!meta) throw Error('Events require title')
   return (dispatch, getState) => {
     const state = getState()
-    const { location, duration, options: eventOptions } = state.form
+    const { location, duration, options } = state.form
     const body = {
       title: meta,
-      location,
+      location: location.description,
       duration,
       emails: state.emails,
-      options: eventOptions.map(option => ({ startTime: option[Object.keys(option)[0]] })),
+      options: options.reduce((accum, option) => {
+        return Object.assign(accum, {
+          [moment(Object.keys(option)[0]).unix()]: 0
+        })
+      }, {}),
       users: state.users
     }
-    console.log('BODY', body)
-    return client.post('/events', body).then((response) => {
+    console.log('BODY', JSON.stringify(body, null, 2))
+    return client.post('/event', body).then((response) => {
       console.log('RESPONSE', response)
       // const { options } = response.data
 

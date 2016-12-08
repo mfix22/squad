@@ -67,7 +67,7 @@ function insert (events, event) {
       reject(new Error('invalid'))
 
     const cleanedEvent = validator.extract(event, { includeOptional: true })
-    cleanedEvent.id = genId();
+    cleanedEvent.id = genEventId()
 
     events
       .insertOne(cleanedEvent)

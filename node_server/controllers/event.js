@@ -16,6 +16,9 @@ module.exports = (db) => {
       case 'POST':
         post(req, res, opts)
         break
+      case 'OPTIONS':
+        res.status(200).end()
+        break
     }
   }
 }
@@ -37,7 +40,6 @@ function get (req, res, opts) {
 
 function post (req, res, opts) {
   const { events, error } = opts
-
   events
     .insert(req.body)
     .then( (event) => {
