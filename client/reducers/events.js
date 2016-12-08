@@ -1,8 +1,8 @@
-import { RECEIVE_EVENT } from '../actions'
+import { RECEIVE_EVENTS } from '../actions'
 
 const events = (state = [], action) => {
   switch (action.type) {
-    case RECEIVE_EVENT: {
+    case RECEIVE_EVENTS: {
       if (!action.events) return state
       return action.events
     }

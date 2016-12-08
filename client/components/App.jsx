@@ -14,15 +14,15 @@ import { loadGoogleEvents } from '../api'
 import { loadState, saveState } from '../helpers/localStorage'
 
 // TODO remove localStorage save in production
-const store = configureStore(loadState())
-
-store.subscribe(() => {
-  saveState(store.getState())
-})
-
-store.getState().users.forEach((user) => {
-  store.dispatch(loadGoogleEvents(user))
-})
+const store = configureStore()
+//
+// store.subscribe(() => {
+//   saveState(store.getState())
+// })
+//
+// store.getState().users.forEach((user) => {
+//   store.dispatch(loadGoogleEvents(user))
+// })
 
 injectTapEventPlugin()
 

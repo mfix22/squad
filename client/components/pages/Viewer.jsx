@@ -1,9 +1,12 @@
 import React from 'react'
-// import { connect } from 'react-redux'
+import { connect } from 'react-redux'
+
 import AppBar from '../AppBar'
 import Form from '../Form'
 import CalendarPaper from '../calendar/CalendarPaper'
 import Confirmation from '../Confirmation'
+
+import { fetchEvent } from '../../api'
 
 const style = {
   container: {
@@ -21,16 +24,25 @@ const style = {
   }
 }
 
-const Viewer = ({ params, location, history }) => (
-  <div style={style.container}>
-    <AppBar params={params} />
-    <div style={style.paperContainer}>
-      <Form params={params} />
-      <CalendarPaper />
+const Viewer = ({ onLoad, params, location, history }) => {
+  onLoad(params.event_id)
+  return (
+    <div style={style.container}>
+      <AppBar params={params} />
+      <div style={style.paperContainer}>
+        <Form params={params} />
+        <CalendarPaper />
+      </div>
+      { /* TODO reorganize routes */ }
+      <Confirmation location={location} params={params} />
     </div>
-    { /* TODO reorganize routes */ }
-    <Confirmation location={location} params={params} />
-  </div>
-)
+  )
+}
 
-export default Viewer
+const mapDispatchToProps = dispatch => ({
+  onLoad: (id) => {
+    dispatch(fetchEvent(id))
+  }
+})
+
+export default connect(null, mapDispatchToProps)(Viewer)

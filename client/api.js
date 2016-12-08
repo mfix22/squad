@@ -1,6 +1,6 @@
 import axios from 'axios'
 import moment from 'moment'
-import { RECEIVE_EVENT, ADD_USER } from './actions'
+import { RECEIVE_EVENT, RECEIVE_EVENTS, ADD_USER } from './actions'
 import { getColor } from './helpers/util'
 
 const client = axios.create({
@@ -22,20 +22,25 @@ const googleAuthClient = axios.create({
   responseType: 'json'
 })
 
-const fetchEvents = (dispatch, getState) => {
-  return client.get('/event').then((response) => {
-    const { events, options } = response.data
-    return dispatch({
-      type: RECEIVE_EVENT,
-      events,
-      options
+const fetchEvent = (id) => {
+  return (dispatch) => {
+    return client.get(`/event/${id}`).then((response) => {
+      const { title, location, duration, emails, options } = response.data
+      return dispatch({
+        type: RECEIVE_EVENT,
+        title,
+        location,
+        duration,
+        emails,
+        options: Object.entries(options).map(([key, value]) => ({ [moment.unix(key).format()]: value })),
+      })
+    }).catch((err) => {
+      return dispatch({
+        type: 'ERROR',
+        err
+      })
     })
-  }).catch((err) => {
-    return dispatch({
-      type: 'ERROR',
-      err
-    })
-  })
+  }
 }
 
 const sendVote = (vote) => {
@@ -76,15 +81,9 @@ const sendEvent = (meta) => {
       }, {}),
       users: state.users
     }
-    console.log('BODY', JSON.stringify(body, null, 2))
     return client.post('/event', body).then((response) => {
-      console.log('RESPONSE', response)
-      // const { options } = response.data
-
-      // return dispatch({
-      //   type: RECEIVE_EVENT,
-      //   options
-      // })
+      const { id } = response.data
+      window.location = window.location.origin + `/event/${id}`
     }).catch((err) => {
       return dispatch({
         type: 'ERROR',
@@ -127,7 +126,7 @@ const loadGoogleEvents = (token) => {
   return (dispatch) => {
     return getGoogleEvents(token).then((response) => {
       dispatch({
-        type: RECEIVE_EVENT,
+        type: RECEIVE_EVENTS,
         events: response.data.items.map(event => ({
           id: event.id,
           title: event.summary,
@@ -153,7 +152,7 @@ const authorizeThenLoadGoogleEvents = (id) => {
       return getGoogleEvents(response.access_token, id)
     }).then((eventResponse) => {
       dispatch({
-        type: RECEIVE_EVENT,
+        type: RECEIVE_EVENTS,
         events: eventResponse.data.items.map(event => ({
           id: event.id,
           title: event.summary,
@@ -167,4 +166,4 @@ const authorizeThenLoadGoogleEvents = (id) => {
   }
 }
 
-export { fetchEvents, sendVote, sendEvent, loadGoogleEvents, authorizeThenLoadGoogleEvents }
+export { fetchEvent, sendVote, sendEvent, loadGoogleEvents, authorizeThenLoadGoogleEvents }
