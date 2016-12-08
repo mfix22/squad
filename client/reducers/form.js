@@ -2,6 +2,7 @@ import moment from 'moment'
 import {
   ADD_OPTION,
   DELETE_OPTION,
+  CHANGE_TITLE,
   CHANGE_TIME,
   CHANGE_DATE,
   CHANGE_DURATION,
@@ -35,6 +36,12 @@ const form = (state, action) => {
   }
 
   switch (action.type) {
+    case CHANGE_TITLE: {
+      if (!action.title) return state
+      return Object.assign({}, state, {
+        title: action.title
+      })
+    }
     case CHANGE_TIME: {
       if (!action.time) {
         return Object.assign({}, state, {
@@ -73,9 +80,12 @@ const form = (state, action) => {
       }
       return state
     case RECEIVE_EVENT: {
-      if (!action.options) return state
+      const { title, location, duration, options } = action
       return Object.assign({}, state, {
-        options: action.options.sort(voteSort)
+        title,
+        location,
+        duration,
+        options: options.sort(voteSort)
       })
     }
     case ADD_OPTION: {

@@ -1,4 +1,4 @@
-import { ADD_EMAIL, DELETE_EMAIL } from '../actions'
+import { ADD_EMAIL, DELETE_EMAIL, RECEIVE_EVENT } from '../actions'
 
 const emails = (state = [], action) => {
   switch (action.type) {
@@ -8,6 +8,9 @@ const emails = (state = [], action) => {
     }
     case DELETE_EMAIL: {
       return state.filter(email => email !== action.email)
+    }
+    case RECEIVE_EVENT: {
+      return action.emails
     }
     default:
       return state
