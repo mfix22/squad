@@ -9,6 +9,7 @@ const app = express()
 app.use( (req, res, next) => {
   req.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
   req.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT')
+  req.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
   next()
 });
 
