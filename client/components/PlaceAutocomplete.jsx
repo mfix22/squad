@@ -38,7 +38,7 @@ const mapDispatchToProps = dispatch => ({
   onNewRequest: (location) => {
     dispatch({
       type: CHANGE_LOCATION,
-      location
+      location: location.description
     })
   }
 })

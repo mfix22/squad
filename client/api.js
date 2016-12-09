@@ -57,16 +57,17 @@ const sendEvent = router => (meta) => {
     const { location, duration, options } = state.form
     const body = {
       title: meta,
-      location: location.description,
+      location,
       duration,
       emails: state.emails,
+      tokens: state.users,
       options: options.reduce((accum, option) => {
         return Object.assign(accum, {
           [moment(Object.keys(option)[0]).unix()]: 0
         })
       }, {}),
-      users: state.users
     }
+    console.log(body);
     return client.post('/event', body).then((response) => {
       const { id } = response.data
       router.push(`/event/${id}`)
