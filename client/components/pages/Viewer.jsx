@@ -7,22 +7,7 @@ import CalendarPaper from '../calendar/CalendarPaper'
 import Confirmation from '../Confirmation'
 
 import { fetchEvent } from '../../api'
-
-const style = {
-  container: {
-    display: 'flex',
-    minHeight: '700px',
-    minWidth: '1200px',
-    alignItems: 'center',
-    flexDirection: 'column',
-  },
-  paperContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    maxWidth: '1600px',
-    width: '100%',
-  }
-}
+import style from './pageStyles'
 
 const Viewer = ({ onLoad, params, location }) => {
   onLoad(params.event_id)
