@@ -1,6 +1,6 @@
 import axios from 'axios'
 import moment from 'moment'
-import { RECEIVE_EVENT, RECEIVE_EVENTS, ADD_USER } from './actions'
+import { RECEIVE_EVENT, RECEIVE_EVENTS, ADD_USER, receiveEvent } from './actions'
 import { getColor } from './helpers/util'
 
 const client = axios.create({
@@ -25,15 +25,7 @@ const googleAuthClient = axios.create({
 const fetchEvent = (id) => {
   return (dispatch) => {
     return client.get(`/event/${id}`).then((response) => {
-      const { title, location, duration, emails, options } = response.data
-      dispatch({
-        type: RECEIVE_EVENT,
-        title,
-        location,
-        duration,
-        emails,
-        options,
-      })
+      dispatch(receiveEvent(response.data))
     }).catch((err) => {
       return dispatch({
         type: 'ERROR',
@@ -43,16 +35,12 @@ const fetchEvent = (id) => {
   }
 }
 
-const sendVote = (vote) => {
+const sendVote = ({ id, option }) => {
   return (dispatch) => {
-    return client.get('/vote'/* , { // TODO change to post
-      time: moment(vote).unix()
-    }*/).then((response) => {
-      const { options } = response.data
-      return dispatch({
-        type: RECEIVE_EVENT,
-        options
-      })
+    return client.post(`/vote/${id}`, {
+      time: moment(option).unix()
+    }).then((response) => {
+      dispatch(receiveEvent(response.data))
     }).catch((err) => {
       return dispatch({
         type: 'ERROR',
@@ -62,7 +50,6 @@ const sendVote = (vote) => {
   }
 }
 
-// TODO switch WHAT box to use state
 // meta is extra data to include outside of state
 const sendEvent = (meta) => {
   if (!meta) throw Error('Events require title')

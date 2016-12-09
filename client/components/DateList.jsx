@@ -135,7 +135,7 @@ const DatePickerWithList = ({
               {
                 !EDIT_FORM ? (
                   <Avatar
-                    onClick={() => handleVote(option)}
+                    onClick={() => handleVote({ id: params.event_id, option: timeKey })}
                     size={24}
                     style={{ cursor: 'pointer' }}
                     backgroundColor={(index === 0) ? color.green : null}
@@ -202,8 +202,9 @@ const mapDispatchToProps = dispatch => ({
       time
     })
   },
-  handleVote: (option) => {
-    dispatch(sendVote(option.time))
+  // meta: current event_id and time option being voted on
+  handleVote: (meta) => {
+    dispatch(sendVote(meta))
   },
   handleChangeDuration: (choice) => {
     dispatch({

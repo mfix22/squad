@@ -22,6 +22,18 @@ const DELETE_EMAIL = 'DELETE_EMAIL'
 
 const SUBMIT_PROPOSAL = 'SUBMIT_PROPOSAL'
 
+const receiveEvent = (data) => {
+  const { title, location, duration, emails, options } = data
+  return {
+    type: RECEIVE_EVENT,
+    title,
+    location,
+    duration,
+    emails,
+    options,
+  }
+}
+
 export {
   VIEW_TODAY,
   VIEW_PREV,
@@ -39,5 +51,6 @@ export {
   ADD_USER,
   ADD_EMAIL,
   DELETE_EMAIL,
-  SUBMIT_PROPOSAL
+  SUBMIT_PROPOSAL,
+  receiveEvent
 }
