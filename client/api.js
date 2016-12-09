@@ -105,31 +105,36 @@ const getGoogleEvents = (token, id) => {
       maxResults: 25,
       orderBy: 'startTime'
     }
-  })
+  }).catch((err) => { throw err })
 }
 
-const loadGoogleEvents = (token) => {
+const loadAllGoogleEvents = (users) => {
   return (dispatch) => {
-    return getGoogleEvents(token).then((response) => {
-      dispatch(receiveGoogleEvents(response.data))
-    }).catch((err) => {
-      throw err
-    })
+    return axios.all(users.map(user => getGoogleEvents(user))).then(axios.spread((...eventGroups) => {
+      if (eventGroups.length) {
+        const allEvents = eventGroups.reduce((events, group) => {
+          return events.concat(group.data.items)
+        }, [])
+        dispatch(receiveGoogleEvents(allEvents))
+      }
+    }))
   }
 }
 
 const authorizeThenLoadGoogleEvents = (id) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     return authorize().then((response) => {
-      dispatch({
-        type: ADD_USER,
-        user: response.access_token
-      })
+      if (!getState().users.includes(response.access_token)) {
+        dispatch({
+          type: ADD_USER,
+          user: response.access_token
+        })
+      }
       return getGoogleEvents(response.access_token, id)
     }).then((eventResponse) => {
-      dispatch(receiveGoogleEvents(eventResponse.data))
+      dispatch(receiveGoogleEvents(eventResponse.data.items))
     })
   }
 }
 
-export { fetchEvent, sendVote, sendEvent, loadGoogleEvents, authorizeThenLoadGoogleEvents }
+export { fetchEvent, sendVote, sendEvent, loadAllGoogleEvents, authorizeThenLoadGoogleEvents }

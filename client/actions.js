@@ -26,7 +26,7 @@ const DELETE_EMAIL = 'DELETE_EMAIL'
 const SUBMIT_PROPOSAL = 'SUBMIT_PROPOSAL'
 
 const receiveEvent = (data) => {
-  const { title, location, duration, emails, options } = data
+  const { title, location, duration, emails, options, tokens } = data
   return {
     type: RECEIVE_EVENT,
     title,
@@ -34,13 +34,14 @@ const receiveEvent = (data) => {
     duration,
     emails,
     options,
+    users: tokens,
   }
 }
 
 const receiveGoogleEvents = (data) => {
   return {
     type: RECEIVE_EVENTS,
-    events: data.items.map(event => ({
+    events: data.map(event => ({
       id: event.id,
       title: event.summary,
       time: moment(event.start.dateTime).format(),
