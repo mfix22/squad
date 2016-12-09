@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-
 import RaisedButton from 'material-ui/RaisedButton'
+
 import PlaceAutocomplete from './PlaceAutocomplete'
 import Paper from './Paper'
 import TextField from './TextField'
@@ -35,7 +35,7 @@ const style = {
   }
 }
 
-const Form = ({ onClick, params, location }) => {
+const Form = ({ onClick, params }, { router }) => {
   let input
   const EDIT_FORM = !(params && params.event_id)
   return (
@@ -70,9 +70,13 @@ const Form = ({ onClick, params, location }) => {
       />
       {/* <RadioField /> */}
       <RaisedButton
-        label="Schedule"
+        label={EDIT_FORM ? 'Schedule' : 'Share'}
         style={style.scheduleButton}
-        onClick={() => { onClick(input.state.value) }}
+        onClick={
+          EDIT_FORM ?
+            () => { onClick(input.state.value, router) } :
+            () => { router.push(`/share/${params.event_id}`) }
+        }
       />
     </Paper>
   )
@@ -84,10 +88,14 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onClick: (input) => {
-      dispatch(sendEvent(input))
+    onClick: (input, router) => {
+      dispatch(sendEvent(router)(input))
     }
   }
+}
+
+Form.contextTypes = {
+  router: React.PropTypes.object
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form)

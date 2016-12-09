@@ -24,7 +24,7 @@ const style = {
   }
 }
 
-const Viewer = ({ onLoad, params, location, history }) => {
+const Viewer = ({ onLoad, params, location }) => {
   onLoad(params.event_id)
   return (
     <div style={style.container}>

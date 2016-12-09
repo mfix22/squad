@@ -90,7 +90,6 @@ const DatePickerWithList = ({
                               hintTextTimeFrom,
                               hintTextDate,
                               handleVote,
-                              handleSubmit,
                               handleChangeTime,
                               handleChangeDate,
                               handleChangeDuration,
@@ -101,7 +100,7 @@ const DatePickerWithList = ({
     <div>
       {
         EDIT_FORM ? (
-          <form style={style.form} onSubmit={handleSubmit}>
+          <form style={style.form}>
             <Label labelFor="TimePicker" text="When" />
             <TimePicker
               hintText={hintTextTimeFrom}
@@ -212,10 +211,6 @@ const mapDispatchToProps = dispatch => ({
       duration: choice.value
     })
   },
-  handleSubmit: (e) => {
-    e.preventDefault()
-    dispatch(sendEvent())
-  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DatePickerWithList)
