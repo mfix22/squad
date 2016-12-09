@@ -13,9 +13,6 @@ module.exports = (db) => {
       case 'POST':
         post(req, res, opts)
         break
-      case 'OPTIONS':
-        res.status(200).end()
-        break
     }
   }
 }
