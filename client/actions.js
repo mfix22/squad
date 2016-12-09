@@ -1,3 +1,6 @@
+import moment from 'moment'
+import { getColor } from './helpers/util'
+
 const VIEW_TODAY = 'VIEW_TODAY'
 const VIEW_PREV = 'VIEW_PREV'
 const VIEW_NEXT = 'VIEW_NEXT'
@@ -34,6 +37,20 @@ const receiveEvent = (data) => {
   }
 }
 
+const receiveGoogleEvents = (data) => {
+  return {
+    type: RECEIVE_EVENTS,
+    events: data.items.map(event => ({
+      id: event.id,
+      title: event.summary,
+      time: moment(event.start.dateTime).format(),
+      duration: moment(event.end.dateTime).diff(moment(event.start.dateTime)),
+      location: event.location,
+      color: getColor(parseInt(event.colorId, 10))
+    }))
+  }
+}
+
 export {
   VIEW_TODAY,
   VIEW_PREV,
@@ -52,5 +69,6 @@ export {
   ADD_EMAIL,
   DELETE_EMAIL,
   SUBMIT_PROPOSAL,
-  receiveEvent
+  receiveEvent,
+  receiveGoogleEvents
 }

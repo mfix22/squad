@@ -1,7 +1,6 @@
 import axios from 'axios'
 import moment from 'moment'
-import { RECEIVE_EVENT, RECEIVE_EVENTS, ADD_USER, receiveEvent } from './actions'
-import { getColor } from './helpers/util'
+import { ADD_USER, receiveEvent, receiveGoogleEvents } from './actions'
 
 const client = axios.create({
   // baseURL: 'http://api.squadup.io',
@@ -103,7 +102,7 @@ const getGoogleEvents = (token, id) => {
       timeMin: (new Date()).toISOString(),
       showDeleted: false,
       singleEvents: true,
-      maxResults: 50,
+      maxResults: 25,
       orderBy: 'startTime'
     }
   })
@@ -112,17 +111,7 @@ const getGoogleEvents = (token, id) => {
 const loadGoogleEvents = (token) => {
   return (dispatch) => {
     return getGoogleEvents(token).then((response) => {
-      dispatch({
-        type: RECEIVE_EVENTS,
-        events: response.data.items.map(event => ({
-          id: event.id,
-          title: event.summary,
-          time: moment(event.start.dateTime).format(),
-          duration: moment(event.end.dateTime).diff(moment(event.start.dateTime)),
-          location: event.location,
-          color: getColor(parseInt(event.colorId, 10))
-        }))
-      })
+      dispatch(receiveGoogleEvents(response.data))
     }).catch((err) => {
       throw err
     })
@@ -138,17 +127,7 @@ const authorizeThenLoadGoogleEvents = (id) => {
       })
       return getGoogleEvents(response.access_token, id)
     }).then((eventResponse) => {
-      dispatch({
-        type: RECEIVE_EVENTS,
-        events: eventResponse.data.items.map(event => ({
-          id: event.id,
-          title: event.summary,
-          time: moment(event.start.dateTime).format(),
-          duration: moment(event.end.dateTime).diff(moment(event.start.dateTime)),
-          location: event.location,
-          color: getColor(parseInt(event.colorId, 10))
-        }))
-      })
+      dispatch(receiveGoogleEvents(eventResponse.data))
     })
   }
 }
