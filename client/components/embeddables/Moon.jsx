@@ -25,9 +25,9 @@ const getEmoji = (value, strict) => {
   return '🌘'
 }
 
-const Moon = ({ date }) => (
+const Moon = ({ date, settings }) => (
   <div style={moonStyle}>
-    {getEmoji(getMoonIllumination(moment(date).toDate()).phase, true)}
+    {getEmoji(getMoonIllumination(moment(date).toDate()).phase, settings.strict)}
   </div>
 )
 

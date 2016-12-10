@@ -41,7 +41,9 @@ const DateColumn = ({ refDate, window, day, events, width }) => {
       <p className={`header ${moment(day).isSame(moment(), 'day') ? 'today' : ''}`}>
         {moment(day).format(getHeaderFormat(window)).toUpperCase()}
       </p>
-      <Moon date={day} />
+      <ul className="embeddables">
+        <Moon date={day} />
+      </ul>
       {
         events.filter((e) => {
           return moment(e.time).isSame(day, 'day')
