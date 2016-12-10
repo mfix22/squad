@@ -10,13 +10,13 @@ import Viewer from './pages/Viewer'
 
 import { color } from '../vars'
 import configureStore from '../helpers/configureStore'
-import { loadState, saveState } from '../helpers/localStorage'
 
-const store = configureStore()
-
+// import { loadState, saveState } from '../helpers/localStorage'
 // store.subscribe(() => {
 //   saveState(store.getState())
 // })
+
+const store = configureStore()
 
 injectTapEventPlugin()
 

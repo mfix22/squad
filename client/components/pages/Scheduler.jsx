@@ -3,6 +3,7 @@ import React from 'react'
 import AppBar from '../AppBar'
 import Form from '../Form'
 import CalendarPaper from '../calendar/CalendarPaper'
+import ErrorPopUp from '../ErrorPopUp'
 
 import style from './pageStyles'
 
@@ -13,6 +14,7 @@ const Scheduler = ({ params }) => (
       <Form params={params} />
       <CalendarPaper />
     </div>
+    <ErrorPopUp />
   </div>
 )
 
