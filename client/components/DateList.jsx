@@ -8,9 +8,9 @@ import FlatButton from 'material-ui/FlatButton'
 import moment from 'moment'
 
 import Label from './Label'
-import { sendVote, sendEvent } from '../api'
+import { sendVote } from '../api'
 import { color } from '../vars'
-import { CHANGE_TIME, CHANGE_DATE, CHANGE_DURATION, ADD_OPTION, DELETE_OPTION } from '../actions'
+import { CHANGE_TIME, CHANGE_DATE, ADD_OPTION, DELETE_OPTION } from '../actions'
 
 const style = {
   form: {
