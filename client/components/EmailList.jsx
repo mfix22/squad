@@ -13,7 +13,7 @@ const style = {
   }
 }
 
-class TextFieldWithList extends React.Component {
+class EmailList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -80,4 +80,4 @@ const mapDispatchToProps = dispatch => ({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(TextFieldWithList)
+export default connect(mapStateToProps, mapDispatchToProps)(EmailList)

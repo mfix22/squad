@@ -9,6 +9,7 @@ require('../../styles/app.scss')
 const getProposedOptions = (state) => {
   return state.form.options.map((option, index) => {
     return {
+      id: -1 * (index + 1), // insure doesn't overlap with pulled events
       title: `Option ${index + 1}`,
       time: Object.keys(option)[0],
       duration: state.form.duration,

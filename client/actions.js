@@ -1,17 +1,19 @@
+import moment from 'moment'
+import { getColor } from './helpers/util'
+
 const VIEW_TODAY = 'VIEW_TODAY'
 const VIEW_PREV = 'VIEW_PREV'
 const VIEW_NEXT = 'VIEW_NEXT'
 const CHANGE_WINDOW = 'CHANGE_WINDOW'
 
 const RECEIVE_EVENT = 'RECEIVE_EVENT'
+const RECEIVE_EVENTS = 'RECEIVE_EVENTS'
 
 const ADD_OPTION = 'ADD_OPTION'
 const DELETE_OPTION = 'DELETE_OPTION'
 
 const CHANGE_TIME = 'CHANGE_TIME'
 const CHANGE_DATE = 'CHANGE_DATE'
-const CHANGE_DURATION = 'CHANGE_DURATION'
-const CHANGE_LOCATION = 'CHANGE_LOCATION'
 
 const ADD_USER = 'ADD_USER'
 
@@ -20,20 +22,48 @@ const DELETE_EMAIL = 'DELETE_EMAIL'
 
 const SUBMIT_PROPOSAL = 'SUBMIT_PROPOSAL'
 
+const receiveEvent = (data) => {
+  const { title, location, duration, emails, options, tokens } = data
+  return {
+    type: RECEIVE_EVENT,
+    title,
+    location,
+    duration,
+    emails,
+    options,
+    users: tokens,
+  }
+}
+
+const receiveGoogleEvents = (data) => {
+  return {
+    type: RECEIVE_EVENTS,
+    events: data.map(event => ({
+      id: event.id,
+      title: event.summary,
+      time: moment(event.start.dateTime).format(),
+      duration: moment(event.end.dateTime).diff(moment(event.start.dateTime)),
+      location: event.location,
+      color: getColor(parseInt(event.colorId, 10))
+    }))
+  }
+}
+
 export {
   VIEW_TODAY,
   VIEW_PREV,
   VIEW_NEXT,
   CHANGE_WINDOW,
   RECEIVE_EVENT,
+  RECEIVE_EVENTS,
   ADD_OPTION,
   DELETE_OPTION,
   CHANGE_TIME,
   CHANGE_DATE,
-  CHANGE_DURATION,
-  CHANGE_LOCATION,
   ADD_USER,
   ADD_EMAIL,
   DELETE_EMAIL,
-  SUBMIT_PROPOSAL
+  SUBMIT_PROPOSAL,
+  receiveEvent,
+  receiveGoogleEvents
 }

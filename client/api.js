@@ -1,12 +1,15 @@
 import axios from 'axios'
 import moment from 'moment'
-import { RECEIVE_EVENT, ADD_USER } from './actions'
-import { getColor } from './helpers/util'
+import { ADD_USER, receiveEvent, receiveGoogleEvents } from './actions'
 
 const client = axios.create({
-  baseURL: 'http://api.squadup.io',
-  responseType: 'json'
+  // baseURL: 'http://api.squadup.io',
+  baseURL: 'http://localhost:4000',
+  responseType: 'json',
+  timeout: 5000,
+  headers: { 'Content-Type': 'application/json' }
 })
+client.defaults.headers.post['Content-Type'] = 'application/json'
 
 const googleCalendarClient = axios.create({
   baseURL: 'https://www.googleapis.com/calendar/v3/calendars',
@@ -18,32 +21,25 @@ const googleAuthClient = axios.create({
   responseType: 'json'
 })
 
-const fetchEvents = (dispatch, getState) => {
-  return client.get('/events').then((response) => {
-    const { events, options } = response.data
-    return dispatch({
-      type: RECEIVE_EVENT,
-      events,
-      options
+const fetchEvent = (id) => {
+  return (dispatch) => {
+    return client.get(`/event/${id}`).then((response) => {
+      dispatch(receiveEvent(response.data))
+    }).catch((err) => {
+      return dispatch({
+        type: 'ERROR',
+        err
+      })
     })
-  }).catch((err) => {
-    return dispatch({
-      type: 'ERROR',
-      err
-    })
-  })
+  }
 }
 
-const sendVote = (vote) => {
+const sendVote = ({ id, option }) => {
   return (dispatch) => {
-    return client.get('/vote'/* , { // TODO change to post
-      time: moment(vote).unix()
-    }*/).then((response) => {
-      const { options } = response.data
-      return dispatch({
-        type: RECEIVE_EVENT,
-        options
-      })
+    return client.post(`/vote/${id}`, {
+      time: moment(option).unix()
+    }).then((response) => {
+      dispatch(receiveEvent(response.data))
     }).catch((err) => {
       return dispatch({
         type: 'ERROR',
@@ -54,16 +50,27 @@ const sendVote = (vote) => {
 }
 
 // meta is extra data to include outside of state
-const sendEvent = (meta) => {
+const sendEvent = router => (meta) => {
+  if (!meta.title) throw Error('Events require title')
   return (dispatch, getState) => {
-    return client.get('/events'/* , { // TODO change to post
-      time: moment(event).unix()
-    }*/).then((response) => {
-      const { options } = response.data
-      return dispatch({
-        type: RECEIVE_EVENT,
-        options
-      })
+    const state = getState()
+    const { options } = state.form
+    const { title, location, duration } = meta
+    const body = {
+      title,
+      location,
+      duration,
+      emails: state.emails,
+      tokens: state.users,
+      options: options.reduce((accum, option) => {
+        return Object.assign(accum, {
+          [moment(Object.keys(option)[0]).unix()]: 0
+        })
+      }, {}),
+    }
+    return client.post('/event', body).then((response) => {
+      const { id } = response.data
+      router.push(`/event/${id}`)
     }).catch((err) => {
       return dispatch({
         type: 'ERROR',
@@ -96,54 +103,39 @@ const getGoogleEvents = (token, id) => {
       timeMin: (new Date()).toISOString(),
       showDeleted: false,
       singleEvents: true,
-      maxResults: 50,
+      maxResults: 25,
       orderBy: 'startTime'
     }
-  })
+  }).catch((err) => { throw err })
 }
 
-const loadGoogleEvents = (token) => {
+const loadAllGoogleEvents = (users) => {
   return (dispatch) => {
-    return getGoogleEvents(token).then((response) => {
-      dispatch({
-        type: RECEIVE_EVENT,
-        events: response.data.items.map(event => ({
-          id: event.id,
-          title: event.summary,
-          time: moment(event.start.dateTime).format(),
-          duration: moment(event.end.dateTime).diff(moment(event.start.dateTime)),
-          location: event.location,
-          color: getColor(parseInt(event.colorId, 10))
-        }))
-      })
-    }).catch((err) => {
-      throw err
-    })
+    return axios.all(users.map(user => getGoogleEvents(user))).then(axios.spread((...eventGroups) => {
+      if (eventGroups.length) {
+        const allEvents = eventGroups.reduce((events, group) => {
+          return events.concat(group.data.items)
+        }, [])
+        dispatch(receiveGoogleEvents(allEvents))
+      }
+    }))
   }
 }
 
 const authorizeThenLoadGoogleEvents = (id) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     return authorize().then((response) => {
-      dispatch({
-        type: ADD_USER,
-        user: response.access_token
-      })
+      if (!getState().users.includes(response.access_token)) {
+        dispatch({
+          type: ADD_USER,
+          user: response.access_token
+        })
+      }
       return getGoogleEvents(response.access_token, id)
     }).then((eventResponse) => {
-      dispatch({
-        type: RECEIVE_EVENT,
-        events: eventResponse.data.items.map(event => ({
-          id: event.id,
-          title: event.summary,
-          time: moment(event.start.dateTime).format(),
-          duration: moment(event.end.dateTime).diff(moment(event.start.dateTime)),
-          location: event.location,
-          color: getColor(parseInt(event.colorId, 10))
-        }))
-      })
+      dispatch(receiveGoogleEvents(eventResponse.data.items))
     })
   }
 }
 
-export { fetchEvents, sendVote, sendEvent, loadGoogleEvents, authorizeThenLoadGoogleEvents }
+export { fetchEvent, sendVote, sendEvent, loadAllGoogleEvents, authorizeThenLoadGoogleEvents }

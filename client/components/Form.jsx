@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-
 import RaisedButton from 'material-ui/RaisedButton'
+
 import PlaceAutocomplete from './PlaceAutocomplete'
 import Paper from './Paper'
 import TextField from './TextField'
-import TextFieldWithList from './TextFieldWithList'
+import EmailList from './EmailList'
 import DateList from './DateList'
-// import RadioField from '../RadioField'
-// import PlainActionButton from './buttons/PlainActionButton'
+import DurationPicker from './DurationPicker'
+
 import { color } from '../vars'
 import { sendEvent } from '../api'
 
@@ -26,6 +26,7 @@ const style = {
   h2: {
     display: 'inlineBlock',
     margin: '0px 0px 16px 0px',
+    textTransform: 'uppercase'
   },
   scheduleButton: {
     backgroundColor: color.green,
@@ -34,15 +35,19 @@ const style = {
   }
 }
 
-const Form = ({ onClick, params }) => {
+const Form = ({ onClick, params }, { router }) => {
   let input
+  let location
+  let duration
+  const EDIT_FORM = !(params && params.event_id)
   return (
     <Paper style={style.form}>
-      <h2 style={style.h2}>{'Propose an Event?'}</h2>
+      <h2 style={style.h2}>{(EDIT_FORM) ? 'Propose an Event?' : 'Vote for event times'}</h2>
       <TextField
         hintText="What are you planning?"
         floatingLabelText="What"
         fullWidth
+        disabled={!EDIT_FORM}
         ref={(node) => {
           input = node
         }}
@@ -54,33 +59,60 @@ const Form = ({ onClick, params }) => {
         hintTextTimeTo="Until?"
         params={params}
       />
+      <DurationPicker
+        params={params}
+        ref={(node) => {
+          duration = node
+        }}
+      />
       <PlaceAutocomplete
         style={style.placeAutocomplete}
         hintText="Where is your event taking place?"
         floatingLabelText="Where"
         floatingLabelFixed
         fullWidth
+        ref={(node) => {
+          location = node
+        }}
       />
-      <TextFieldWithList
+      <EmailList
         hint="Emails to invite?"
         label="Who"
       />
       {/* <RadioField /> */}
       <RaisedButton
-        label="Schedule"
+        label={EDIT_FORM ? 'Schedule' : 'Share'}
         style={style.scheduleButton}
-        onClick={() => { onClick(input.state.value) }}
+        onClick={
+          EDIT_FORM ?
+            () => {
+              onClick({
+                duration: duration.state.value,
+                location: location.state.value,
+                title: input.state.value
+              }, router)
+            } :
+            () => { router.push(`/share/${params.event_id}`) }
+        }
       />
     </Paper>
   )
 }
 
+const mapStateToProps = state => ({
+  location: state.form.location
+})
+
 const mapDispatchToProps = (dispatch) => {
   return {
-    onClick: (input) => {
-      dispatch(sendEvent(input))
+    onClick: (input, router) => {
+      dispatch(sendEvent(router)(input))
     }
   }
 }
 
-export default connect(null, mapDispatchToProps)(Form)
+Form.contextTypes = {
+  router: React.PropTypes.object
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form)

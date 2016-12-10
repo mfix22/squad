@@ -10,19 +10,13 @@ import Viewer from './pages/Viewer'
 
 import { color } from '../vars'
 import configureStore from '../helpers/configureStore'
-import { loadGoogleEvents } from '../api'
 import { loadState, saveState } from '../helpers/localStorage'
 
-// TODO remove localStorage save in production
-const store = configureStore(loadState())
+const store = configureStore()
 
-store.subscribe(() => {
-  saveState(store.getState())
-})
-
-store.getState().users.forEach((user) => {
-  store.dispatch(loadGoogleEvents(user))
-})
+// store.subscribe(() => {
+//   saveState(store.getState())
+// })
 
 injectTapEventPlugin()
 

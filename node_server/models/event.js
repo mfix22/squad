@@ -1,5 +1,5 @@
-const crypto = require('crypto')
-const validator = require('./validator')('event')
+const genEventId = require('../lib/genId')
+const validator  = require('./validator')('event')
 
 module.exports = (db) => {
   const events = db.collection('events')
@@ -34,14 +34,11 @@ function incrementVote (events, id, time) {
     incVal[queryProp] = 1
     const update = { $inc: incVal }
 
+    const options = { new: true }
+
     events
-    .findAndModify(
-      query,
-      update
-    )
-    .then( (result) => {
-      resolve(result.ops)
-    })
+    .findAndModify(query, [], update, options)
+    .then( (result) => resolve(result.value))
     .catch(reject)
   })
 }
@@ -70,19 +67,11 @@ function insert (events, event) {
       reject(new Error('invalid'))
 
     const cleanedEvent = validator.extract(event, { includeOptional: true })
-    cleanedEvent.id = genEventId();
+    cleanedEvent.id = genEventId()
 
     events
       .insertOne(cleanedEvent)
       .then( (result) => resolve(result.ops[0]))
       .catch(reject)
   })
-}
-
-function genEventId () {
-  return crypto
-          .createHash('md5')
-          .update(crypto.pseudoRandomBytes(15).toString())
-          .digest('hex')
-          .slice(0, 10)
 }

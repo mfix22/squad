@@ -1,11 +1,10 @@
-const crypto          = require('crypto')
-const eventModel      = require('../models/event')
+const adminModel      = require('../models/admin')
 const genErrorHandler = require('../lib/errorHandler.js')
 
 module.exports = (db) => {
   return (req, res) => {
     const opts = {
-      events: eventModel(db),
+      admins: adminModel(db),
       error: genErrorHandler(res)
     }
 
@@ -22,25 +21,30 @@ module.exports = (db) => {
 
 function get (req, res, opts) {
 
-  const { events, error } = opts
+  const { admins, error } = opts
 
-  if (!req.params.eventId)
+  if (!req.params.eventId || !req.query.key)
     return res.status(400).send('Invalid')
 
-  events
+  admins
     .get(req.params.eventId)
-    .then( (event) => {
-      res.status(200).json(event)
+    .then( (admin) => {
+      const valid = admin.key === req.query.key
+      res.status(200).json({ valid })
     })
     .catch(error)
 }
 
 function post (req, res, opts) {
-  const { events, error } = opts
-  events
-    .insert(req.body)
-    .then( (event) => {
-      res.status(200).json(event)
+  const { admins, error } = opts
+
+  if (!req.params.eventId)
+    return res.status(400).send('Invalid')
+
+  admins
+    .insert(req.params.eventId)
+    .then( (admin) => {
+      res.status(200).json(admin)
     })
     .catch(error)
 }

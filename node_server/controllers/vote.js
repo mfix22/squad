@@ -12,6 +12,7 @@ module.exports = (db) => {
     switch (req.method) {
       case 'POST':
         post(req, res, opts)
+        break
     }
   }
 }
