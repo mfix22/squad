@@ -5,7 +5,6 @@ import Avatar from 'material-ui/Avatar'
 import DatePicker from 'material-ui/DatePicker'
 import TimePicker from 'material-ui/TimePicker'
 import FlatButton from 'material-ui/FlatButton'
-import AutoComplete from 'material-ui/AutoComplete'
 import moment from 'moment'
 
 import Label from './Label'
@@ -22,11 +21,6 @@ const style = {
   timePicker: {
     width: '136px',
     marginRight: '16px',
-    float: 'left'
-  },
-  durationPicker: {
-    width: '96px',
-    marginTop: '16px',
     float: 'left'
   },
   datePicker: {
@@ -59,32 +53,10 @@ const optionToDisplayString = (option) => {
   return `${moment(option).format('MMM Do')}, ${moment(option).format('LT')}`
 }
 
-const humanize = (time) => {
-  if (time < 60 * 60 * 1000) return `${Math.floor(time / (60 * 1000))} minutes`
-  return `${time / (60 * 60 * 1000)} hours`
-}
-
-const baseValues = [30, 60, 15, 90, 120, 45]
-                    .concat([...Array(29).keys()].map(key => key + 1))
-                    .concat([...Array(8).keys()].map(key => (key + 5) * 30))
-// convert minutes to milliseconds
-const timeValues = baseValues.map(minutes => minutes * 60 * 1000).map(value => ({
-  text: humanize(value),
-  value
-}))
-
-// const getRoundedTime = () => {
-//   const time = moment()
-//   const minutes = 30 - (time.minutes() % 30)
-//   const c = time.add(time.minutes() + minutes, 'm')
-//   return c.toDate()
-// }
-
 const DatePickerWithList = ({
                               time,
                               date,
                               options,
-                              duration,
                               disabled,
                               params,
                               hintTextTimeFrom,
@@ -92,9 +64,9 @@ const DatePickerWithList = ({
                               handleVote,
                               handleChangeTime,
                               handleChangeDate,
-                              handleChangeDuration,
                               handleChipAdd,
-                              handleChipDelete }) => {
+                              handleChipDelete
+                            }) => {
   const EDIT_FORM = !(params && params.event_id)
   return (
     <div>
@@ -148,31 +120,16 @@ const DatePickerWithList = ({
           )
         })}
       </div>
-      <AutoComplete
-        openOnFocus
-        hintText={humanize(duration)}
-        searchText={EDIT_FORM ? '' : humanize(duration)}
-        disabled={!EDIT_FORM}
-        dataSource={timeValues}
-        dataSourceConfig={{ text: 'text', value: 'value' }}
-        filter={AutoComplete.fuzzyFilter}
-        maxSearchResults={5}
-        style={style.durationPicker}
-        onNewRequest={handleChangeDuration}
-        floatingLabelFixed
-        floatingLabelText="How long?"
-      />
     </div>
   )
 }
 
 const mapStateToProps = (state) => {
-  const { time, date, options, duration } = state.form
+  const { time, date, options } = state.form
   return {
     options,
     time: (!time) ? null : moment(time).toDate(),
     date: (!date) ? null : moment(date).toDate(),
-    duration,
     disabled: !time || !date
   }
 }
@@ -204,13 +161,7 @@ const mapDispatchToProps = dispatch => ({
   // meta: current event_id and time option being voted on
   handleVote: (meta) => {
     dispatch(sendVote(meta))
-  },
-  handleChangeDuration: (choice) => {
-    dispatch({
-      type: CHANGE_DURATION,
-      duration: choice.value
-    })
-  },
+  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DatePickerWithList)

@@ -7,8 +7,8 @@ import Paper from './Paper'
 import TextField from './TextField'
 import EmailList from './EmailList'
 import DateList from './DateList'
-// import RadioField from '../RadioField'
-// import PlainActionButton from './buttons/PlainActionButton'
+import DurationPicker from './DurationPicker'
+
 import { color } from '../vars'
 import { sendEvent } from '../api'
 
@@ -37,6 +37,8 @@ const style = {
 
 const Form = ({ onClick, params }, { router }) => {
   let input
+  let location
+  let duration
   const EDIT_FORM = !(params && params.event_id)
   return (
     <Paper style={style.form}>
@@ -57,12 +59,21 @@ const Form = ({ onClick, params }, { router }) => {
         hintTextTimeTo="Until?"
         params={params}
       />
+      <DurationPicker
+        params={params}
+        ref={(node) => {
+          duration = node
+        }}
+      />
       <PlaceAutocomplete
         style={style.placeAutocomplete}
         hintText="Where is your event taking place?"
         floatingLabelText="Where"
         floatingLabelFixed
         fullWidth
+        ref={(node) => {
+          location = node
+        }}
       />
       <EmailList
         hint="Emails to invite?"
@@ -74,7 +85,13 @@ const Form = ({ onClick, params }, { router }) => {
         style={style.scheduleButton}
         onClick={
           EDIT_FORM ?
-            () => { onClick(input.state.value, router) } :
+            () => {
+              onClick({
+                duration: duration.state.value,
+                location: location.state.value,
+                title: input.state.value
+              }, router)
+            } :
             () => { router.push(`/share/${params.event_id}`) }
         }
       />

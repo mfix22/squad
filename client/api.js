@@ -51,12 +51,13 @@ const sendVote = ({ id, option }) => {
 
 // meta is extra data to include outside of state
 const sendEvent = router => (meta) => {
-  if (!meta) throw Error('Events require title')
+  if (!meta.title) throw Error('Events require title')
   return (dispatch, getState) => {
     const state = getState()
-    const { location, duration, options } = state.form
+    const { options } = state.form
+    const { title, location, duration } = meta
     const body = {
-      title: meta,
+      title,
       location,
       duration,
       emails: state.emails,
@@ -67,7 +68,6 @@ const sendEvent = router => (meta) => {
         })
       }, {}),
     }
-    console.log(body);
     return client.post('/event', body).then((response) => {
       const { id } = response.data
       router.push(`/event/${id}`)
