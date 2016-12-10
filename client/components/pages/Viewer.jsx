@@ -12,8 +12,7 @@ import style from './pageStyles'
 class Viewer extends React.Component {
 
   componentWillMount() {
-    const { params, users } = this.props
-    this.props.onLoad(params.event_id, users)
+    this.props.onLoad()
   }
 
   render() {
@@ -32,15 +31,12 @@ class Viewer extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  users: state.users
-})
-
-const mapDispatchToProps = dispatch => ({
-  onLoad: (id, users) => {
-    dispatch(fetchEvent(id))
-    dispatch(loadAllGoogleEvents(users))
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onLoad: () => {
+    dispatch(fetchEvent(ownProps.params.event_id)).then(() => {
+      dispatch(loadAllGoogleEvents())
+    })
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Viewer)
+export default connect(null, mapDispatchToProps)(Viewer)

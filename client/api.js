@@ -109,8 +109,9 @@ const getGoogleEvents = (token, id) => {
   }).catch((err) => { throw err })
 }
 
-const loadAllGoogleEvents = (users) => {
-  return (dispatch) => {
+const loadAllGoogleEvents = () => {
+  return (dispatch, getState) => {
+    const users = getState().users
     return axios.all(users.map(user => getGoogleEvents(user))).then(axios.spread((...eventGroups) => {
       if (eventGroups.length) {
         const allEvents = eventGroups.reduce((events, group) => {
