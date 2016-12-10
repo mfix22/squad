@@ -7,8 +7,6 @@ import {
   RECEIVE_EVENT,
 } from '../actions'
 
-const DEFAULT_DURATION = 30 * 60 * 1000
-
 // TODO vote sort
 export const voteSort = (a, b) => {
   const aTime = Object.keys(a)[0]
@@ -26,8 +24,6 @@ const form = (state, action) => {
     return {
       time: null,
       date: null,
-      duration: DEFAULT_DURATION,
-      location: null,
       options: []
     }
   }
@@ -56,16 +52,15 @@ const form = (state, action) => {
     }
     case RECEIVE_EVENT: {
       const { title, location, duration, options } = action
-      // if (!title || !location || !duration || !options) return state
       return Object.assign({}, state, {
-        title: title || state.title || '',
-        location: location || state.location,
-        duration: duration || state.duration,
+        title: title || '',
+        location,
+        duration,
         options: options && Object.entries(options).map(([key, value]) => ({ [moment.unix(key).format()]: value })).sort(voteSort)
       })
     }
     case ADD_OPTION: {
-      if (!state.time || !state.date || !state.duration) return state
+      if (!state.time || !state.date) return state
       const date = moment(state.date)
       const time = moment(state.time)
       const newTime = moment({

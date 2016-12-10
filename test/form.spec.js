@@ -51,32 +51,6 @@ describe('Form Reducer', () => {
     })
     expect(store.getState().form.date).to.be.null
   })
-  it('should change duration by dispatching CHANGE_DURATION', () => {
-    const store = createStore(reducer)
-    store.dispatch({
-      type: 'CHANGE_DURATION',
-      duration: 60*60*1000
-    })
-    expect(store.getState().form.duration).to.equal(60*60*1000)
-    store.dispatch({
-      type: 'CHANGE_DURATION',
-      duration: null
-    })
-    expect(store.getState().form.duration).to.equal(30 * 60 * 1000)
-  })
-  it('should change location by dispatching CHANGE_LOCATION', () => {
-    const store = createStore(reducer)
-    store.dispatch({
-      type: 'CHANGE_LOCATION',
-      location: 'Rochester Minnesota'
-    })
-    expect(store.getState().form.location).to.equal('Rochester Minnesota')
-    store.dispatch({
-      type: 'CHANGE_LOCATION',
-      // null location
-    })
-    expect(store.getState().form.location).to.equal('Rochester Minnesota')
-  })
   it('should add a vote with ADD_OPTION and clear the form', () => {
     const newTime = moment()
     const newDate = moment()
@@ -84,7 +58,6 @@ describe('Form Reducer', () => {
       form: {
         time: newTime.format(),
         date: newDate.format(),
-        duration: 3600000,
         options: []
       }
     })
