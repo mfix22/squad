@@ -5,21 +5,29 @@ import Snackbar from 'material-ui/Snackbar'
 import { color } from '../vars'
 
 const style = {
+  color: 'white',
   backgroundColor: color.error,
   textAlign: 'center',
   maxWidth: '240px'
 }
+const inlineColor = {
+  color: 'white'
+}
 
-const ErrorPopUp = ({ error }) => (
+const ErrorPopUp = ({ message }) => (
   <Snackbar
-    open={!!error}
-    message={error || 'No Error'}
-    bodyStyle={style.snackbar}
+    open={!!message}
+    message={message ? message.message : 'No Error'}
+    bodyStyle={style}
+    contentStyle={inlineColor}
+    style={inlineColor}
+    action="MORE"
+    onActionTouchTap={() => console.log(message)}
   />
 )
 
 const mapStateToProps = state => ({
-  error: state.error
+  message: state.error
 })
 
 export default connect(mapStateToProps)(ErrorPopUp)
