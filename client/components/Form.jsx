@@ -42,7 +42,7 @@ const Form = ({ onClick, params }, { router }) => {
   const EDIT_FORM = !(params && params.event_id)
   return (
     <Paper style={style.form}>
-      <h2 style={style.h2}>{(EDIT_FORM) ? 'Propose an Event?' : 'Vote for event times'}</h2>
+      <h2 style={style.h2}>{(EDIT_FORM) ? 'Propose an event' : 'Vote for event times'}</h2>
       <TextField
         hintText="What are you planning?"
         floatingLabelText="What"
