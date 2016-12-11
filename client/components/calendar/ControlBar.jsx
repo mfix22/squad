@@ -37,7 +37,7 @@ const style = {
   }
 }
 
-const ControlBar = ({ referenceDate, onChange, viewChoice, header }) => (
+const ControlBar = ({ referenceDate, onChange, viewChoice, onChangeHeader }) => (
   <Toolbar style={style.controlBar} className="controlBar">
     {/* <ToolbarTitle
       style={{ fontSize: '14px', fontWeight: 'bold' }}
@@ -52,10 +52,15 @@ const ControlBar = ({ referenceDate, onChange, viewChoice, header }) => (
       </DropDownMenu>
     </ToolbarGroup>
     <ToolbarGroup className="refDateHeaderWrapper" style={style.toolbarGroup}>
-      <DropDownMenu labelStyle={style.labelStyle} value={0} iconStyle={style.iconStyle} onChange={() => {}}>
+      <DropDownMenu
+        labelStyle={style.labelStyle}
+        value={moment(referenceDate).month()}
+        iconStyle={style.iconStyle}
+        onChange={onChangeHeader}
+      >
         {
           getOrderedMonthArray(referenceDate).map((month, index) => (
-            <MenuItem key={index} value={index} primaryText={month.format('MMMM YYYY')} />
+            <MenuItem key={index} value={month.month()} primaryText={month.format('MMMM YYYY')} />
           ))
         }
       </DropDownMenu>
@@ -71,7 +76,7 @@ const ControlBar = ({ referenceDate, onChange, viewChoice, header }) => (
 const mapStateToProps = state => ({
   referenceDate: state.view.date,
   viewChoice: state.view.window,
-  header: formatCenterHeader(state.view)
+  header: formatCenterHeader(state.view),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -79,6 +84,12 @@ const mapDispatchToProps = dispatch => ({
     dispatch({
       type: 'CHANGE_WINDOW',
       window: value,
+    })
+  },
+  onChangeHeader: (event, index/* ,value */) => {
+    dispatch({
+      type: 'VIEW_FUTURE_MONTHS',
+      n: index
     })
   }
 })

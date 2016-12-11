@@ -4,6 +4,7 @@ import {
   VIEW_TODAY,
   VIEW_PREV,
   VIEW_NEXT,
+  VIEW_FUTURE_MONTHS,
   CHANGE_WINDOW,
   GLOBAL_KEY_PRESS,
 } from '../actions'
@@ -70,6 +71,11 @@ const date = (state, action) => {
     case VIEW_PREV:
       return Object.assign({}, state, {
         date: getPrevViewDelta(state),
+      })
+    // TODO change this to use getNextViewDelta when the control bar does more than just months
+    case VIEW_FUTURE_MONTHS:
+      return Object.assign({}, state, {
+        date: moment(state.date).add(action.n, 'M').format(),
       })
     case CHANGE_WINDOW:
       return Object.assign({}, state, {
