@@ -10,6 +10,7 @@ import Viewer from './pages/Viewer'
 
 import { color } from '../vars'
 import configureStore from '../helpers/configureStore'
+import { configureGlobalKeyPress } from '../helpers/configureGlobalListeners'
 
 // import { loadState, saveState } from '../helpers/localStorage'
 // store.subscribe(() => {
@@ -17,6 +18,7 @@ import configureStore from '../helpers/configureStore'
 // })
 
 const store = configureStore()
+configureGlobalKeyPress(store)
 
 injectTapEventPlugin()
 

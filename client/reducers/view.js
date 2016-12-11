@@ -5,6 +5,7 @@ import {
   VIEW_PREV,
   VIEW_NEXT,
   CHANGE_WINDOW,
+  GLOBAL_KEY_PRESS,
 } from '../actions'
 
 const getNextViewDelta = (state) => {
@@ -37,6 +38,19 @@ const getPrevViewDelta = (state) => {
   }
 }
 
+const getViewFromKey = (key) => {
+  switch (key) {
+    case 'w':
+      return 'WEEK'
+    case 'm':
+      return 'MONTH'
+    case 'd':
+      return '4_DAY'
+    default:
+      return null
+  }
+}
+
 const date = (state, action) => {
   if (!state) {
     return {
@@ -60,6 +74,10 @@ const date = (state, action) => {
     case CHANGE_WINDOW:
       return Object.assign({}, state, {
         window: action.window,
+      })
+    case GLOBAL_KEY_PRESS:
+      return Object.assign({}, state, {
+        window: getViewFromKey(action.key) || state.window,
       })
     default:
       return state

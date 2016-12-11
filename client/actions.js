@@ -22,6 +22,8 @@ const DELETE_EMAIL = 'DELETE_EMAIL'
 
 const SUBMIT_PROPOSAL = 'SUBMIT_PROPOSAL'
 
+const GLOBAL_KEY_PRESS = 'GLOBAL_KEY_PRESS'
+
 const receiveEvent = (data) => {
   const { title, location, duration, emails, options, tokens } = data
   return {
@@ -63,6 +65,7 @@ export {
   ADD_USER,
   ADD_EMAIL,
   DELETE_EMAIL,
+  GLOBAL_KEY_PRESS,
   SUBMIT_PROPOSAL,
   receiveEvent,
   receiveGoogleEvents

@@ -140,11 +140,6 @@ const authorizeThenLoadGoogleEvents = (id) => {
       return getGoogleEvents(response.access_token, id)
     }).then((eventResponse) => {
       dispatch(receiveGoogleEvents(eventResponse.data.items))
-    }).catch((err) => {
-      return dispatch({
-        type: 'ERROR',
-        err
-      })
     })
   }
 }
