@@ -76,9 +76,30 @@ const date = (state, action) => {
         window: action.window,
       })
     case GLOBAL_KEY_PRESS:
-      return Object.assign({}, state, {
-        window: getViewFromKey(action.key) || state.window,
-      })
+      // change window
+      if (['w', 'd', 'm'].some(elem => elem === action.key)) {
+        return Object.assign({}, state, {
+          window: getViewFromKey(action.key) || state.window,
+        })
+        // change reference date value
+      } else if (['j', 'k', 'l'].some(elem => elem === action.key)) {
+        // go to prev
+        if (action.key === 'j') {
+          return Object.assign({}, state, {
+            date: getPrevViewDelta(state),
+          })
+        // go to next
+        } else if (action.key === 'l') {
+          return Object.assign({}, state, {
+            date: getNextViewDelta(state),
+          })
+        }
+        // go to today
+        return Object.assign({}, state, {
+          date: moment().format(),
+        })
+      }
+      return state
     default:
       return state
   }

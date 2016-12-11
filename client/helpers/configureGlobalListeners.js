@@ -21,7 +21,7 @@ function listenToWindowEvent(name, mapEventToAction, filter = () => true) {
 const globalKeyPress = (e) => {
   return {
     type: GLOBAL_KEY_PRESS,
-    key: e.key,
+    key: e.key.toLowerCase(),
     ctrl: e.ctrlKey,
     meta: e.metaKey,
     shift: e.shiftKey,
@@ -31,9 +31,7 @@ const globalKeyPress = (e) => {
 
 const keyFilter = (e) => {
   if (e.ctrlKey) {
-    if (e.key.toLowerCase() === 'w' ||
-        e.key.toLowerCase() === 'd' ||
-        e.key.toLowerCase() === 'm') return true
+    if (['w', 'd', 'm', 'j', 'k', 'l'].some(key => key === e.key.toLowerCase())) return true
   }
   if (e.shiftKey) {
     // pass
