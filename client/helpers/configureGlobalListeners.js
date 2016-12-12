@@ -1,5 +1,5 @@
 // thunk action creator, needs redux-thunk
-import { GLOBAL_KEY_PRESS } from '../actions'
+import { GLOBAL_KEY_PRESS, CHANGE_WINDOW, VIEW_PREV, VIEW_TODAY, VIEW_NEXT } from '../actions'
 
 function listenToWindowEvent(name, mapEventToAction, filter = () => true) {
   return (dispatch) => {
@@ -19,13 +19,37 @@ function listenToWindowEvent(name, mapEventToAction, filter = () => true) {
 // turns DOM event into action,
 // you can define many of those
 const globalKeyPress = (e) => {
-  return {
-    type: GLOBAL_KEY_PRESS,
-    key: e.key.toLowerCase(),
-    ctrl: e.ctrlKey,
-    meta: e.metaKey,
-    shift: e.shiftKey,
-    alt: e.altKey
+  switch (e.key.toLowerCase()) {
+    case 'w': return {
+      type: CHANGE_WINDOW,
+      window: 'WEEK'
+    }
+    case 'd': return {
+      type: CHANGE_WINDOW,
+      window: '4_DAY'
+    }
+    case 'm': return {
+      type: CHANGE_WINDOW,
+      window: 'MONTH'
+    }
+    case 'j': return {
+      type: VIEW_PREV
+    }
+    case 'k': return {
+      type: VIEW_TODAY
+    }
+    case 'l': return {
+      type: VIEW_NEXT
+    }
+    // currently unused
+    default: return {
+      type: GLOBAL_KEY_PRESS,
+      key: e.key.toLowerCase(),
+      ctrl: e.ctrlKey,
+      meta: e.metaKey,
+      shift: e.shiftKey,
+      alt: e.altKey
+    }
   }
 }
 
