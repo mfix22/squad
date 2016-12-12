@@ -1,12 +1,12 @@
 import React from 'react'
 
-import Base from './Base'
+import Viewer from './Viewer'
 import Confirmation from '../Confirmation'
 
 const Sharer = ({ location, params }) => (
-  <Base params={params} location={location}>
+  <Viewer params={params} location={location}>
     <Confirmation location={location} params={params} />
-  </Base>
+  </Viewer>
 )
 
 export default Sharer

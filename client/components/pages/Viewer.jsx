@@ -14,7 +14,7 @@ class Viewer extends React.Component {
   render() {
     const { params } = this.props
     return (
-      <Base params={params} />
+      <Base params={params}>{this.props.children}</Base>
     )
   }
 }
