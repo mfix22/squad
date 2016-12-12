@@ -105,7 +105,7 @@ describe('Form Reducer', () => {
       options
     })
 
-    expect(store.getState().form.options).to.deep.equal([
+    expect(store.getState().options).to.deep.equal([
       { '1970-01-02T20:00:00-06:00': 4 },
       { '1970-01-01T19:00:00-06:00': 1 },
       { '1970-01-03T21:00:00-06:00': 0 }
