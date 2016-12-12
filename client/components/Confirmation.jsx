@@ -13,8 +13,8 @@ import { color, type } from '../vars'
 const style = {
   form: {
     position: 'absolute',
-    top: '50%',
-    left: '50%',
+    top: '50vh',
+    left: '50vw',
     transform: 'translate(-50%, -50%)',
     flexDirection: 'column',
     minWidth: '460px',
@@ -42,6 +42,7 @@ const style = {
   },
   image: {
     display: 'inline-block',
+    pointerEvents: 'none',
     width: '92px',
     height: '92px',
     margin: '0 auto 8px'
