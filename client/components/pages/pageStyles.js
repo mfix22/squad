@@ -10,6 +10,7 @@ export default {
     minWidth: '1200px',
     alignItems: 'center',
     flexDirection: 'column',
+    position: 'relative'
   },
   paperContainer: {
     display: 'flex',

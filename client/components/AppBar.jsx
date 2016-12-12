@@ -12,7 +12,6 @@ const style = {
   appBar: {
     transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
     position: 'relative',
-    zIndex: 1100,
     width: '100%',
     maxWidth: '1600px',
     display: 'flex',
