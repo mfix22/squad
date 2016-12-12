@@ -56,7 +56,9 @@ const form = (state, action) => {
         title: title || '',
         location,
         duration,
-        options: options && Object.entries(options).map(([key, value]) => ({ [moment.unix(key).format()]: value })).sort(voteSort)
+        options: options ?
+                 Object.entries(options).map(([key, value]) => ({ [moment.unix(key).format()]: value })).sort(voteSort) :
+                 []
       })
     }
     case ADD_OPTION: {
