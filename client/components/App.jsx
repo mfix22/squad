@@ -7,6 +7,7 @@ import { Router, Route, browserHistory } from 'react-router'
 
 import Scheduler from './pages/Scheduler'
 import Viewer from './pages/Viewer'
+import Sharer from './pages/Sharer'
 
 import { color } from '../vars'
 import configureStore from '../helpers/configureStore'
@@ -35,7 +36,7 @@ const App = () => (
       <Router history={browserHistory}>
         <Route path="/new" component={Scheduler} />
         <Route path="/event/:event_id" component={Viewer} />
-        <Route path="/share/:event_id" component={Viewer} />
+        <Route path="/share/:event_id" component={Sharer} />
       </Router>
     </MuiThemeProvider>
   </Provider>

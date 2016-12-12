@@ -96,10 +96,6 @@ class Confirmation extends React.Component {
   }
 
   render() {
-    // only render if sharing
-    if (this.props.location.pathname.split('/')[1] !== 'share') return null
-    // TODO fix links to work with React router
-    console.log(this.props.location)
     return (
       <div>
         <a href={`/event/${this.props.params.event_id}`}>

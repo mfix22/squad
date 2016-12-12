@@ -1,13 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import AppBar from '../AppBar'
-import Form from '../Form'
-import CalendarPaper from '../calendar/CalendarPaper'
-import Confirmation from '../Confirmation'
+import Base from './Base'
 
 import { fetchEvent, loadAllGoogleEvents } from '../../api'
-import style from './pageStyles'
 
 class Viewer extends React.Component {
 
@@ -16,17 +12,9 @@ class Viewer extends React.Component {
   }
 
   render() {
-    const { params, location } = this.props
+    const { params } = this.props
     return (
-      <div style={style.container}>
-        <AppBar params={params} />
-        <div style={style.paperContainer}>
-          <Form params={params} />
-          <CalendarPaper />
-        </div>
-        { /* TODO reorganize routes */ }
-        <Confirmation location={location} params={params} />
-      </div>
+      <Base params={params} />
     )
   }
 }
