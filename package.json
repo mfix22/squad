@@ -11,7 +11,8 @@
     "database": "mongod",
     "poststart": "start chrome http://localhost:8080/",
     "dev-server": "nodemon server.js",
-    "webpack-watch": "webpack -w"
+    "webpack-watch": "webpack -w",
+    "build": "webpack"
   },
   "dependencies": {
     "axios": "^0.15.2",
@@ -67,12 +68,11 @@
     "url": "git+https://github.com/SquadCalendar/squad.git"
   },
   "jest": {
-    "verbose": true,
+    "verbose": false,
     "testRegex": "(/test/.*\\.spec\\.js)$",
     "moduleFileExtensions": [
       "jsx",
-      "js",
-      "json"
+      "js"
     ]
   },
   "author": "Squad",
