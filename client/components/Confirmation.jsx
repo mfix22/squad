@@ -17,10 +17,12 @@ const style = {
     left: '50vw',
     transform: 'translate(-50%, -50%)',
     flexDirection: 'column',
+    justifyContent: 'center',
     minWidth: '460px',
     width: '460px',
-    height: '444px',
+    minHeight: '444px',
     padding: '24px 36px',
+    margin: '0',
     zIndex: 1000,
   },
   h2: {
@@ -32,7 +34,7 @@ const style = {
   h4: {
     display: 'inline-block',
     fontFamily: type.main,
-    margin: '0px 0px 24px 0px',
+    margin: '0px 0px 32px 0px',
     fontSize: '16px'
   },
   sendButton: {
@@ -45,7 +47,7 @@ const style = {
     pointerEvents: 'none',
     width: '92px',
     height: '92px',
-    margin: '0 auto 8px'
+    margin: '0 auto 16px'
   },
   code: {
     fontFamily: 'Consolas, Courier New, monospace',
