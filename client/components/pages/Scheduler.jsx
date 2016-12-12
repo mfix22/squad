@@ -1,10 +1,8 @@
 import React from 'react'
 import Base from './Base'
 
-import ErrorPopUp from '../ErrorPopUp'
-
-const Scheduler = ({ params }) => (
-  <Base params={params}><ErrorPopUp /></Base>
+const Scheduler = ({ params, children }) => (
+  <Base params={params}>{children}</Base>
 )
 
 export default Scheduler

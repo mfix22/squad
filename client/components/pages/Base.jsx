@@ -3,6 +3,7 @@ import React from 'react'
 import AppBar from '../AppBar'
 import Form from '../Form'
 import CalendarPaper from '../calendar/CalendarPaper'
+import ErrorPopUp from '../ErrorPopUp'
 
 const style = {
   buttons: {
@@ -32,6 +33,7 @@ const Base = ({ params, children }) => (
       <Form params={params} />
       <CalendarPaper />
     </div>
+    <ErrorPopUp />
     {children}
   </div>
 )
