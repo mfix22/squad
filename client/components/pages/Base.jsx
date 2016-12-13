@@ -31,7 +31,7 @@ const Base = ({ params, children }) => (
     <AppBar params={params} />
     <div style={style.paperContainer}>
       <Form params={params} />
-      <CalendarPaper />
+      <CalendarPaper params={params} />
     </div>
     <ErrorPopUp />
     {children}
