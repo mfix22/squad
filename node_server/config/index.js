@@ -15,7 +15,8 @@ module.exports = {
     }
 
     const MongoClient = require('mongodb')
-    const url = `mongodb://${this.HOST}:${this.DB_PORT}/${this.DB_NAME}`
+    const login = (this.DB_USER !== '' && this.DB_PASSWORD !== '') ? `${this.DB_USER}:${this.DB_PASSWORD}@` : ''
+    const url = `mongodb://${login}${this.HOST}:${this.DB_PORT}/${this.DB_NAME}`
 
     return MongoClient.connect(url)
   }

@@ -18,9 +18,9 @@ class PlaceAutocomplete extends React.Component {
     })
   }
 
-  handleNewRequest(location) {
+  handleNewRequest(newLocation) {
     this.setState({
-      value: location.description
+      value: newLocation ? newLocation.description : this.state.value
     })
   }
 
