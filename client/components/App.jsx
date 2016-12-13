@@ -13,20 +13,27 @@ import { color } from '../vars'
 import configureStore from '../helpers/configureStore'
 import { configureGlobalKeyPress } from '../helpers/configureGlobalListeners'
 
-// import { loadState, saveState } from '../helpers/localStorage'
-// store.subscribe(() => {
-//   saveState(store.getState())
-// })
+import { loadState, saveState } from '../helpers/localStorage'
+
+// if SAVE_STATE_TO_LOCAL is turned on, state is loaded from localStorage
+const store = configureStore(process.env.SAVE_STATE_TO_LOCAL ? loadState() : undefined)
+
+if (process.env.SAVE_STATE_TO_LOCAL) {
+  store.subscribe(() => {
+    saveState(store.getState())
+  })
+}
 
 gapi.load('client', () => {
-  gapi.client.init({
+  const GoogleAuth = gapi.client.init({
     clientId: '583561432942-5fcf74j7tmfelnqj5jttnubd55dghdff.apps.googleusercontent.com',
     scope: 'https://www.googleapis.com/auth/calendar.readonly',
     immediate: false
+  }).then(() => {
+    gapi.auth2.getAuthInstance().signOut()
   })
 })
 
-const store = configureStore()
 configureGlobalKeyPress(store)
 
 injectTapEventPlugin()

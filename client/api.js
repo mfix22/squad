@@ -24,7 +24,7 @@ const googleAuthClient = axios.create({
 const authorize = () => {
   const GoogleAuth = gapi.auth2.getAuthInstance()
   return GoogleAuth.signIn({
-    prompt: 'select_account'
+    prompt: 'select_account login'
   })
   // return googleAuthClient.get('/auth', {
   //   params: {
