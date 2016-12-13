@@ -18,6 +18,14 @@ import { configureGlobalKeyPress } from '../helpers/configureGlobalListeners'
 //   saveState(store.getState())
 // })
 
+gapi.load('client', () => {
+  gapi.client.init({
+    clientId: '583561432942-5fcf74j7tmfelnqj5jttnubd55dghdff.apps.googleusercontent.com',
+    scope: 'https://www.googleapis.com/auth/calendar.readonly',
+    immediate: false
+  })
+})
+
 const store = configureStore()
 configureGlobalKeyPress(store)
 

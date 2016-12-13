@@ -7,7 +7,7 @@ import Calendar from './Calendar'
 import ControlBar from './ControlBar'
 import Paper from '../Paper'
 
-import { authorizeThenLoadGoogleEvents } from '../../api'
+import { authorizeThenLoadGoogleEvents, authorize, sendToken } from '../../api'
 
 const style = {
   padding: '0',
@@ -18,7 +18,7 @@ const style = {
   flexDirection: 'column',
 }
 
-const CalendarPaper = ({ authorized, onAuthorize }) => (
+const CalendarPaper = ({ authorized, params, onAddAuth, onAuthorize }) => (
   <Paper style={style}>
     {
       (authorized) ?
@@ -26,6 +26,12 @@ const CalendarPaper = ({ authorized, onAuthorize }) => (
           <div>
             <ControlBar />
             <Calendar />
+            <RaisedButton
+              icon={<ActionAndroid />}
+              secondary
+              label="Authorize"
+              onMouseUp={() => { onAddAuth(params.event_id) }}
+            />
           </div>
         ) :
         (
@@ -47,6 +53,14 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onAuthorize: () => {
     dispatch(authorizeThenLoadGoogleEvents())
+  },
+  onAddAuth: (id) => {
+    authorize().then((response) => {
+      dispatch(sendToken({
+        id,
+        token: response.Zi.access_token
+      }))
+    })
   }
 })
 
