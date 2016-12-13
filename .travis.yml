@@ -1,3 +1,5 @@
 language: node_js
 node_js:
   - "6"
+notifications:
+  slack: squaaaaaad:pKZSaX5G0WAqjQ0cErZ3CC1s
