@@ -20,6 +20,7 @@ const style = {
     justifyContent: 'center',
     minWidth: '460px',
     width: '460px',
+    height: 'initial',
     minHeight: '444px',
     padding: '24px 36px',
     margin: '0',
@@ -52,7 +53,9 @@ const style = {
   code: {
     fontFamily: 'Consolas, Courier New, monospace',
     margin: '0px 0px 16px',
-    fontSize: '24px'
+    fontSize: '24px',
+    userSelect: 'all',
+
   },
   item: {
     margin: '4px 4px 16px',
