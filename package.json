@@ -58,7 +58,6 @@
     "node-sass": "^3.8.0",
     "nodemon": "^1.9.2",
     "path": "^0.12.7",
-    "phantomjs-prebuilt": "^2.1.7",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.0"
