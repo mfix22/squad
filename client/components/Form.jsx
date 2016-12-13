@@ -54,6 +54,7 @@ const Form = ({ onClick, params }, { router }) => {
       />
       {/* <EmojiBar /> */}
       <DateList
+        EDIT_FORM={EDIT_FORM}
         hintTextDate="On what day?"
         hintTextTimeFrom="Starting at?"
         hintTextTimeTo="Until?"
@@ -106,7 +107,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     onClick: (input, router) => {
-      dispatch(sendEvent(router)(input))
+      if (input.title) {
+        dispatch(sendEvent(router)(input))
+      } else {
+        alert('Events require title')
+      }
     }
   }
 }

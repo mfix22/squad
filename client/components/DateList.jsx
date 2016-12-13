@@ -54,6 +54,7 @@ const optionToDisplayString = (option) => {
 }
 
 const DatePickerWithList = ({
+                              EDIT_FORM,
                               time,
                               date,
                               options,
@@ -67,7 +68,6 @@ const DatePickerWithList = ({
                               handleChipAdd,
                               handleChipDelete
                             }) => {
-  const EDIT_FORM = !(params && params.event_id)
   return (
     <div>
       {
