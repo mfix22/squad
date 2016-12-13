@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton'
 
 import PlaceAutocomplete from './PlaceAutocomplete'
@@ -35,7 +36,7 @@ const style = {
   }
 }
 
-const Form = ({ onClick, params }, { router }) => {
+const Form = ({ onClick, params, router }) => {
   let input
   let location
   let duration
@@ -120,4 +121,4 @@ Form.contextTypes = {
   router: React.PropTypes.object
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Form))

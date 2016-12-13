@@ -75,6 +75,11 @@
       "js"
     ]
   },
+  "now": {
+    "engines": {
+      "node": "7.0.0"
+    }
+  },
   "author": "Squad",
   "license": "ISC",
   "bugs": {

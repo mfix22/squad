@@ -1,8 +1,19 @@
 import React from 'react'
+import { withRouter } from 'react-router'
 import Base from './Base'
 
-const Scheduler = ({ params, children }) => (
-  <Base params={params}>{children}</Base>
-)
+class Scheduler extends React.Component {
 
-export default Scheduler
+  componentDidMount() {
+    this.props.router.setRouteLeaveHook(this.props.route, () => {
+      return 'You have unsaved information, are you sure you want to leave this page?'
+    })
+  }
+
+  render() {
+    const { params, children } = this.props
+    return <Base params={params}>{children}</Base>
+  }
+}
+
+export default withRouter(Scheduler)
