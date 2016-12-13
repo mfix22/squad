@@ -3,8 +3,7 @@ import moment from 'moment'
 import { ADD_USER, receiveEvent, receiveGoogleEvents } from './actions'
 
 const client = axios.create({
-  // baseURL: 'http://api.squadup.io',
-  baseURL: 'http://localhost:4000',
+  baseURL: process.env.SQUAD_HOST || 'http://localhost:4000',
   responseType: 'json',
   timeout: 5000,
   headers: { 'Content-Type': 'application/json' }
