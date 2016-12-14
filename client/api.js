@@ -52,15 +52,12 @@ const loadAllGoogleEvents = () => {
   return (dispatch, getState) => {
     const users = getState().users
     // TODO fix function programming
-    return axios.all(users.map(user => getGoogleEvents(user))).then(axios.spread(
-      (...eventGroups) => {
-        if (eventGroups.length) {
-          const allEvents = eventGroups.reduce((events, group) => {
-            return events.concat(group.data.items)
-          }, [])
-          dispatch(receiveGoogleEvents(allEvents))
-        }
-      }),
+    return axios.all(users.map(getGoogleEvents)).then(axios.spread(
+      (...eventGroups) => eventGroups
+                          .filter(group => group.length)
+                          .reduce((events, group) => events.concat(group.data.items), [])
+                          .map(receiveGoogleEvents)
+                          .map(dispatch)),
       err => dispatch(error(err))
     )
   }
