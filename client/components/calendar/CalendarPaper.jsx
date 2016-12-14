@@ -18,7 +18,7 @@ const style = {
   flexDirection: 'column',
 }
 
-const CalendarPaper = ({ authorized, params, onAddAuth, onAuthorize }) => (
+const CalendarPaper = ({ authorized, onAuthorize }) => (
   <Paper style={style}>
     {
       (authorized) ?
@@ -26,12 +26,6 @@ const CalendarPaper = ({ authorized, params, onAddAuth, onAuthorize }) => (
           <div>
             <ControlBar />
             <Calendar />
-            <RaisedButton
-              icon={<ActionAndroid />}
-              secondary
-              label="Authorize"
-              onMouseUp={() => { onAddAuth(params.event_id) }}
-            />
           </div>
         ) :
         (
@@ -54,14 +48,6 @@ const mapDispatchToProps = dispatch => ({
   onAuthorize: () => {
     dispatch(authorizeThenLoadGoogleEvents())
   },
-  onAddAuth: (id) => {
-    authorize().then((response) => {
-      dispatch(sendToken({
-        id,
-        token: response.Zi.access_token
-      }))
-    })
-  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CalendarPaper)
