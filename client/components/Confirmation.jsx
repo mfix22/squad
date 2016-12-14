@@ -53,7 +53,7 @@ const style = {
   code: {
     fontFamily: 'Consolas, Courier New, monospace',
     margin: '0px 0px 16px',
-    fontSize: '24px',
+    fontSize: '16px',
     userSelect: 'all',
 
   },
@@ -120,7 +120,7 @@ class Confirmation extends React.Component {
             }}
             style={style.code}
           >
-            {`${location.host}/${this.props.params.event_id}`}
+            {`${location.host}/event/${this.props.params.event_id}`}
           </code>
           <div style={style.list}>
             {this.props.emails.map((item, index) => {
