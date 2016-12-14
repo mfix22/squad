@@ -24,6 +24,16 @@ if (process.env.SAVE_STATE_TO_LOCAL) {
   })
 }
 
+gapi.load('client', () => {
+  const GoogleAuth = gapi.client.init({
+    clientId: '583561432942-5fcf74j7tmfelnqj5jttnubd55dghdff.apps.googleusercontent.com',
+    scope: 'https://www.googleapis.com/auth/calendar.readonly',
+    immediate: false
+  }).then(() => {
+    gapi.auth2.getAuthInstance().signOut()
+  })
+})
+
 configureGlobalKeyPress(store)
 
 injectTapEventPlugin()

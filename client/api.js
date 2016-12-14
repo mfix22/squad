@@ -21,10 +21,9 @@ const googleAuthClient = axios.create({
 })
 
 const authorize = () => {
-  return gapi.auth.authorize({
-    client_id: '583561432942-5fcf74j7tmfelnqj5jttnubd55dghdff.apps.googleusercontent.com',
-    scope: ['https://www.googleapis.com/auth/calendar.readonly'],
-    immediate: false
+  const GoogleAuth = gapi.auth2.getAuthInstance()
+  return GoogleAuth.signIn({
+    prompt: 'select_account login'
   })
   // return googleAuthClient.get('/auth', {
   //   params: {
@@ -71,14 +70,14 @@ const loadAllGoogleEvents = () => {
 const authorizeThenLoadGoogleEvents = (id) => {
   return (dispatch, getState) => {
     return authorize().then((response) => {
-      console.log(response)
-      if (!getState().users.includes(response.access_token)) {
+      const token = response.Zi.access_token
+      if (!getState().users.includes(token)) {
         dispatch({
           type: ADD_USER,
-          user: response.access_token
+          user: token
         })
       }
-      return getGoogleEvents(response.access_token, id)
+      return getGoogleEvents(token, id)
     }).then((eventResponse) => {
       dispatch(receiveGoogleEvents(eventResponse.data.items))
     })

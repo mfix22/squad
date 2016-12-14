@@ -1,9 +1,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ActionAndroid from 'material-ui/svg-icons/action/android'
+
 import Base from './Base'
 
-import { fetchEvent, loadAllGoogleEvents } from '../../api'
+import { fetchEvent, loadAllGoogleEvents, authorize, sendToken } from '../../api'
+
+const fabStyle = {
+  bottom: 24,
+  right: 64,
+  position: 'fixed'
+}
 
 class Viewer extends React.Component {
 
@@ -12,9 +21,18 @@ class Viewer extends React.Component {
   }
 
   render() {
-    const { params } = this.props
+    const { params, onAddAuth } = this.props
     return (
-      <Base params={params}>{this.props.children}</Base>
+      <Base params={params}>
+        <FloatingActionButton
+          style={fabStyle}
+          primary
+          onMouseUp={() => { onAddAuth(params.event_id) }}
+        >
+          <ActionAndroid />
+        </FloatingActionButton>
+        {this.props.children}
+      </Base>
     )
   }
 }
@@ -23,6 +41,14 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onLoad: () => {
     dispatch(fetchEvent(ownProps.params.event_id)).then(() => {
       dispatch(loadAllGoogleEvents())
+    })
+  },
+  onAddAuth: (id) => {
+    authorize().then((response) => {
+      dispatch(sendToken({
+        id,
+        token: response.Zi.access_token
+      }))
     })
   }
 })
