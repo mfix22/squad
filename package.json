@@ -11,7 +11,8 @@
     "database": "mongod",
     "poststart": "start chrome http://localhost:8080/",
     "dev-server": "nodemon server.js",
-    "webpack-watch": "webpack -w"
+    "webpack-watch": "webpack -w",
+    "build": "webpack"
   },
   "dependencies": {
     "axios": "^0.15.2",
@@ -19,6 +20,7 @@
     "cookie-parser": "^1.4.3",
     "express": "4.13.4",
     "googlePlaceAutocomplete": "^1.0.3",
+    "lodash": "^4.17.2",
     "material-ui": "^0.16.4",
     "mo-js": "^0.288.1",
     "moment": "^2.13.0",
@@ -54,10 +56,10 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "jest": "^17.0.3",
     "jest-cli": "^17.0.3",
+    "moment-timezone": "^0.5.10",
     "node-sass": "^3.8.0",
     "nodemon": "^1.9.2",
     "path": "^0.12.7",
-    "phantomjs-prebuilt": "^2.1.7",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.0"
@@ -67,13 +69,17 @@
     "url": "git+https://github.com/SquadCalendar/squad.git"
   },
   "jest": {
-    "verbose": true,
+    "verbose": false,
     "testRegex": "(/test/.*\\.spec\\.js)$",
     "moduleFileExtensions": [
       "jsx",
-      "js",
-      "json"
+      "js"
     ]
+  },
+  "now": {
+    "engines": {
+      "node": "7.0.0"
+    }
   },
   "author": "Squad",
   "license": "ISC",

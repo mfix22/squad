@@ -13,14 +13,17 @@ import { color, type } from '../vars'
 const style = {
   form: {
     position: 'absolute',
-    top: '50%',
-    left: '50%',
+    top: '50vh',
+    left: '50vw',
     transform: 'translate(-50%, -50%)',
     flexDirection: 'column',
+    justifyContent: 'center',
     minWidth: '460px',
     width: '460px',
-    height: '444px',
+    height: 'initial',
+    minHeight: '444px',
     padding: '24px 36px',
+    margin: '0',
     zIndex: 1000,
   },
   h2: {
@@ -32,7 +35,7 @@ const style = {
   h4: {
     display: 'inline-block',
     fontFamily: type.main,
-    margin: '0px 0px 24px 0px',
+    margin: '0px 0px 32px 0px',
     fontSize: '16px'
   },
   sendButton: {
@@ -42,14 +45,17 @@ const style = {
   },
   image: {
     display: 'inline-block',
+    pointerEvents: 'none',
     width: '92px',
     height: '92px',
-    margin: '0 auto 8px'
+    margin: '0 auto 16px'
   },
   code: {
     fontFamily: 'Consolas, Courier New, monospace',
     margin: '0px 0px 16px',
-    fontSize: '24px'
+    fontSize: '16px',
+    userSelect: 'all',
+
   },
   item: {
     margin: '4px 4px 16px',
@@ -96,9 +102,6 @@ class Confirmation extends React.Component {
   }
 
   render() {
-    // only render if sharing
-    if (this.props.location.pathname.split('/')[1] !== 'share') return null
-    // TODO fix links to work with React router
     return (
       <div>
         <a href={`/event/${this.props.params.event_id}`}>
@@ -117,7 +120,7 @@ class Confirmation extends React.Component {
             }}
             style={style.code}
           >
-            {`squadup.io/event/${this.props.params.event_id}`}
+            {`${location.host}/event/${this.props.params.event_id}`}
           </code>
           <div style={style.list}>
             {this.props.emails.map((item, index) => {

@@ -54,6 +54,7 @@ const optionToDisplayString = (option) => {
 }
 
 const DatePickerWithList = ({
+                              EDIT_FORM,
                               time,
                               date,
                               options,
@@ -67,7 +68,6 @@ const DatePickerWithList = ({
                               handleChipAdd,
                               handleChipDelete
                             }) => {
-  const EDIT_FORM = !(params && params.event_id)
   return (
     <div>
       {
@@ -93,7 +93,7 @@ const DatePickerWithList = ({
         ) : null
       }
       <div style={style.chips}>
-        <Label labelFor="Chips" text="Options" />
+        <Label labelFor="Chips" text={options.length ? 'Options' : ''} />
         {options.map((option, index) => {
           const timeKey = Object.keys(option)[0]
           const count = option[timeKey]

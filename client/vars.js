@@ -3,6 +3,7 @@ export const color = {
   grey: '#757575',
   border: '#DBDBDB',
   blue: '#2196f3',
+  error: '#bf4040',
 }
 
 export const type = {

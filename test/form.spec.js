@@ -1,8 +1,10 @@
 import { expect } from 'chai'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import { createStore } from 'redux'
-import reducer from '../client/reducers/index'
+import reducer from '../client/reducers/form'
 import { voteSort } from '../client/reducers/form'
+
+moment.tz.setDefault("America/Chicago");
 
 describe('Form Reducer', () => {
   it('should sort votes by vote count and then start date', () => {
@@ -31,12 +33,12 @@ describe('Form Reducer', () => {
       type: 'CHANGE_TIME',
       time: moment().format()
     })
-    expect(moment(store.getState().form.time).format('LT')).to.equal(moment().format('LT'))
+    expect(moment(store.getState().time).format('LT')).to.equal(moment().format('LT'))
     store.dispatch({
       type: 'CHANGE_TIME',
       time: null
     })
-    expect(store.getState().form.time).to.be.null
+    expect(store.getState().time).to.be.null
   })
   it('should change date by dispatching CHANGE_DATE', () => {
     const store = createStore(reducer)
@@ -44,27 +46,25 @@ describe('Form Reducer', () => {
       type: 'CHANGE_DATE',
       date: moment('2020-10-10').format()
     })
-    expect(moment(store.getState().form.date).format('LL')).to.equal(moment('2020-10-10').format('LL'))
+    expect(moment(store.getState().date).format('LL')).to.equal(moment('2020-10-10').format('LL'))
     store.dispatch({
       type: 'CHANGE_DATE',
       date: null
     })
-    expect(store.getState().form.date).to.be.null
+    expect(store.getState().date).to.be.null
   })
   it('should add a vote with ADD_OPTION and clear the form', () => {
     const newTime = moment()
     const newDate = moment()
     const store = createStore(reducer, {
-      form: {
-        time: newTime.format(),
-        date: newDate.format(),
-        options: []
-      }
+      time: newTime.format(),
+      date: newDate.format(),
+      options: []
     })
     store.dispatch({ type: 'ADD_OPTION' })
-    expect(store.getState().form.options).to.have.lengthOf(1)
-    const newVote = store.getState().form.options[0]
-    const form = store.getState().form
+    expect(store.getState().options).to.have.lengthOf(1)
+    const newVote = store.getState().options[0]
+    const form = store.getState()
 
     expect(Object.keys(newVote)[0]).to.equal(moment({
       year: newDate.year(),
@@ -78,21 +78,19 @@ describe('Form Reducer', () => {
   })
   it('should remove a vote with DELETE_OPTION', () => {
     const store = createStore(reducer, {
-      form: {
-        time: moment().format(),
-        options: [
-          {
-            1: 0,
-          },
-          {
-            2: 2,
-          }
-        ]
-      }
+      time: moment().format(),
+      options: [
+        {
+          1: 0,
+        },
+        {
+          2: 2,
+        }
+      ]
     })
     store.dispatch({ type: 'DELETE_OPTION', time: '1' })
-    expect(store.getState().form.options).to.have.lengthOf(1)
-    expect(store.getState().form.options[0]).to.have.keys('2')
+    expect(store.getState().options).to.have.lengthOf(1)
+    expect(store.getState().options[0]).to.have.keys('2')
   })
 
   it('simulates receiving options from the server', () => {
@@ -107,7 +105,7 @@ describe('Form Reducer', () => {
       options
     })
 
-    expect(store.getState().form.options).to.deep.equal([
+    expect(store.getState().options).to.deep.equal([
       { '1970-01-02T20:00:00-06:00': 4 },
       { '1970-01-01T19:00:00-06:00': 1 },
       { '1970-01-03T21:00:00-06:00': 0 }
@@ -118,6 +116,6 @@ describe('Form Reducer', () => {
       type: 'RECEIVE_EVENT',
       options: null
     })
-    expect(store.getState().options).to.deep.equal(prevState)
+    expect(store.getState().options).to.deep.equal([])
   })
 })

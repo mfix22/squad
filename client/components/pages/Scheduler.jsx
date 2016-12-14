@@ -1,19 +1,26 @@
 import React from 'react'
-// import { connect } from 'react-redux'
-import AppBar from '../AppBar'
-import Form from '../Form'
-import CalendarPaper from '../calendar/CalendarPaper'
+import { connect } from 'react-redux'
+import Base from './Base'
 
-import style from './pageStyles'
+class Scheduler extends React.Component {
+  componentDidMount() {
+    window.onbeforeunload = () => {
+      if (this.props.options.length) return "Your changes will be lost. Are you sure you want to leave?"
+      return null
+    }
+  }
 
-const Scheduler = ({ params }) => (
-  <div style={style.container}>
-    <AppBar params={params} />
-    <div style={style.paperContainer}>
-      <Form params={params} />
-      <CalendarPaper />
-    </div>
-  </div>
-)
+  componentWillUnmount() {
+    window.onbeforeunload = null
+  }
 
-export default Scheduler
+  render() {
+    const { params, children } = this.props
+    return <Base params={params}>{children}</Base>
+  }
+}
+const mapStateToProps = state => ({
+  options: state.form.options
+})
+
+export default connect(mapStateToProps)(Scheduler)

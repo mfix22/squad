@@ -3,8 +3,7 @@ import moment from 'moment'
 import { ADD_USER, receiveEvent, receiveGoogleEvents } from './actions'
 
 const client = axios.create({
-  // baseURL: 'http://api.squadup.io',
-  baseURL: 'http://localhost:4000',
+  baseURL: process.env.SQUAD_HOST || 'http://localhost:4000',
   responseType: 'json',
   timeout: 5000,
   headers: { 'Content-Type': 'application/json' }
@@ -21,10 +20,76 @@ const googleAuthClient = axios.create({
   responseType: 'json'
 })
 
+const authorize = () => {
+  const GoogleAuth = gapi.auth2.getAuthInstance()
+  return GoogleAuth.signIn({
+    prompt: 'select_account login'
+  })
+  // return googleAuthClient.get('/auth', {
+  //   params: {
+  //     response_type: 'token',
+  //     client_id: '583561432942-5fcf74j7tmfelnqj5jttnubd55dghdff.apps.googleusercontent.com',
+  //     scope: 'https://www.googleapis.com/auth/calendar.readonly',
+  //     redirect_uri: 'http://localhost:8080',
+  //   }
+  // })
+}
+
+const getGoogleEvents = (token, id) => {
+  return googleCalendarClient.get(`${id || 'primary'}/events`, {
+    params: {
+      access_token: token,
+      timeMin: (new Date()).toISOString(),
+      showDeleted: false,
+      singleEvents: true,
+      maxResults: 25,
+      orderBy: 'startTime'
+    }
+  }).catch((err) => { throw err })
+}
+
+const loadAllGoogleEvents = () => {
+  return (dispatch, getState) => {
+    const users = getState().users
+    return axios.all(users.map(user => getGoogleEvents(user))).then(axios.spread((...eventGroups) => {
+      if (eventGroups.length) {
+        const allEvents = eventGroups.reduce((events, group) => {
+          return events.concat(group.data.items)
+        }, [])
+        dispatch(receiveGoogleEvents(allEvents))
+      }
+    })).catch((err) => {
+      return dispatch({
+        type: 'ERROR',
+        err
+      })
+    })
+  }
+}
+
+const authorizeThenLoadGoogleEvents = (id) => {
+  return (dispatch, getState) => {
+    return authorize().then((response) => {
+      const token = response.Zi.access_token
+      if (!getState().users.includes(token)) {
+        dispatch({
+          type: ADD_USER,
+          user: token
+        })
+      }
+      return getGoogleEvents(token, id)
+    }).then((eventResponse) => {
+      dispatch(receiveGoogleEvents(eventResponse.data.items))
+    })
+  }
+}
+
+
 const fetchEvent = (id) => {
   return (dispatch) => {
     return client.get(`/event/${id}`).then((response) => {
       dispatch(receiveEvent(response.data))
+      // dispatch(loadAllGoogleEvents())
     }).catch((err) => {
       return dispatch({
         type: 'ERROR',
@@ -41,11 +106,29 @@ const sendVote = ({ id, option }) => {
     }).then((response) => {
       dispatch(receiveEvent(response.data))
     }).catch((err) => {
-      return dispatch({
+      dispatch({
         type: 'ERROR',
         err
       })
     })
+  }
+}
+
+const sendToken = ({ id, token }) => {
+  return (dispatch, getState) => {
+    if (!getState().users.includes(token)) {
+      return client.post(`/authToken/${id}`, { token }).then((response) => {
+        dispatch(receiveEvent(response.data))
+        dispatch(loadAllGoogleEvents())
+      }).catch((err) => {
+        dispatch({
+          type: 'ERROR',
+          err
+        })
+      })
+    }
+
+    return Promise.resolve() // no need to send server
   }
 }
 
@@ -80,62 +163,4 @@ const sendEvent = router => (meta) => {
   }
 }
 
-const authorize = () => {
-  return gapi.auth.authorize({
-    client_id: '583561432942-5fcf74j7tmfelnqj5jttnubd55dghdff.apps.googleusercontent.com',
-    scope: ['https://www.googleapis.com/auth/calendar.readonly'],
-    immediate: false
-  })
-  // return googleAuthClient.get('/auth', {
-  //   params: {
-  //     response_type: 'token',
-  //     client_id: '583561432942-5fcf74j7tmfelnqj5jttnubd55dghdff.apps.googleusercontent.com',
-  //     scope: 'https://www.googleapis.com/auth/calendar.readonly',
-  //     redirect_uri: 'http://localhost:8080',
-  //   }
-  // })
-}
-
-const getGoogleEvents = (token, id) => {
-  return googleCalendarClient.get(`${id || 'primary'}/events`, {
-    params: {
-      access_token: token,
-      timeMin: (new Date()).toISOString(),
-      showDeleted: false,
-      singleEvents: true,
-      maxResults: 25,
-      orderBy: 'startTime'
-    }
-  }).catch((err) => { throw err })
-}
-
-const loadAllGoogleEvents = (users) => {
-  return (dispatch) => {
-    return axios.all(users.map(user => getGoogleEvents(user))).then(axios.spread((...eventGroups) => {
-      if (eventGroups.length) {
-        const allEvents = eventGroups.reduce((events, group) => {
-          return events.concat(group.data.items)
-        }, [])
-        dispatch(receiveGoogleEvents(allEvents))
-      }
-    }))
-  }
-}
-
-const authorizeThenLoadGoogleEvents = (id) => {
-  return (dispatch, getState) => {
-    return authorize().then((response) => {
-      if (!getState().users.includes(response.access_token)) {
-        dispatch({
-          type: ADD_USER,
-          user: response.access_token
-        })
-      }
-      return getGoogleEvents(response.access_token, id)
-    }).then((eventResponse) => {
-      dispatch(receiveGoogleEvents(eventResponse.data.items))
-    })
-  }
-}
-
-export { fetchEvent, sendVote, sendEvent, loadAllGoogleEvents, authorizeThenLoadGoogleEvents }
+export { authorize, fetchEvent, sendVote, sendEvent, sendToken, loadAllGoogleEvents, authorizeThenLoadGoogleEvents }

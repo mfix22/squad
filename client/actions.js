@@ -4,6 +4,7 @@ import { getColor } from './helpers/util'
 const VIEW_TODAY = 'VIEW_TODAY'
 const VIEW_PREV = 'VIEW_PREV'
 const VIEW_NEXT = 'VIEW_NEXT'
+const VIEW_FUTURE_MONTHS = 'VIEW_FUTURE_MONTHS'
 const CHANGE_WINDOW = 'CHANGE_WINDOW'
 
 const RECEIVE_EVENT = 'RECEIVE_EVENT'
@@ -21,6 +22,8 @@ const ADD_EMAIL = 'ADD_EMAIL'
 const DELETE_EMAIL = 'DELETE_EMAIL'
 
 const SUBMIT_PROPOSAL = 'SUBMIT_PROPOSAL'
+
+const GLOBAL_KEY_PRESS = 'GLOBAL_KEY_PRESS'
 
 const receiveEvent = (data) => {
   const { title, location, duration, emails, options, tokens } = data
@@ -53,6 +56,7 @@ export {
   VIEW_TODAY,
   VIEW_PREV,
   VIEW_NEXT,
+  VIEW_FUTURE_MONTHS,
   CHANGE_WINDOW,
   RECEIVE_EVENT,
   RECEIVE_EVENTS,
@@ -63,6 +67,7 @@ export {
   ADD_USER,
   ADD_EMAIL,
   DELETE_EMAIL,
+  GLOBAL_KEY_PRESS,
   SUBMIT_PROPOSAL,
   receiveEvent,
   receiveGoogleEvents

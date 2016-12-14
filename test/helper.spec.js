@@ -1,6 +1,8 @@
 import { expect } from 'chai'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import { chunk, getDays, getNumDaysInView, getChunkedDays, isThisMonth, getOrderedMonthArray } from '../client/helpers/util'
+
+moment.tz.setDefault("America/Chicago");
 
 describe('Date utils', () => {
   it('Gets list of day with refDate in relative week position if numDays < 10', () => {

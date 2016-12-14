@@ -41,13 +41,11 @@ class DurationPicker extends React.Component {
   }
 
   render() {
-    const EDIT_FORM = !(this.props.params && this.props.params.event_id)
     return (
       <AutoComplete
         openOnFocus
         hintText={humanize(this.state.value)}
-        searchText={EDIT_FORM ? '' : humanize(this.state.value)}
-        disabled={!EDIT_FORM}
+        searchText={''}
         dataSource={timeValues}
         dataSourceConfig={{ text: 'text', value: 'value' }}
         filter={AutoComplete.fuzzyFilter}
