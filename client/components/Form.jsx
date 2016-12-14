@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton'
+import MaterialTextField from 'material-ui/TextField';
 
 import PlaceAutocomplete from './PlaceAutocomplete'
 import Paper from './Paper'
@@ -36,11 +37,50 @@ const style = {
   }
 }
 
-const Form = ({ onClick, params, router }) => {
+const Form = ({ onClick, params, router, titleReceived, locationReceived }) => {
   let input
   let location
   let duration
   const EDIT_FORM = !(params && params.event_id)
+
+  if (!EDIT_FORM) {
+    // FIXME update this section to use viewing components
+    return (
+      <Paper style={style.form}>
+        <h2 style={style.h2}>{'Vote for event times'}</h2>
+        <MaterialTextField
+          value={titleReceived}
+          disabled
+          floatingLabelText="What"
+          fullWidth
+        />
+        <DateList
+          EDIT_FORM={EDIT_FORM}
+          hintTextDate="On what day?"
+          hintTextTimeFrom="Starting at?"
+          hintTextTimeTo="Until?"
+          params={params}
+        />
+        <MaterialTextField
+          value={locationReceived}
+          disabled
+          floatingLabelText="Where"
+          fullWidth
+        />
+        <EmailList
+          hint="Emails to invite?"
+          label="Who"
+        />
+        <RaisedButton
+          label={'Share'}
+          style={style.scheduleButton}
+          onClick={
+            () => { router.push(`/share/${params.event_id}`) }
+          }
+        />
+      </Paper>
+    )
+  }
   return (
     <Paper style={style.form}>
       <h2 style={style.h2}>{(EDIT_FORM) ? 'Propose an event' : 'Vote for event times'}</h2>
@@ -102,7 +142,8 @@ const Form = ({ onClick, params, router }) => {
 }
 
 const mapStateToProps = state => ({
-  location: state.form.location
+  locationReceived: state.form.location,
+  titleReceived: state.form.title
 })
 
 const mapDispatchToProps = (dispatch) => {

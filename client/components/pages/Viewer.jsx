@@ -26,7 +26,6 @@ class Viewer extends React.Component {
       <Base params={params}>
         <FloatingActionButton
           style={fabStyle}
-          primary
           onMouseUp={() => { onAddAuth(params.event_id) }}
         >
           <ActionAndroid />
