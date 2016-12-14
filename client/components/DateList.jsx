@@ -93,7 +93,7 @@ const DatePickerWithList = ({
         ) : null
       }
       <div style={style.chips}>
-        <Label labelFor="Chips" text="Options" />
+        <Label labelFor="Chips" text={options.length ? 'Options' : ''} />
         {options.map((option, index) => {
           const timeKey = Object.keys(option)[0]
           const count = option[timeKey]
