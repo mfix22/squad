@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import FloatingActionButton from 'material-ui/FloatingActionButton'
-import ActionAndroid from 'material-ui/svg-icons/action/android'
+import ContentAdd from 'material-ui/svg-icons/social/person-add'
 
 import Base from './Base'
 
@@ -28,7 +28,7 @@ class Viewer extends React.Component {
           style={fabStyle}
           onMouseUp={() => { onAddAuth(params.event_id) }}
         >
-          <ActionAndroid />
+          <ContentAdd />
         </FloatingActionButton>
         {this.props.children}
       </Base>

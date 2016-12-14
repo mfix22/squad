@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton'
-import MaterialTextField from 'material-ui/TextField';
+import MaterialTextField from 'material-ui/TextField'
 
 import PlaceAutocomplete from './PlaceAutocomplete'
 import Paper from './Paper'
