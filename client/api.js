@@ -56,8 +56,7 @@ const loadAllGoogleEvents = () => {
       (...eventGroups) => eventGroups
                           .filter(group => group.length)
                           .reduce((events, group) => events.concat(group.data.items), [])
-                          .map(receiveGoogleEvents)
-                          .map(dispatch)),
+                          .map(data => dispatch(receiveGoogleEvents(data)))),
       err => dispatch(error(err))
     )
   }
