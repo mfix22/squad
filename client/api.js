@@ -66,58 +66,47 @@ const loadAllGoogleEvents = () => {
   }
 }
 
-const authorizeThenLoadGoogleEvents = (id) => {
-  return (dispatch, getState) => {
-    return authorize().then(
+const authorizeThenLoadGoogleEvents = id => (dispatch, getState) => authorize()
+  .then(
+    (response) => {
+      const token = response.Zi.access_token
+      if (!getState().users.includes(token)) {
+        dispatch({ type: ADD_USER, user: token })
+      }
+      return getGoogleEvents(token, id)
+    },
+    err => dispatch(error(err))
+  )
+  .then(
+    response => dispatch(receiveGoogleEvents(response.data.items)),
+    err => dispatch(error(err))
+  )
+
+
+const fetchEvent = id => dispatch => client.get(`/event/${id}`).then(
+  response => dispatch(receiveEvent(response.data)),
+  err => dispatch(error(err))
+)
+
+const sendVote = ({ id, option }) => dispatch =>
+  client.post(`/vote/${id}`, {
+    time: moment(option).unix()
+  }).then(
+    response => dispatch(receiveEvent(response.data)),
+    err => dispatch(error(err))
+  )
+
+const sendToken = ({ id, token }) => (dispatch, getState) => {
+  if (!getState().users.includes(token)) {
+    return client.post(`/authToken/${id}`, { token }).then(
       (response) => {
-        const token = response.Zi.access_token
-        if (!getState().users.includes(token)) {
-          dispatch({ type: ADD_USER, user: token })
-        }
-        return getGoogleEvents(token, id)
+        dispatch(receiveEvent(response.data))
+        dispatch(loadAllGoogleEvents())
       },
-      err => dispatch(error(err))
-    ).then(
-      response => dispatch(receiveGoogleEvents(response.data.items)),
-      err => dispatch(error(err))
-    )
+      err => dispatch(error(err)))
   }
-}
 
-
-const fetchEvent = (id) => {
-  return (dispatch) => {
-    return client.get(`/event/${id}`).then(
-      response => dispatch(receiveEvent(response.data)),
-      err => dispatch(error(err))
-    )
-  }
-}
-
-const sendVote = ({ id, option }) => {
-  return (dispatch) => {
-    return client.post(`/vote/${id}`, {
-      time: moment(option).unix()
-    }).then(
-      response => dispatch(receiveEvent(response.data)),
-      err => dispatch(error(err))
-    )
-  }
-}
-
-const sendToken = ({ id, token }) => {
-  return (dispatch, getState) => {
-    if (!getState().users.includes(token)) {
-      return client.post(`/authToken/${id}`, { token }).then(
-        (response) => {
-          dispatch(receiveEvent(response.data))
-          dispatch(loadAllGoogleEvents())
-        },
-        err => dispatch(error(err)))
-    }
-
-    return Promise.resolve() // no need to send server
-  }
+  return Promise.resolve() // no need to send server
 }
 
 // meta is extra data to include outside of state
