@@ -25,6 +25,11 @@ const SUBMIT_PROPOSAL = 'SUBMIT_PROPOSAL'
 
 const GLOBAL_KEY_PRESS = 'GLOBAL_KEY_PRESS'
 
+const error = err => ({
+  type: 'ERROR',
+  err
+})
+
 const receiveEvent = (data) => {
   const { title, location, duration, emails, options, tokens } = data
   return {
@@ -69,6 +74,7 @@ export {
   DELETE_EMAIL,
   GLOBAL_KEY_PRESS,
   SUBMIT_PROPOSAL,
+  error,
   receiveEvent,
   receiveGoogleEvents
 }
