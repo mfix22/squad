@@ -150,7 +150,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onClick: (input, router) => {
       if (input.title) {
-        dispatch(sendEvent(router)(input))
+        dispatch(sendEvent(input))
+          .then(response => router.push(`/event/${response.data.id}`))
       } else {
         alert('Events require title')
       }

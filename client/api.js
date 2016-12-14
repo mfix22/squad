@@ -1,6 +1,6 @@
 import axios from 'axios'
 import moment from 'moment'
-import { ADD_USER, receiveEvent, receiveGoogleEvents } from './actions'
+import { ADD_USER, receiveEvent, receiveGoogleEvents, error } from './actions'
 
 const client = axios.create({
   baseURL: process.env.SQUAD_HOST || 'http://localhost:4000',
@@ -45,57 +45,52 @@ const getGoogleEvents = (token, id) => {
       maxResults: 25,
       orderBy: 'startTime'
     }
-  }).catch((err) => { throw err })
+  })
 }
 
 const loadAllGoogleEvents = () => {
   return (dispatch, getState) => {
     const users = getState().users
-    return axios.all(users.map(user => getGoogleEvents(user))).then(axios.spread((...eventGroups) => {
-      if (eventGroups.length) {
-        const allEvents = eventGroups.reduce((events, group) => {
-          return events.concat(group.data.items)
-        }, [])
-        dispatch(receiveGoogleEvents(allEvents))
-      }
-    })).catch((err) => {
-      return dispatch({
-        type: 'ERROR',
-        err
-      })
-    })
+    // TODO fix function programming
+    return axios.all(users.map(user => getGoogleEvents(user))).then(axios.spread(
+      (...eventGroups) => {
+        if (eventGroups.length) {
+          const allEvents = eventGroups.reduce((events, group) => {
+            return events.concat(group.data.items)
+          }, [])
+          dispatch(receiveGoogleEvents(allEvents))
+        }
+      }),
+      err => dispatch(error(err))
+    )
   }
 }
 
 const authorizeThenLoadGoogleEvents = (id) => {
   return (dispatch, getState) => {
-    return authorize().then((response) => {
-      const token = response.Zi.access_token
-      if (!getState().users.includes(token)) {
-        dispatch({
-          type: ADD_USER,
-          user: token
-        })
-      }
-      return getGoogleEvents(token, id)
-    }).then((eventResponse) => {
-      dispatch(receiveGoogleEvents(eventResponse.data.items))
-    })
+    return authorize().then(
+      (response) => {
+        const token = response.Zi.access_token
+        if (!getState().users.includes(token)) {
+          dispatch({ type: ADD_USER, user: token })
+        }
+        return getGoogleEvents(token, id)
+      },
+      err => dispatch(error(err))
+    ).then(
+      response => dispatch(receiveGoogleEvents(response.data.items)),
+      err => dispatch(error(err))
+    )
   }
 }
 
 
 const fetchEvent = (id) => {
   return (dispatch) => {
-    return client.get(`/event/${id}`).then((response) => {
-      dispatch(receiveEvent(response.data))
-      // dispatch(loadAllGoogleEvents())
-    }).catch((err) => {
-      return dispatch({
-        type: 'ERROR',
-        err
-      })
-    })
+    return client.get(`/event/${id}`).then(
+      response => dispatch(receiveEvent(response.data)),
+      err => dispatch(error(err))
+    )
   }
 }
 
@@ -103,29 +98,22 @@ const sendVote = ({ id, option }) => {
   return (dispatch) => {
     return client.post(`/vote/${id}`, {
       time: moment(option).unix()
-    }).then((response) => {
-      dispatch(receiveEvent(response.data))
-    }).catch((err) => {
-      dispatch({
-        type: 'ERROR',
-        err
-      })
-    })
+    }).then(
+      response => dispatch(receiveEvent(response.data)),
+      err => dispatch(error(err))
+    )
   }
 }
 
 const sendToken = ({ id, token }) => {
   return (dispatch, getState) => {
     if (!getState().users.includes(token)) {
-      return client.post(`/authToken/${id}`, { token }).then((response) => {
-        dispatch(receiveEvent(response.data))
-        dispatch(loadAllGoogleEvents())
-      }).catch((err) => {
-        dispatch({
-          type: 'ERROR',
-          err
-        })
-      })
+      return client.post(`/authToken/${id}`, { token }).then(
+        (response) => {
+          dispatch(receiveEvent(response.data))
+          dispatch(loadAllGoogleEvents())
+        },
+        err => dispatch(error(err)))
     }
 
     return Promise.resolve() // no need to send server
@@ -133,7 +121,7 @@ const sendToken = ({ id, token }) => {
 }
 
 // meta is extra data to include outside of state
-const sendEvent = router => (meta) => {
+const sendEvent = (meta) => {
   if (!meta.title) throw Error('Events require title')
   return (dispatch, getState) => {
     const state = getState()
@@ -151,15 +139,7 @@ const sendEvent = router => (meta) => {
         })
       }, {}),
     }
-    return client.post('/event', body).then((response) => {
-      const { id } = response.data
-      router.push(`/event/${id}`)
-    }).catch((err) => {
-      return dispatch({
-        type: 'ERROR',
-        err
-      })
-    })
+    return client.post('/event', body).catch(err => dispatch(error(err)))
   }
 }
 
