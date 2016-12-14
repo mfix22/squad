@@ -25,14 +25,6 @@ const authorize = () => {
   return GoogleAuth.signIn({
     prompt: 'select_account login'
   })
-  // return googleAuthClient.get('/auth', {
-  //   params: {
-  //     response_type: 'token',
-  //     client_id: '583561432942-5fcf74j7tmfelnqj5jttnubd55dghdff.apps.googleusercontent.com',
-  //     scope: 'https://www.googleapis.com/auth/calendar.readonly',
-  //     redirect_uri: 'http://localhost:8080',
-  //   }
-  // })
 }
 
 const getGoogleEvents = (token, id) => {
@@ -48,35 +40,32 @@ const getGoogleEvents = (token, id) => {
   })
 }
 
-const loadAllGoogleEvents = () => {
-  return (dispatch, getState) => {
-    const users = getState().users
-    // TODO fix function programming
-    return axios.all(users.map(getGoogleEvents)).then(axios.spread(
-      (...eventGroups) => eventGroups
-                          .filter(group => group.length)
-                          .reduce((events, group) => events.concat(group.data.items), [])
-                          .map(data => dispatch(receiveGoogleEvents(data)))),
-      err => dispatch(error(err))
-    )
-  }
-}
-
-const authorizeThenLoadGoogleEvents = id => (dispatch, getState) => authorize()
-  .then(
-    (response) => {
-      const token = response.Zi.access_token
-      if (!getState().users.includes(token)) {
-        dispatch({ type: ADD_USER, user: token })
+const loadAllGoogleEvents = () => (dispatch, getState) =>
+  axios.all(getState().users.map(user => getGoogleEvents(user))).then(axios.spread(
+    (...eventGroups) => {
+      if (eventGroups.length) {
+        const allEvents = eventGroups.reduce((events, group) => {
+          return events.concat(group.data.items)
+        }, [])
+        dispatch(receiveGoogleEvents(allEvents))
       }
-      return getGoogleEvents(token, id)
-    },
+    }),
     err => dispatch(error(err))
   )
-  .then(
-    response => dispatch(receiveGoogleEvents(response.data.items)),
-    err => dispatch(error(err))
-  )
+
+const authorizeThenLoadGoogleEvents = id => (dispatch, getState) => authorize().then(
+  (response) => {
+    const token = response.Zi.access_token
+    if (!getState().users.includes(token)) {
+      dispatch({ type: ADD_USER, user: token })
+    }
+    return getGoogleEvents(token, id)
+  },
+  err => dispatch(error(err))
+).then(
+  response => dispatch(receiveGoogleEvents(response.data.items)),
+  err => dispatch(error(err))
+)
 
 
 const fetchEvent = id => dispatch => client.get(`/event/${id}`).then(
@@ -85,9 +74,7 @@ const fetchEvent = id => dispatch => client.get(`/event/${id}`).then(
 )
 
 const sendVote = ({ id, option }) => dispatch =>
-  client.post(`/vote/${id}`, {
-    time: moment(option).unix()
-  }).then(
+  client.post(`/vote/${id}`, { time: moment(option).unix() }).then(
     response => dispatch(receiveEvent(response.data)),
     err => dispatch(error(err))
   )
