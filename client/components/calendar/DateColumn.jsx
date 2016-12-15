@@ -28,7 +28,7 @@ const setViewClasses = (window) => {
   }
 }
 
-const DateColumn = ({ refDate, window, day, events, width }) => {
+const DateColumn = ({ refDate, window, day, events, width, settings }) => {
   return (
     <div
       className={`dateColumn ${setViewClasses(window)}`}
@@ -42,7 +42,11 @@ const DateColumn = ({ refDate, window, day, events, width }) => {
         {moment(day).format(getHeaderFormat(window)).toUpperCase()}
       </p>
       <ul className="embeddables">
-        <Moon date={day} />
+        {
+          settings && settings.embeddables && settings.embeddables.length ?
+            <Moon date={day} settings={settings.embeddables.moon} /> :
+            null
+        }
       </ul>
       {
         events.filter((e) => {
@@ -66,6 +70,7 @@ const mapStateToProps = (state) => {
   return {
     refDate: state.view.date,
     window: state.view.window,
+    settings: state.settings
   }
 }
 
