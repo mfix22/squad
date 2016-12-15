@@ -54,8 +54,11 @@ const globalKeyPress = (e) => {
 }
 
 const keyFilter = (e) => {
+  if (e.target.nodeName.toLowerCase() === 'input') return false
+
+  if (['w', 'd', 'm', 'j', 'k', 'l'].some(key => key === e.key.toLowerCase())) return true
   if (e.ctrlKey) {
-    if (['w', 'd', 'm', 'j', 'k', 'l'].some(key => key === e.key.toLowerCase())) return true
+    // pass
   }
   if (e.shiftKey) {
     // pass
