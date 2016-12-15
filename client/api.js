@@ -20,15 +20,12 @@ const googleAuthClient = axios.create({
   responseType: 'json'
 })
 
-const authorize = () => {
-  const GoogleAuth = gapi.auth2.getAuthInstance()
-  return GoogleAuth.signIn({
-    prompt: 'select_account login'
-  })
-}
+const authorize = () =>  gapi.auth2.getAuthInstance().signIn({
+  prompt: 'select_account login'
+})
 
-const getGoogleEvents = (token, id) => {
-  return googleCalendarClient.get(`${id || 'primary'}/events`, {
+const getGoogleEvents = (token, id) =>
+  googleCalendarClient.get(`${id || 'primary'}/events`, {
     params: {
       access_token: token,
       timeMin: (new Date()).toISOString(),
@@ -38,35 +35,30 @@ const getGoogleEvents = (token, id) => {
       orderBy: 'startTime'
     }
   })
-}
 
 const loadAllGoogleEvents = () => (dispatch, getState) =>
-  axios.all(getState().users.map(user => getGoogleEvents(user))).then(axios.spread(
-    (...eventGroups) => {
-      if (eventGroups.length) {
-        const allEvents = eventGroups.reduce((events, group) => {
-          return events.concat(group.data.items)
-        }, [])
-        dispatch(receiveGoogleEvents(allEvents))
+  Promise.all(getState().users.map(user => getGoogleEvents(user)))
+    .then(
+      eventGroups => dispatch(receiveGoogleEvents(
+        eventGroups.reduce((events, group) => events.concat(group.data.items), [])
+      )),
+      err => dispatch(error(err))
+    )
+
+const authorizeThenLoadGoogleEvents = id => (dispatch, getState) =>
+  authorize().then(
+    (response) => {
+      const token = response.Zi.access_token
+      if (!getState().users.includes(token)) {
+        dispatch({ type: ADD_USER, user: token })
       }
-    }),
+      return getGoogleEvents(token, id)
+    },
+    err => Promise.reject(err)
+  ).then(
+    response => dispatch(receiveGoogleEvents(response.data.items)),
     err => dispatch(error(err))
   )
-
-const authorizeThenLoadGoogleEvents = id => (dispatch, getState) => authorize().then(
-  (response) => {
-    const token = response.Zi.access_token
-    if (!getState().users.includes(token)) {
-      dispatch({ type: ADD_USER, user: token })
-    }
-    return getGoogleEvents(token, id)
-  },
-  err => dispatch(error(err))
-).then(
-  response => dispatch(receiveGoogleEvents(response.data.items)),
-  err => dispatch(error(err))
-)
-
 
 const fetchEvent = id => dispatch => client.get(`/event/${id}`).then(
   response => dispatch(receiveEvent(response.data)),
@@ -93,26 +85,33 @@ const sendToken = ({ id, token }) => (dispatch, getState) => {
 }
 
 // meta is extra data to include outside of state
-const sendEvent = (meta) => {
-  if (!meta.title) throw Error('Events require title')
-  return (dispatch, getState) => {
-    const state = getState()
-    const { options } = state.form
-    const { title, location, duration } = meta
-    const body = {
-      title,
-      location,
-      duration,
-      emails: state.emails,
-      tokens: state.users,
-      options: options.reduce((accum, option) => {
-        return Object.assign(accum, {
-          [moment(Object.keys(option)[0]).unix()]: 0
-        })
-      }, {}),
-    }
-    return client.post('/event', body).catch(err => dispatch(error(err)))
+const sendEvent = meta => (dispatch, getState) => {
+  if (!meta.title) return dispatch(error(Error('Events require title')))
+  const { emails, form, users: tokens } = getState()
+  const { options } = form
+  const { title, location, duration } = meta
+  const body = {
+    title,
+    location,
+    duration,
+    emails,
+    tokens,
+    // array to key value pair object to match Model
+    options: options.reduce((accum, option) => {
+      return Object.assign(accum, {
+        [moment(Object.keys(option)[0]).unix()]: 0
+      })
+    }, {}),
   }
+  return client.post('/event', body).catch(err => dispatch(error(err)))
 }
 
-export { authorize, fetchEvent, sendVote, sendEvent, sendToken, loadAllGoogleEvents, authorizeThenLoadGoogleEvents }
+export {
+  authorize,
+  fetchEvent,
+  sendVote,
+  sendEvent,
+  sendToken,
+  loadAllGoogleEvents,
+  authorizeThenLoadGoogleEvents
+}
