@@ -20,7 +20,7 @@ module.exports = webpackMerge(commonConfig, {
 
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.SAVE_STATE_TO_LOCAL': process.env.SAVE_STATE_TO_LOCAL
+      'process.env.SAVE_STATE_TO_LOCAL': JSON.stringify(process.env.SAVE_STATE_TO_LOCAL)
     }),
   ]
 })
