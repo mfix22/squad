@@ -2,22 +2,24 @@
   "name": "squad",
   "version": "1.0.0",
   "description": "Squad Application",
-  "main": "index.jsx",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
+    "now-start": "node server.js",
     "test": "jest",
     "test:nocache": "jest --no-cache",
     "test:coverage": "jest --coverage",
-    "start": "concurrently --kill-others \"npm run webpack-watch\" \"npm run dev-server\"",
+    "dev": "concurrently --kill-others \"npm run build:watch\" \"npm run dev-server\"",
     "database": "mongod",
-    "poststart": "start chrome http://localhost:8080/",
     "dev-server": "nodemon server.js",
-    "webpack-watch": "webpack -w",
-    "build": "webpack"
+    "build": "webpack",
+    "build:watch": "webpack -w"
   },
   "dependencies": {
     "axios": "^0.15.2",
     "body-parser": "1.15.1",
     "cookie-parser": "^1.4.3",
+    "extract-text-webpack-plugin": "^1.0.1",
     "express": "4.13.4",
     "googlePlaceAutocomplete": "^1.0.3",
     "lodash": "^4.17.2",
@@ -34,6 +36,7 @@
     "redux-logger": "^2.7.0",
     "redux-thunk": "^2.1.0",
     "sendgrid-web": "0.0.5",
+    "webpack": "^1.13.0",
     "webpack-merge": "^0.20.0"
   },
   "devDependencies": {
@@ -52,7 +55,6 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.0",
-    "extract-text-webpack-plugin": "^1.0.1",
     "jest": "^17.0.3",
     "jest-cli": "^17.0.3",
     "moment-timezone": "^0.5.10",
@@ -60,8 +62,7 @@
     "nodemon": "^1.9.2",
     "path": "^0.12.7",
     "sass-loader": "^4.0.0",
-    "style-loader": "^0.13.1",
-    "webpack": "^1.13.0"
+    "style-loader": "^0.13.1"
   },
   "repository": {
     "type": "git",

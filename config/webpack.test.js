@@ -2,14 +2,19 @@ module.exports = {
   devtool: 'inline-source-map',
 
   resolve: {
-    extensions: ['', '.ts', '.js']
+    extensions: ['', '.js', '.jsx']
   },
 
   module: {
     loaders: [
       {
-        test: /\.ts$/,
-        loader: 'ts'
+        test: /\.jsx?$/,
+        loader: 'babel',
+        exclude: /node_modules/,
+        query: {
+          cacheDirectory: true,
+          presets: ['react', 'es2015']
+        }
       },
       {
         test: /\.html$/,

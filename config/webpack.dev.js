@@ -1,3 +1,4 @@
+var webpack = require('webpack')
 var webpackMerge = require('webpack-merge')
 var commonConfig = require('./webpack.common.js')
 var helpers = require('./helpers')
@@ -15,5 +16,11 @@ module.exports = webpackMerge(commonConfig, {
     publicPath: 'http://localhost:8080/',
     filename: 'scripts/[name].js',
     chunkFilename: 'scripts/[id].chunk.js'
-  }
+  },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.SAVE_STATE_TO_LOCAL': process.env.SAVE_STATE_TO_LOCAL
+    }),
+  ]
 })
