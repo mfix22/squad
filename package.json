@@ -36,6 +36,7 @@
     "redux-logger": "^2.7.0",
     "redux-thunk": "^2.1.0",
     "sendgrid-web": "0.0.5",
+    "suncalc": "^1.7.0",
     "webpack": "^1.13.0",
     "webpack-merge": "^0.20.0"
   },
