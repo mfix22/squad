@@ -20,7 +20,7 @@ const googleAuthClient = axios.create({
   responseType: 'json'
 })
 
-const authorize = () =>  gapi.auth2.getAuthInstance().signIn({
+const authorize = () => gapi.auth2.getAuthInstance().signIn({
   prompt: 'select_account login'
 })
 
@@ -38,47 +38,42 @@ const getGoogleEvents = (token, id) =>
 
 const loadAllGoogleEvents = () => (dispatch, getState) =>
   Promise.all(getState().users.map(user => getGoogleEvents(user)))
-    .then(
-      eventGroups => dispatch(receiveGoogleEvents(
-        eventGroups.reduce((events, group) => events.concat(group.data.items), [])
-      )),
-      err => dispatch(error(err))
-    )
+    .then(eventGroups =>
+            dispatch(receiveGoogleEvents(eventGroups.reduce((events, group) =>
+              events.concat(group.data.items), []))))
+    .catch(err => dispatch(error(err)))
 
 const authorizeThenLoadGoogleEvents = id => (dispatch, getState) =>
-  authorize().then(
-    (response) => {
+  authorize()
+    .then((response) => {
       const token = response.Zi.access_token
       if (!getState().users.includes(token)) {
         dispatch({ type: ADD_USER, user: token })
       }
       return getGoogleEvents(token, id)
-    },
-    err => Promise.reject(err)
-  ).then(
-    response => dispatch(receiveGoogleEvents(response.data.items)),
-    err => dispatch(error(err))
-  )
+    })
+    .then(response => dispatch(receiveGoogleEvents(response.data.items)))
+    .catch(err => dispatch(error(err)))
 
-const fetchEvent = id => dispatch => client.get(`/event/${id}`).then(
-  response => dispatch(receiveEvent(response.data)),
-  err => dispatch(error(err))
-)
+const fetchEvent = id => dispatch =>
+  client.get(`/event/${id}`)
+    .then(response => dispatch(receiveEvent(response.data)))
+    .catch(err => dispatch(error(err)))
+
 
 const sendVote = ({ id, option }) => dispatch =>
-  client.post(`/vote/${id}`, { time: moment(option).unix() }).then(
-    response => dispatch(receiveEvent(response.data)),
-    err => dispatch(error(err))
-  )
+  client.post(`/vote/${id}`, { time: moment(option).unix() })
+    .then(response => dispatch(receiveEvent(response.data)))
+    .catch(err => dispatch(error(err)))
 
 const sendToken = ({ id, token }) => (dispatch, getState) => {
   if (!getState().users.includes(token)) {
-    return client.post(`/authToken/${id}`, { token }).then(
-      (response) => {
+    return client.post(`/authToken/${id}`, { token })
+      .then((response) => {
         dispatch(receiveEvent(response.data))
         dispatch(loadAllGoogleEvents())
-      },
-      err => dispatch(error(err)))
+      })
+      .catch(err => dispatch(error(err)))
   }
 
   return Promise.resolve() // no need to send server
