@@ -1,6 +1,6 @@
 module.exports = (model) => {
   const modelObj = require(`./schemas/${model}.json`)
-  const entries = Object.keys(modelObj).map( (key) => {
+  const entries = Object.keys(modelObj).map((key) => {
     return [key, modelObj[key]]
   })
 
@@ -11,7 +11,7 @@ module.exports = (model) => {
 }
 
 function validate (entries, item, opts) {
-  let includeOptional = false;
+  let includeOptional = false
 
   // check options
   if (opts) {
@@ -28,11 +28,11 @@ function validate (entries, item, opts) {
 }
 
 function extract (entries, item, opts) {
-  let includeOptional = false;
+  let includeOptional = false
 
   // check options
   if (opts) {
-    includeOptional = opts.includeOptional;
+    includeOptional = opts.includeOptional
   }
 
   if (!includeOptional) {
@@ -43,7 +43,7 @@ function extract (entries, item, opts) {
 
   const clean = {}
 
-  entries.forEach( (entry) => {
+  entries.forEach((entry) => {
     const [key, value] = entry
     if (isValid(item, entry)) {
       clean[key] = item[key]
@@ -98,6 +98,6 @@ function isRequired ([prop]) {
 }
 
 function trimOptional (entry) {
-  let [prop, type] = entry
+  const [prop, type] = entry
   return !isRequired(entry) ? [prop.slice(0, -1), type] : [prop, type]
 }

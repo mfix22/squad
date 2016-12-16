@@ -11,7 +11,7 @@ module.exports = (db) => {
 }
 
 function get (admins, id) {
-  return new Promise( (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     admins
       .find({ id })
       .limit(1)
@@ -28,7 +28,7 @@ function get (admins, id) {
 }
 
 function insert (admins, id) {
-  return new Promise( (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const admin = { id }
 
     // validate
@@ -37,21 +37,21 @@ function insert (admins, id) {
 
     const cleanedAdmin = validator.extract(admin, {
       includeOptional: true
-    });
+    })
     cleanedAdmin.key = genId()
 
     admins
     .find({ id })
     .limit(1)
     .next()
-    .then( (admin) => {
+    .then((admin) => {
       if (admin) {
         throw new Error('already exists')
       } else {
         return admins.insertOne(cleanedAdmin)
       }
     })
-    .then( (result) => resolve(result.ops[0]))
+    .then((result) => resolve(result.ops[0]))
     .catch(reject)
   })
 }

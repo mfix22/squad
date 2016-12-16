@@ -1,5 +1,6 @@
 const adminModel      = require('../models/admin')
 const genErrorHandler = require('../lib/errorHandler.js')
+const { send404 } = require('../lib/util')
 
 module.exports = (db) => {
   return (req, res) => {
@@ -15,12 +16,13 @@ module.exports = (db) => {
       case 'POST':
         post(req, res, opts)
         break
+      default:
+        send404(req, res)
     }
   }
 }
 
 function get (req, res, opts) {
-
   const { admins, error } = opts
 
   if (!req.params.eventId || !req.query.key)
@@ -28,7 +30,7 @@ function get (req, res, opts) {
 
   admins
     .get(req.params.eventId)
-    .then( (admin) => {
+    .then((admin) => {
       const valid = admin.key === req.query.key
       res.status(200).json({ valid })
     })
@@ -43,7 +45,7 @@ function post (req, res, opts) {
 
   admins
     .insert(req.params.eventId)
-    .then( (admin) => {
+    .then((admin) => {
       res.status(200).json(admin)
     })
     .catch(error)
