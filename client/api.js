@@ -1,6 +1,6 @@
 import axios from 'axios'
 import moment from 'moment'
-import { functor } from './helpers/functional'
+// import { functor } from './helpers/functional'
 import { ADD_USER, receiveEvent, receiveGoogleEvents, error } from './actions'
 
 const client = axios.create({
@@ -39,62 +39,43 @@ const getGoogleEvents = (token, id) =>
 
 const loadAllGoogleEvents = () => (dispatch, getState) =>
   Promise.all(getState().users.map(user => getGoogleEvents(user)))
-    .then(eventGroups =>
-      functor(eventGroups)
-      .map(es => es.reduce((events, group) => events.concat(group.data.items), []))
-      .map(receiveGoogleEvents)
-      .fold(dispatch))
-    .catch(err =>
-      functor(err)
-      .map(error)
-      .fold(dispatch))
+    .then(eventGroups => eventGroups.reduce((events, group) => events.concat(group.data.items), []))
+      .then(receiveGoogleEvents)
+      .then(dispatch)
+    .catch(error)
+      .then(dispatch)
 
 const authorizeThenLoadGoogleEvents = id => (dispatch, getState) =>
   authorize()
-    .then((response) => {
-      functor(response)
-      .map(r => r.Zi.access_token)
-      .fold((token) => {
+    .then(r => r.Zi.access_token)
+      .then((token) => {
         if (!getState().users.includes(token)) {
           dispatch({ type: ADD_USER, user: token })
         }
         return getGoogleEvents(token, id)
       })
-    })
-    .then(response =>
-      functor(response)
-      .map(r => r.data.items)
-      .map(receiveGoogleEvents)
-      .fold(dispatch))
-    .catch(err =>
-      functor(err)
-      .map(error)
-      .fold(dispatch))
+      .then(r => r.data.items)
+      .then(receiveGoogleEvents)
+      .then(dispatch)
+    .catch(error)
+      .then(dispatch)
 
 const fetchEvent = id => dispatch =>
   client.get(`/event/${id}`)
-    .then(response =>
-      functor(response)
-      .map(r => r.data)
-      .map(receiveEvent)
-      .fold(dispatch))
-    .catch(err =>
-      functor(err)
-      .map(error)
-      .fold(dispatch))
+    .then(response => response.data)
+      .then(receiveEvent)
+      .then(dispatch)
+    .catch(error)
+      .then(dispatch)
 
 
 const sendVote = ({ id, option }) => dispatch =>
   client.post(`/vote/${id}`, { time: moment(option).unix() })
-    .then(response =>
-      functor(response)
-      .map(r => r.data)
-      .map(receiveEvent)
-      .fold(dispatch))
-    .catch(err =>
-      functor(err)
-      .map(error)
-      .fold(dispatch))
+    .then(response => response.data)
+      .then(receiveEvent)
+      .then(dispatch)
+    .catch(error)
+      .then(dispatch)
 
 const sendToken = ({ id, token }) => (dispatch, getState) => {
   if (!getState().users.includes(token)) {
@@ -103,7 +84,8 @@ const sendToken = ({ id, token }) => (dispatch, getState) => {
         dispatch(receiveEvent(response.data))
         dispatch(loadAllGoogleEvents())
       })
-      .catch(err => dispatch(error(err)))
+      .catch(error)
+        .then(dispatch)
   }
 
   return Promise.resolve() // no need to send server
@@ -128,7 +110,9 @@ const sendEvent = meta => (dispatch, getState) => {
       })
     }, {}),
   }
-  return client.post('/event', body).catch(err => dispatch(error(err)))
+  return client.post('/event', body)
+    .catch(error)
+      .then(dispatch)
 }
 
 export {
