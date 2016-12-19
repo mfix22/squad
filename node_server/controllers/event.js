@@ -23,7 +23,6 @@ module.exports = (db) => {
 }
 
 function get (req, res, opts) {
-
   const { events, error } = opts
 
   if (!req.params.eventId)
