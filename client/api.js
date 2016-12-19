@@ -41,7 +41,6 @@ const loadAllGoogleEvents = () => (dispatch, getState) =>
   Promise.all(getState().users.map(user => getGoogleEvents(user)))
     .then(eventGroups => eventGroups.reduce((events, group) => events.concat(group.data.items), []))
       .then(receiveGoogleEvents)
-      .then(dispatch)
     .catch(error)
       .then(dispatch)
 
@@ -56,7 +55,6 @@ const authorizeThenLoadGoogleEvents = id => (dispatch, getState) =>
       })
       .then(r => r.data.items)
       .then(receiveGoogleEvents)
-      .then(dispatch)
     .catch(error)
       .then(dispatch)
 
@@ -64,7 +62,6 @@ const fetchEvent = id => dispatch =>
   client.get(`/event/${id}`)
     .then(response => response.data)
       .then(receiveEvent)
-      .then(dispatch)
     .catch(error)
       .then(dispatch)
 
@@ -73,7 +70,6 @@ const sendVote = ({ id, option }) => dispatch =>
   client.post(`/vote/${id}`, { time: moment(option).unix() })
     .then(response => response.data)
       .then(receiveEvent)
-      .then(dispatch)
     .catch(error)
       .then(dispatch)
 
@@ -84,8 +80,8 @@ const sendToken = ({ id, token }) => (dispatch, getState) => {
         dispatch(receiveEvent(response.data))
         dispatch(loadAllGoogleEvents())
       })
-      .catch(error)
-        .then(dispatch)
+      // TODO functionalize this
+      .catch(e => dispatch(error(e)))
   }
 
   return Promise.resolve() // no need to send server
@@ -111,8 +107,7 @@ const sendEvent = meta => (dispatch, getState) => {
     }, {}),
   }
   return client.post('/event', body)
-    .catch(error)
-      .then(dispatch)
+    .catch(e => dispatch(error(e)))
 }
 
 export {
