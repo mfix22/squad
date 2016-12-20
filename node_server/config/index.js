@@ -1,5 +1,3 @@
-const MongoClient = require('mongodb')
-
 module.exports = {
 
   ENV: process.env.NODE_ENV || 'dev',
@@ -11,11 +9,12 @@ module.exports = {
   DB_PASSWORD: process.env.DB_PASSWORD || '',
 
 
-  connectDB () {
+  connectDB ()  {
     if (!['dev', 'production'].includes(this.ENV)) {
       // setup test db
     }
 
+    const MongoClient = require('mongodb')
     const login = (this.DB_USER !== '' && this.DB_PASSWORD !== '') ? `${this.DB_USER}:${this.DB_PASSWORD}@` : ''
     const url = `mongodb://${login}${this.HOST}:${this.DB_PORT}/${this.DB_NAME}`
 

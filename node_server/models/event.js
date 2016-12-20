@@ -13,20 +13,20 @@ module.exports = (db) => {
 }
 
 function addAuthToken (events, id, token) {
-  return new Promise((resolve, reject) => {
+  return new Promise( (resolve, reject) => {
     const query = { id }
     const update = { $addToSet: { tokens: token } }
     const options = { new: true }
 
     events
       .findAndModify(query, [], update, options)
-      .then(result => resolve(result.value))
+      .then( (result) => resolve(result.value))
       .catch(reject)
   })
 }
 
 function incrementVote (events, id, time) {
-  return new Promise((resolve, reject) => {
+  return new Promise( (resolve, reject) => {
     const query = { id }
 
     const queryProp = `options.${time}`
@@ -38,13 +38,13 @@ function incrementVote (events, id, time) {
 
     events
     .findAndModify(query, [], update, options)
-    .then(result => resolve(result.value))
+    .then( (result) => resolve(result.value))
     .catch(reject)
   })
 }
 
 function get (events, id) {
-  return new Promise((resolve, reject) => {
+  return new Promise( (resolve, reject) => {
     events
       .find({ id })
       .limit(1)
@@ -61,7 +61,7 @@ function get (events, id) {
 }
 
 function insert (events, event) {
-  return new Promise((resolve, reject) => {
+  return new Promise( (resolve, reject) => {
     // validate
     if (!validator.validate(event))
       reject(new Error('invalid'))
@@ -71,7 +71,7 @@ function insert (events, event) {
 
     events
       .insertOne(cleanedEvent)
-      .then(result => resolve(result.ops[0]))
+      .then( (result) => resolve(result.ops[0]))
       .catch(reject)
   })
 }

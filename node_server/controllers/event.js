@@ -1,6 +1,6 @@
+const crypto          = require('crypto')
 const eventModel      = require('../models/event')
 const genErrorHandler = require('../lib/errorHandler.js')
-const { send404 } = require('../lib/util')
 
 module.exports = (db) => {
   return (req, res) => {
@@ -16,8 +16,6 @@ module.exports = (db) => {
       case 'POST':
         post(req, res, opts)
         break
-      default:
-        send404(req, res)
     }
   }
 }
@@ -31,7 +29,9 @@ function get (req, res, opts) {
 
   events
     .get(req.params.eventId)
-    .then(res.status(200).json)
+    .then( (event) => {
+      res.status(200).json(event)
+    })
     .catch(error)
 }
 
@@ -39,6 +39,8 @@ function post (req, res, opts) {
   const { events, error } = opts
   events
     .insert(req.body)
-    .then(res.status(200).json)
+    .then( (event) => {
+      res.status(200).json(event)
+    })
     .catch(error)
 }

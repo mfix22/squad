@@ -11,6 +11,9 @@
       "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
       "max-len": 0,
       "react/prop-types": 0,
-      "arrow-body-style": 0
+      "arrow-body-style": 0,
+      "no-use-before-define": ["error", { "functions": false, "classes": true }],
+      "no-multi-spaces": ["error", { "exceptions": { "VariableDeclarator": true } }],
+      "curly": ["error", "multi", "consistent"]
     }
 }

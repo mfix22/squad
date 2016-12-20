@@ -3,7 +3,7 @@ const eventController     = require('../controllers/event')
 const voteController      = require('../controllers/vote')
 const authTokenController = require('../controllers/authToken')
 const adminController     = require('../controllers/admin')
-const healthController    = require('../controllers/health')
+const healthController     = require('../controllers/health')
 
 module.exports = function ({ db }) {
 
