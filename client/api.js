@@ -48,14 +48,13 @@ const authorizeThenLoadGoogleEvents = id => (dispatch, getState) =>
   authorize()
     .then(r => r.Zi.access_token)
       .then((token) => {
-        if (!getState().users.includes(token)) {
+        if (!getState().users.includes(token))
           dispatch({ type: ADD_USER, user: token })
-        }
+
         return getGoogleEvents(token, id)
       })
       .then(r => r.data.items)
       .then(receiveGoogleEvents)
-    .catch(error)
       .then(dispatch)
 
 const fetchEvent = id => dispatch =>
