@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import { chunk } from './util'
+import { chunk, countMap } from './util'
 
 export const getColor = (id) => {
   const colors = [
@@ -40,14 +40,13 @@ export const isThisMonth = (refDate, otherDate) => {
 const defaultNumDays = 35
 
 export function getDays(refDate, numDays = defaultNumDays) {
-  if (numDays <= 4) return [...Array(numDays).keys()].map(offset => moment(refDate).add(offset, 'd').format())
-  if (numDays <= 10) return [...Array(numDays).keys()].map(offset => moment(refDate).day(offset).format())
-  const numWeeks = Math.ceil(numDays / 7)
-  const correctedNumDays = numWeeks * 7
+  if (numDays <= 4) return countMap(offset => moment(refDate).add(offset, 'd').format(), numDays)
+  if (numDays <= 10) return countMap(offset => moment(refDate).day(offset).format(), numDays)
+  const correctedNumDays = Math.ceil(numDays / 7) * 7
 
   // chunks days into week arrays of day arrays
-  return [...Array(correctedNumDays).keys()].map(i => i - moment(refDate).date())
-                                   .map(offset => moment(refDate).day(offset).format())
+  return countMap(i => i - moment(refDate).date(), correctedNumDays)
+          .map(offset => moment(refDate).day(offset).format())
 }
 
 export function getChunkedDays(refDate, numDays = defaultNumDays) {
@@ -59,5 +58,5 @@ export function getChunkedDays(refDate, numDays = defaultNumDays) {
 }
 
 export function getOrderedMonthArray(date) {
-  return [...Array(12).keys()].map((month, index) => moment(date).add(index, 'M'))
+  return countMap(month => moment(date).add(month, 'M'), 12)
 }
