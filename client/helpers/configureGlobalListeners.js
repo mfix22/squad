@@ -16,47 +16,51 @@ function listenToWindowEvent(name, mapEventToAction, filter = () => true) {
   }
 }
 
+const keyMap = {
+  w: {
+    type: CHANGE_WINDOW,
+    window: 'WEEK'
+  },
+  4: {
+    type: CHANGE_WINDOW,
+    window: '4_DAY'
+  },
+  d: {
+    type: CHANGE_WINDOW,
+    window: '4_DAY'
+  },
+  m: {
+    type: CHANGE_WINDOW,
+    window: 'MONTH'
+  },
+  j: {
+    type: VIEW_PREV
+  },
+  k: {
+    type: VIEW_TODAY
+  },
+  l: {
+    type: VIEW_NEXT
+  }
+}
+
 // turns DOM event into action,
 // you can define many of those
 const globalKeyPress = (e) => {
-  switch (e.key.toLowerCase()) {
-    case 'w': return {
-      type: CHANGE_WINDOW,
-      window: 'WEEK'
-    }
-    case 'd': return {
-      type: CHANGE_WINDOW,
-      window: '4_DAY'
-    }
-    case 'm': return {
-      type: CHANGE_WINDOW,
-      window: 'MONTH'
-    }
-    case 'j': return {
-      type: VIEW_PREV
-    }
-    case 'k': return {
-      type: VIEW_TODAY
-    }
-    case 'l': return {
-      type: VIEW_NEXT
-    }
-    // currently unused
-    default: return {
-      type: GLOBAL_KEY_PRESS,
-      key: e.key.toLowerCase(),
-      ctrl: e.ctrlKey,
-      meta: e.metaKey,
-      shift: e.shiftKey,
-      alt: e.altKey
-    }
+  return keyMap[e.key.toLowerCase()] ? keyMap[e.key.toLowerCase()] : {
+    type: GLOBAL_KEY_PRESS,
+    key: e.key.toLowerCase(),
+    ctrl: e.ctrlKey,
+    meta: e.metaKey,
+    shift: e.shiftKey,
+    alt: e.altKey
   }
 }
 
 const keyFilter = (e) => {
   if (e.target.nodeName.toLowerCase() === 'input') return false
 
-  if (['w', 'd', 'm', 'j', 'k', 'l'].some(key => key === e.key.toLowerCase())) return true
+  if (Object.keys(keyMap).some(key => key === e.key.toLowerCase())) return true
   if (e.ctrlKey) {
     // pass
   }
