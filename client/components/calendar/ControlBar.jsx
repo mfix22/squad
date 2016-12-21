@@ -9,7 +9,7 @@ import MenuItem from 'material-ui/MenuItem'
 import NextButton from '../buttons/NextButton'
 import PrevButton from '../buttons/PrevButton'
 import TodayButton from '../buttons/TodayButton'
-import { getOrderedMonthArray, getNumDaysInView, getDays } from '../../helpers/util'
+import { getOrderedMonthArray, getNumDaysInView, getDays } from '../../helpers/calendarUtil'
 import { color } from '../../vars'
 
 const formatCenterHeader = (view) => {

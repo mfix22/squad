@@ -4,7 +4,7 @@ import moment from 'moment'
 import Event from './Event'
 import Moon from '../embeddables/Moon'
 
-import { isThisMonth } from '../../helpers/util'
+import { isThisMonth } from '../../helpers/calendarUtil'
 
 const getHeaderFormat = (window) => {
   switch (window) {

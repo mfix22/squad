@@ -1,6 +1,14 @@
 import { expect } from 'chai'
 import moment from 'moment-timezone'
-import { chunk, getDays, getNumDaysInView, getChunkedDays, isThisMonth, getOrderedMonthArray } from '../client/helpers/util'
+import { chunk } from '../client/helpers/calendarUtil'
+import {
+  chunk,
+  getDays,
+  getNumDaysInView,
+  getChunkedDays,
+  isThisMonth,
+  getOrderedMonthArray
+} from '../client/helpers/calendarUtil'
 
 moment.tz.setDefault("America/Chicago");
 

@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { getColor } from './helpers/util'
+import { getColor } from './helpers/calendarUtil'
 
 const VIEW_TODAY = 'VIEW_TODAY'
 const VIEW_PREV = 'VIEW_PREV'

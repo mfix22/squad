@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import WeekRow from './WeekRow'
 
-import { getChunkedDays, getNumDaysInView } from '../../helpers/util'
+import { getChunkedDays, getNumDaysInView } from '../../helpers/calendarUtil'
 
 require('../../styles/app.scss')
 
