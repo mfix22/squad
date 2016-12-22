@@ -1,8 +1,7 @@
 import { expect } from 'chai'
 import moment from 'moment-timezone'
-import { chunk } from '../client/helpers/calendarUtil'
+import { chunk } from '../client/helpers/util'
 import {
-  chunk,
   getDays,
   getNumDaysInView,
   getChunkedDays,
