@@ -14,14 +14,14 @@
 ```json
 
 {
-  "id": "sure",
+  "id": "ID",
   "title": "some title",
   "description": "some description",
   "location": "some location",
-  "duration": 12343,
+  "duration": 1234332,
   "emails" : [
     "test@test.com",
-    "boaty@mcboatface.coms"
+    "email@email.com"
   ],
   "options": {
       "startTime": "count"
@@ -51,7 +51,7 @@ __Request__:
     "duration": 12343,
     "emails" : [
       "test@test.com",
-      "boaty@mcboatface.coms"
+      "email@email.com"
     ],
     "options": [
       {
